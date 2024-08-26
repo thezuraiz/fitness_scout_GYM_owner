@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ZColor{
+class ZColor {
   ZColor._();
 
   // --- APP BASIC COLORS
-  static const primary = Color(0xff4b68ff);
+  static const primary = Colors.orange;
   static const secondary = Color(0xffffe24b);
   static const accent = Color(0xffb0c7ff);
 
@@ -13,10 +13,10 @@ class ZColor{
       begin: Alignment(0.0, 0.0),
       end: Alignment(0.707, -0.707),
       colors: [
-    Color(0xFFFf9A9e),
-    Color(0xFFFad0c4),
-    Color(0xFFFad0c4),
-  ]);
+        Color(0xFFFf9A9e),
+        Color(0xFFFad0c4),
+        Color(0xFFFad0c4),
+      ]);
 
   // --- TEXT COLORS
   static const textPrimary = Color(0xff333333);
@@ -55,5 +55,4 @@ class ZColor{
   static const Color softGrey = Color(0xFFF4F4F4);
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
-
 }

@@ -17,7 +17,6 @@ import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exception.dart';
 import '../user/user_repository.dart';
 
-
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
   final _auth = FirebaseAuth.instance;
@@ -46,11 +45,10 @@ class AuthenticationRepository extends GetxController {
         // Get.offAll(() => const NavigationMenu());
       } else {
         Get.offAll(() => VerifyScreen(
-          email: _auth.currentUser?.email,
-        ));
+              email: _auth.currentUser?.email,
+            ));
       }
     } else {
-
       /// Local Storage
       deviceStorage.writeIfNull('isFirstTime', true);
       deviceStorage.read('isFirstTime') != true
@@ -141,7 +139,7 @@ class AuthenticationRepository extends GetxController {
 
       /// --- Obtain the auth detail from the request
       final GoogleSignInAuthentication? googleAuth =
-      await userAccount?.authentication;
+          await userAccount?.authentication;
 
       /// --- Create new credentials
       final credentials = GoogleAuthProvider.credential(
@@ -168,7 +166,7 @@ class AuthenticationRepository extends GetxController {
     try {
       // Create a credentials
       AuthCredential credential =
-      EmailAuthProvider.credential(email: email, password: password);
+          EmailAuthProvider.credential(email: email, password: password);
 
       // Re Authenticate
       await _auth.currentUser!.reauthenticateWithCredential(credential);

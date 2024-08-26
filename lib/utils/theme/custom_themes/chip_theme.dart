@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/colors.dart';
-
 class ZChipTheme{
   ZChipTheme._();
 
   // --- LIGHT MODE
   static ChipThemeData lightChipThemeData = ChipThemeData(
-    disabledColor: ZColor.grey.withOpacity(0.4),
-    labelStyle: const TextStyle(color: ZColor.black),
-    selectedColor: ZColor.primary,
+    disabledColor: Colors.grey.withOpacity(0.4),
+    labelStyle: const TextStyle(color: Colors.black),
+    selectedColor: Colors.blue,
     padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-    checkmarkColor: ZColor.white
+    checkmarkColor: Colors.white
   );
 
   // --- DARK MODE
-  static ChipThemeData darkChopThemeData = const ChipThemeData(
-    disabledColor: ZColor.darkerGrey,
-    labelStyle: TextStyle(color: ZColor.white),
-    selectedColor: ZColor.primary,
+  static ChipThemeData darkChipThemeData = const ChipThemeData(
+    disabledColor: Colors.grey,
+    labelStyle: TextStyle(color: Colors.white),
+    selectedColor: Colors.blue,
     padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12.0),
-    checkmarkColor: ZColor.white
+    checkmarkColor: Colors.white
   );
 }

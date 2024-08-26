@@ -7,7 +7,6 @@ import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loader.dart';
 
-
 class LoginController extends GetxController {
   static LoginController get instance => Get.find();
 
@@ -37,7 +36,7 @@ class LoginController extends GetxController {
 
       // Todo: Start Loader
       ZFullScreenLoader.openLoadingDialogy(
-          'Logging you in...', ZImages.dockerAnimation);
+          'Logging you in...', ZImages.fileAnimation);
 
       // Todo: Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -86,7 +85,7 @@ class LoginController extends GetxController {
 
       // Todo: Start Loader
       ZFullScreenLoader.openLoadingDialogy(
-          'Logging you in...', ZImages.dockerAnimation);
+          'Logging you in...', ZImages.fileAnimation);
 
       // Todo: Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
