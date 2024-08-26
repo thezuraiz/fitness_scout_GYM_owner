@@ -4,20 +4,20 @@ class ZText {
   // --- GLOBAL TEXTS
 
   // --- ON BOARDING TEXTS
-  static const String onBoardingTitle1 = "Choose your product";
-  static const String onBoardingTitle2 = "Select Payment Method";
-  static const String onBoardingTitle3 = "Deliver at your door step";
+  static const String onBoardingTitle1 = "Choose Your GYM";
+  static const String onBoardingTitle2 = "Customizable Diet Plan";
+  static const String onBoardingTitle3 = "Record Your Health";
 
   static const String onBoardingSubTitle1 =
-      "Welcome to a World of Limitless Choices - Your Perfect Products Awaits!";
+      "Welcome to a World of Limitless Choices - Find Your Perfect Gym!";
   static const String onBoardingSubTitle2 =
-      "For Seamless Transactions, Choose Your Payment Path - Your Convenience Our Priority";
+      "Seamless Health, Customizable Your Diet Plan - Your Health Our Priority";
   static const String onBoardingSubTitle3 =
-      "From Our Doorstep to Yours - Swift, Secure and Contactless Delivery";
+      "Start Your Health Journey with Quick, Safe, and Healthy Exercise";
 
   // --- HOME
-  static const String homeAppbarTitle = "Good day for shopping";
-  static const String homeAppbarSubTitle = "The Zuraiz";
+  static const String homeAppbarTitle = "Good day for Exercise";
+  static const String homeAppbarSubTitle = "User";
 
   // Authentication Form Text
   static const String firstName = "First Name";
@@ -27,6 +27,8 @@ class ZText {
   static const String newPassword = "New Password";
   static const String userName = "User Name";
   static const String phoneNo = "Phone Number";
+  static const String height = "Height (mm)";
+  static const String weight = "Weight (kg)";
   static const String rememberMe = "Remember Me";
   static const String forgetPassword = "Forget Password?";
   static const String signIn = "Sign In";
@@ -45,21 +47,35 @@ class ZText {
 
   // Authentication Headings Email
   static const String loginTitle = "Welcome Back,";
-  static const String loginSubTitle = "Discover Limitless Choices and Unmatched Convenience";
+  static const String loginSubTitle =
+      "Discover Limitless Choices and Unmatched Convenience";
   static const String signupTitle = "Let's create your account";
   static const String forgetPasswordTitle = "Forget Password";
   static const String Continue = "Continue";
-  static const String forgetPasswordSubTitle = "Don't worry sometimes poeple can forget too, enter your email and we will send you a password reset link.";
+  static const String forgetPasswordSubTitle =
+      "Don't worry sometimes poeple can forget too, enter your email and we will send you a password reset link.";
   static const String confirmEmailTitle = "Verify your email address";
-  static const String confirmEmailSubtitle = "Congratulations! Your Account Awaits: Verify your email to start shopping and experience a world of Unrivaled Deals and Personalized Offer";
-  static const String emailNotReceivedMessage = "Didn't get the Email? Check your junk/spam or resend it";
-  static const String yourAccountCreatedTitle = "Your account successfully created!";
-  static const String yourAccountCreatedSubTitle = "Welcome to your Ultimate Shopping Destination: Your Account is Created, Unleash the Joy of Seamless Online Shopping";
+  static const String confirmEmailSubtitle =
+      "Congratulations! Your Account Awaits: Verify your email to start shopping and experience a world of Unrivaled Deals and Personalized Offer";
+  static const String emailNotReceivedMessage =
+      "Didn't get the Email? Check your junk/spam or resend it";
+  static const String yourAccountCreatedTitle =
+      "Your account successfully created!";
+  static const String yourAccountCreatedSubTitle =
+      "Welcome to your Ultimate Shopping Destination: Your Account is Created, Unleash the Joy of Seamless Online Shopping";
 
   // Reset Password
   static const String changeYourPasswordTitle = "Password Reset Email Send";
-  static const String changeYourPasswordSubTitle = "Your Account Security is our priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected";
+  static const String changeYourPasswordSubTitle =
+      "Your Account Security is our priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected";
   static const String done = "Done";
 
+  /// --- Order Review
+  static const String orderReviewAppbarTitle = "Order Review";
+  static const String orderReviewReferenceFieldTitle = "Reference ID";
+  static const String fitnessScoutBankIBAN = 'PK39SADA0000003001234029';
 
+  /// --- BMI Screen
+  static const String bmiScreenHeading =
+      "Warning: Please ensure the value is correct. All exercises depend on the BMI.";
 }

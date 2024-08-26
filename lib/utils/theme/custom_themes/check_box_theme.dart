@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/colors.dart';
+
 class ZCheckBoxTheme {
   ZCheckBoxTheme._();
 
@@ -15,7 +17,7 @@ class ZCheckBoxTheme {
     }),
     fillColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.blue;
+        return ZColor.primary;
       } else {
         return Colors.transparent;
       }
@@ -34,7 +36,7 @@ class ZCheckBoxTheme {
       }),
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return Colors.blue;
+          return ZColor.primary;
         } else {
           return Colors.transparent;
         }

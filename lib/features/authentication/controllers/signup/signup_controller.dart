@@ -30,7 +30,7 @@ class SignupController extends GetxController {
     try {
       // Start Loading
       ZFullScreenLoader.openLoadingDialogy(
-          'We are processing your information...', ZImages.dockerAnimation);
+          'We are processing your information...', ZImages.fileAnimation);
 
       // Form Validation
       if (!signupFormKey.currentState!.validate()) {
@@ -81,7 +81,9 @@ class SignupController extends GetxController {
       ZFullScreenLoader.stopLoading();
 
       // Move To Verify Email Screen
-      Get.to(() => VerifyScreen(email: email.text.toString(),));
+      Get.to(() => VerifyScreen(
+            email: email.text.toString(),
+          ));
     } catch (e) {
       //  Show some generic error to the user
       ZLoaders.warningSnackBar(title: 'Uh Snap!', message: e.toString());

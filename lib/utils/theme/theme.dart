@@ -10,7 +10,6 @@ import 'custom_themes/outlined_button.dart';
 import 'custom_themes/textTheme.dart';
 import 'custom_themes/textformfield_theme.dart';
 
-
 class AppTheme {
   AppTheme._(); // To make its constructor private
 
@@ -39,7 +38,7 @@ class AppTheme {
       primaryColor: Colors.blue,
       scaffoldBackgroundColor: ZColor.black,
       textTheme: ZTextTheme.darkTextTheme,
-      chipTheme: ZChipTheme.darkChopThemeData,
+      chipTheme: ZChipTheme.darkChipThemeData,
       appBarTheme: ZAppBarTheme.darkAppBarTheme,
       checkboxTheme: ZCheckBoxTheme.darkCheckBoxTheme,
       bottomSheetTheme: ZBottomSheetTheme.darkBottomSheetTheme,
