@@ -1,3 +1,4 @@
+import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/switch_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
@@ -15,35 +16,37 @@ class AppTheme {
 
   // --- Light Theme
   static ThemeData lightTheme = ThemeData(
-      useMaterial3: true,
-      fontFamily: 'Poppins',
-      brightness: Brightness.light,
-      primaryColor: Colors.blue,
-      scaffoldBackgroundColor: Colors.white,
-      textTheme: ZTextTheme.lightTextTheme,
-      chipTheme: ZChipTheme.lightChipThemeData,
-      appBarTheme: ZAppBarTheme.lightAppBarTheme,
-      checkboxTheme: ZCheckBoxTheme.ligthCheckboxTheme,
-      bottomSheetTheme: ZBottomSheetTheme.lightBottomSheetTheme,
-      elevatedButtonTheme: ZElevatedButtonTheme.lightElevatedButtonTheme,
-      outlinedButtonTheme: ZOutlinedButton.lightOutlinedButtonTheme,
-      inputDecorationTheme: ZTextFormFieldTheme.lightTextFormField
+    useMaterial3: true,
+    fontFamily: 'Poppins',
+    brightness: Brightness.light,
+    primaryColor: Colors.blue,
+    scaffoldBackgroundColor: Colors.white,
+    textTheme: ZTextTheme.lightTextTheme,
+    chipTheme: ZChipTheme.lightChipThemeData,
+    appBarTheme: ZAppBarTheme.lightAppBarTheme,
+    checkboxTheme: ZCheckBoxTheme.ligthCheckboxTheme,
+    bottomSheetTheme: ZBottomSheetTheme.lightBottomSheetTheme,
+    elevatedButtonTheme: ZElevatedButtonTheme.lightElevatedButtonTheme,
+    outlinedButtonTheme: ZOutlinedButton.lightOutlinedButtonTheme,
+    inputDecorationTheme: ZTextFormFieldTheme.lightTextFormField,
+    switchTheme: ZSwitchTheme.lightSwitchThemeData,
   );
 
   // --- Dark Theme
   static ThemeData darkTheme = ThemeData(
-      useMaterial3: true,
-      fontFamily: 'Poppins',
-      brightness: Brightness.dark,
-      primaryColor: Colors.blue,
-      scaffoldBackgroundColor: ZColor.black,
-      textTheme: ZTextTheme.darkTextTheme,
-      chipTheme: ZChipTheme.darkChipThemeData,
-      appBarTheme: ZAppBarTheme.darkAppBarTheme,
-      checkboxTheme: ZCheckBoxTheme.darkCheckBoxTheme,
-      bottomSheetTheme: ZBottomSheetTheme.darkBottomSheetTheme,
-      elevatedButtonTheme: ZElevatedButtonTheme.darkElevatedButtonTheme,
-      outlinedButtonTheme: ZOutlinedButton.darkOutlinedButtonTheme,
-      inputDecorationTheme: ZTextFormFieldTheme.darkTextFormField
+    useMaterial3: true,
+    fontFamily: 'Poppins',
+    brightness: Brightness.dark,
+    primaryColor: Colors.blue,
+    scaffoldBackgroundColor: ZColor.black,
+    textTheme: ZTextTheme.darkTextTheme,
+    chipTheme: ZChipTheme.darkChipThemeData,
+    appBarTheme: ZAppBarTheme.darkAppBarTheme,
+    checkboxTheme: ZCheckBoxTheme.darkCheckBoxTheme,
+    bottomSheetTheme: ZBottomSheetTheme.darkBottomSheetTheme,
+    elevatedButtonTheme: ZElevatedButtonTheme.darkElevatedButtonTheme,
+    outlinedButtonTheme: ZOutlinedButton.darkOutlinedButtonTheme,
+    inputDecorationTheme: ZTextFormFieldTheme.darkTextFormField,
+    switchTheme: ZSwitchTheme.darkSwitchThemeData,
   );
 }

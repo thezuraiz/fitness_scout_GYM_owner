@@ -1,4 +1,5 @@
 import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
+import 'package:fitness_scout_owner_v1/features/gym/screen/wallet/wallet.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +11,17 @@ class NavigationMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Todo:
     // Get.put(UserController());
     final controller = Get.put(NavigationController());
     final dark = ZHelperFunction.isDarkMode(context);
     return Obx(
-          () => Scaffold(
+      () => Scaffold(
         bottomNavigationBar: NavigationBar(
           selectedIndex: controller.selectedIndex.value,
           elevation: 0,
           onDestinationSelected: (index) =>
-          controller.selectedIndex.value = index,
+              controller.selectedIndex.value = index,
           backgroundColor: dark
               ? ZColor.black.withOpacity(0.1)
               : ZColor.white.withOpacity(0.1),
@@ -30,7 +30,7 @@ class NavigationMenu extends StatelessWidget {
               : ZColor.black.withOpacity(0.1),
           destinations: const [
             NavigationDestination(icon: Icon(Iconsax.home), label: 'My Income'),
-            NavigationDestination(icon: Icon(Iconsax.shop), label: 'Wallet'),
+            NavigationDestination(icon: Icon(Iconsax.wallet), label: 'Wallet'),
           ],
         ),
         body: controller.screens[controller.selectedIndex.value],
@@ -46,6 +46,6 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomePage(),
-    HomePage(),
+    WalletScreen(),
   ];
 }
