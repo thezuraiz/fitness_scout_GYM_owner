@@ -47,7 +47,8 @@ class LoginScreenFormField extends StatelessWidget {
                     labelText: ZText.password),
                 controller: controller.password,
                 obscureText: controller.hidePassword.value,
-                validator: (value) => ZValidation.validatePassword(value),
+                // Todo: Uncomment validation in production mode
+                // validator: (value) => ZValidation.validatePassword(value),
               ),
             ),
 
