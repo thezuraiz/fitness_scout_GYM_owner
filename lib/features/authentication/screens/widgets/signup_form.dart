@@ -99,7 +99,7 @@ class SignupForm extends StatelessWidget {
               controller: controller.password,
               obscureText: controller.hidePassword.value,
               // Todo:
-              // validator: (value) => ZValidation.validatePassword(value),
+              validator: (value) => ZValidation.validatePassword(value),
               decoration: InputDecoration(
                 labelText: ZText.password,
                 prefixIcon: const Icon(Iconsax.password_check),

@@ -56,7 +56,7 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  // ------------------ Email & Password Sign-in -----------------------
+  /// ------------------ Email & Password Sign-in -----------------------
 
   ///  [Email Authentication] - Sign-in
   Future<UserCredential> loginWithEmailAndPassword(

@@ -1,3 +1,4 @@
+import 'package:fitness_scout_owner_v1/utils/validator/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ class LoginScreenFormField extends StatelessWidget {
                 prefixIcon: Icon(Iconsax.direct_right),
               ),
               controller: controller.email,
+              validator: (value) => ZValidation.validateEmail(value),
             ),
             const SizedBox(
               height: ZSizes.spaceBtwInputFields,
@@ -45,6 +47,7 @@ class LoginScreenFormField extends StatelessWidget {
                     labelText: ZText.password),
                 controller: controller.password,
                 obscureText: controller.hidePassword.value,
+                validator: (value) => ZValidation.validatePassword(value),
               ),
             ),
 

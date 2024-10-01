@@ -5,7 +5,6 @@ import '../../../../common/widgets/formDivider.dart';
 import '../../../../common/widgets/socialButtons.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
-import '../../../../utils/helpers/helper_functions.dart';
 import '../../controllers/signup/signup_controller.dart';
 import '../widgets/signup_form.dart';
 
@@ -14,7 +13,6 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = ZHelperFunction.isDarkMode(context);
     final controller = Get.put(SignupController());
     return Scaffold(
       appBar: AppBar(),

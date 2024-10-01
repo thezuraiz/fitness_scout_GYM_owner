@@ -52,7 +52,7 @@ class ZValidation {
 
   static String? validatePhoneNumber(value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required!';
+      return 'Phone Number is required!';
     }
 
     // Regular Expression for phone number validation (assuming a 11 digit for PK phone number format )
