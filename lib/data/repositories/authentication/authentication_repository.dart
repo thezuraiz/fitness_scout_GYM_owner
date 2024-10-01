@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/gym_verification.dart';
-import 'package:fitness_scout_owner_v1/navigation_menu.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';

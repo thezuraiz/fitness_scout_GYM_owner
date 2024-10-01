@@ -22,15 +22,15 @@ class CustomDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: dark ? ZColor.dark : ZColor.primary,
               ),
-              accountName: Text(
+              accountName: const Text(
                 "Zuraiz Khan",
               ),
-              currentAccountPicture: CircleAvatar(
+              currentAccountPicture: const CircleAvatar(
                 backgroundImage: AssetImage(
                     "assets/user_profile/user_profile_compressed.png"),
                 backgroundColor: ZColor.light,
               ),
-              accountEmail: Text("thezuraiz@gmail.com"),
+              accountEmail: const Text("thezuraiz@gmail.com"),
             ),
             ListTile(
               leading: const Icon(Iconsax.location,
@@ -42,9 +42,9 @@ class CustomDrawer extends StatelessWidget {
                       .copyWith(color: ZColor.light)),
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Iconsax.wallet,
+              leading: const Icon(Iconsax.wallet,
                   color: ZColor.light, size: ZSizes.iconLg),
               title: Text("Wallet",
                   style: Theme.of(context)
@@ -54,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Iconsax.security_safe,
+              leading: const Icon(Iconsax.security_safe,
                   color: ZColor.light, size: ZSizes.iconLg),
               title: Text("Safety",
                   style: Theme.of(context)
@@ -71,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                     .headlineSmall!
                     .copyWith(color: ZColor.light),
               ),
-              leading: Icon(Iconsax.setting,
+              leading: const Icon(Iconsax.setting,
                   color: ZColor.light, size: ZSizes.iconLg),
               onTap: () {},
             ),
@@ -81,7 +81,7 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .headlineSmall!
                       .copyWith(color: ZColor.light)),
-              leading: Icon(Iconsax.info_circle,
+              leading: const Icon(Iconsax.info_circle,
                   color: ZColor.light, size: ZSizes.iconLg),
               onTap: () {},
             ),
@@ -91,20 +91,20 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .headlineSmall!
                       .copyWith(color: ZColor.light)),
-              leading: Icon(Iconsax.message,
+              leading: const Icon(Iconsax.message,
                   color: ZColor.light, size: ZSizes.iconLg),
               onTap: () {},
             ),
-            Spacer(),
-            Divider(),
-            SizedBox(
+            const Spacer(),
+            const Divider(),
+            const SizedBox(
               height: ZSizes.spaceBtwSections,
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [ZSocialButtons()],
             ),
-            SizedBox(
+            const SizedBox(
               height: ZSizes.spaceBtwSections,
             )
           ],

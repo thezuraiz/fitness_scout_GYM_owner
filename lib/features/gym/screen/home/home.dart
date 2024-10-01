@@ -1,14 +1,9 @@
-import 'package:fitness_scout_owner_v1/common/widgets/custom_appbar/custom_app_bar.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/drawer/custom_drawer.dart';
-import 'package:fitness_scout_owner_v1/common/widgets/formDivider.dart';
-import 'package:fitness_scout_owner_v1/common/widgets/socialButtons.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,7 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = ZHelperFunction.isDarkMode(context);
     return Scaffold(
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         appBar: AppBar(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +38,9 @@ class HomePage extends StatelessWidget {
               )
             ],
           ),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Iconsax.setting))],
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Iconsax.setting))
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -55,20 +52,20 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     OutlinedButton(
-                      child: Text('Day'),
+                      child: const Text('Day'),
                       onPressed: () {},
                     ),
                     OutlinedButton(
-                      child: Text('Week'),
+                      child: const Text('Week'),
                       onPressed: () {},
                     ),
                     OutlinedButton(
-                      child: Text('Month'),
+                      child: const Text('Month'),
                       onPressed: () {},
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.spaceBtwSections,
                 ),
                 Text(
@@ -78,11 +75,11 @@ class HomePage extends StatelessWidget {
                       .displayMedium!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.spaceBtwSections,
                 ),
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Iconsax.level,
                     size: ZSizes.iconLg * 1.3,
                     color: ZColor.light,
@@ -102,35 +99,35 @@ class HomePage extends StatelessWidget {
                         .copyWith(color: ZColor.light),
                   ),
                   tileColor: ZColor.primary,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(ZSizes.lg),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.spaceBtwSections * 2.5,
                 ),
                 Column(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           color: ZColor.lightGrey, shape: BoxShape.circle),
-                      padding: EdgeInsets.all(ZSizes.sm),
+                      padding: const EdgeInsets.all(ZSizes.sm),
                       child: IconButton(
                         onPressed: () {},
-                        icon: Icon(
-                          Iconsax.home_1,
+                        icon: const Icon(
+                          Iconsax.personalcard,
                           size: ZSizes.iconLg * 1.3,
                           color: ZColor.darkGrey,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: ZSizes.sm,
                     ),
                     Text(
-                      'No completed orders',
+                      'No members yet',
                       style: Theme.of(context)
                           .textTheme
                           .titleMedium!
@@ -138,16 +135,16 @@ class HomePage extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.spaceBtwSections * 2.2,
                 ),
                 ListTile(
-                  leading: Icon(Iconsax.task),
+                  leading: const Icon(Iconsax.task),
                   title: Text('Go to request hostory',
                       style: Theme.of(context).textTheme.titleLarge),
                 ),
                 ListTile(
-                  leading: Icon(Iconsax.flag),
+                  leading: const Icon(Iconsax.flag),
                   title: Text('Acheivements',
                       style: Theme.of(context).textTheme.titleLarge),
                 )
