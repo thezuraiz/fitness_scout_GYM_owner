@@ -56,7 +56,11 @@ class GymVerificationScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: controls.onStepContinue,
+                      onPressed: () {
+                        if (controller.validateCurrentStep()) {
+                          controls.onStepContinue;
+                        }
+                      },
                       child: Text(isLastStep ? 'Finish' : 'Next'),
                     ),
                   ),

@@ -10,7 +10,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   // TODO: Add Widget Binding
   final WidgetsBinding widgetsBinding =
-  WidgetsFlutterBinding.ensureInitialized();
+      WidgetsFlutterBinding.ensureInitialized();
 
   /// TODO: Init Local Storage
   GetStorage.init();
@@ -23,7 +23,11 @@ Future<void> main() async {
   // TODO: Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  ).then((FirebaseApp value) => Get.put(AuthenticationRepository()));
+  ).then(
+    (FirebaseApp value) => Get.put(
+      AuthenticationRepository(),
+    ),
+  );
 
   // TODO: Initialize Authentication
 

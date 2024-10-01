@@ -13,7 +13,7 @@ class WalletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = ZHelperFunction.isDarkMode(context);
     return Scaffold(
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,8 +45,9 @@ class WalletScreen extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                  color: dark ? ZColor.darkContainer : ZColor.lightGrey,
-                  borderRadius: BorderRadius.circular(ZSizes.md)),
+                color: dark ? ZColor.darkContainer : ZColor.lightGrey,
+                borderRadius: BorderRadius.circular(ZSizes.md),
+              ),
               padding: const EdgeInsets.all(ZSizes.md),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -81,22 +82,22 @@ class WalletScreen extends StatelessWidget {
                       'PKR1300',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    trailing: Icon(Iconsax.arrow_right_3),
+                    trailing: const Icon(Iconsax.arrow_right_3),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: ZSizes.spaceBtwSections,
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('Top up'),
+                      child: const Text('Top up'),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: ZSizes.spaceBtwSections,
             ),
             Container(
