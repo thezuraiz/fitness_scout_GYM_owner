@@ -11,8 +11,9 @@ class GymInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(GymVerificationController());
+
     return Form(
-      key: controller.formKeyStep1,
+      // key: controller.formKeys[0],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,30 +33,145 @@ class GymInfoScreen extends StatelessWidget {
           const SizedBox(
             height: ZSizes.spaceBtwInputFields,
           ),
+          const SizedBox(height: ZSizes.spaceBtwInputFields),
           TextFormField(
             decoration: const InputDecoration(labelText: 'GYM Address'),
             validator: (value) =>
                 ZValidation.validateEmptyText('GYM Address', value),
             controller: controller.gymAddress,
           ),
+          // Padding(
+          //   padding: const EdgeInsets.all(16.0),
+          //   child: Text(
+          //     'Select Opening Hours',
+          //     style: TextStyle(
+          //       fontSize: 24,
+          //       fontWeight: FontWeight.bold,
+          //       color: Colors.black87,
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
+          // ListView(
+          //   physics: NeverScrollableScrollPhysics(),
+          //   shrinkWrap: true,
+          //   children: openingHours.keys.map((day) {
+          //     return Card(
+          //       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          //       child: Column(
+          //         children: [
+          //           ListTile(
+          //             title: Text(day),
+          //             trailing: ToggleButtons(
+          //               children: <Widget>[
+          //                 Padding(
+          //                   padding:
+          //                       const EdgeInsets.symmetric(horizontal: 16.0),
+          //                   child: Text('Closed'),
+          //                 ),
+          //                 Padding(
+          //                   padding:
+          //                       const EdgeInsets.symmetric(horizontal: 16.0),
+          //                   child: Text('Open'),
+          //                 ),
+          //               ],
+          //               isSelected: [
+          //                 !openingHours[day]!['isOpen']!,
+          //                 openingHours[day]!['isOpen']!
+          //               ],
+          //               onPressed: (int index) {
+          //                 setState(() {
+          //                   openingHours[day]!['isOpen'] =
+          //                       index == 1; // Update isOpen state
+          //                   if (index == 0) {
+          //                     // If selected 'Closed', reset times
+          //                     openingHours[day]!['opening'] = null;
+          //                     openingHours[day]!['closing'] = null;
+          //                   }
+          //                 });
+          //               },
+          //             ),
+          //           ),
+          //           if (openingHours[day]!['isOpen']!)
+          //             Column(
+          //               children: [
+          //                 ListTile(
+          //                   title: Text(
+          //                       'Opening Time: ${openingHours[day]!['opening']?.format(context) ?? 'Select Opening Time'}'),
+          //                   trailing: IconButton(
+          //                     icon: Icon(Icons.access_time),
+          //                     onPressed: () {
+          //                       _selectTime(context, day, true);
+          //                     },
+          //                   ),
+          //                 ),
+          //                 ListTile(
+          //                   title: Text(
+          //                       'Closing Time: ${openingHours[day]!['closing']?.format(context) ?? 'Select Closing Time'}'),
+          //                   trailing: IconButton(
+          //                     icon: Icon(Icons.access_time),
+          //                     onPressed: () {
+          //                       _selectTime(context, day, false);
+          //                     },
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //         ],
+          //       ),
+          //     );
+          //   }).toList(),
+          // ),
           const SizedBox(
             height: ZSizes.spaceBtwInputFields,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'GYM Location'),
-            validator: (value) =>
-                ZValidation.validateEmptyText('GYM Location', value),
+            enabled: false,
             controller: controller.gymLocation,
           ),
           const SizedBox(
             height: ZSizes.spaceBtwInputFields,
           ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'GYM License'),
-            validator: (value) =>
-                ZValidation.validateEmptyText('GYM License', value),
-            controller: controller.gymLicence,
+          GestureDetector(
+            onTap: () => controller.pickImage(),
+            child: Obx(
+              () => Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.all(10),
+                child: controller.gymLicenseImage.value == null
+                    ? const Column(
+                        children: [
+                          Icon(Icons.image, size: 50, color: Colors.grey),
+                          SizedBox(height: 8),
+                          Text('Select GYM License Image',
+                              style: TextStyle(color: Colors.grey)),
+                        ],
+                      )
+                    : Image.file(
+                        controller.gymLicenseImage.value!,
+                        fit: BoxFit.cover,
+                        height: 100,
+                        width: 100,
+                      ),
+              ),
+            ),
           ),
+          Obx(() {
+            final isInvalid = controller.gymLicenseImage.value;
+            return isInvalid == null
+                ? Text(
+                    'Required',
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        color: Colors.red.shade900,
+                        fontWeight: FontWeight.w500),
+                  )
+                : SizedBox
+                    .shrink(); // Provide an empty widget when the condition is false
+          }),
           const SizedBox(
             height: ZSizes.spaceBtwInputFields,
           ),

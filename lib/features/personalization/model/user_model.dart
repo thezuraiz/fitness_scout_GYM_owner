@@ -1,98 +1,79 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../authentication/models/gym_model.dart';
 
-class GymOwnerModel {
+class Gym {
   final String id;
-  String firstName;
-  String lastName;
-  final String userName;
-  final String email;
-  String phoneNumber;
-  String profilePicture;
-  String gymLocation;
-  String gymType;
-  String accountNumber;
-  String bankName;
+  final String name;
+  final String? description;
+  final Location location; // This already includes latitude and longitude
+  final String address;
+  final String contactNumber;
+  final String? website;
+  final String license;
+  final Map<String, String> openingHours;
+  final List<String> images;
+  final List<String> amenities;
+  final OwnerBankDetails ownerBankDetails;
+  final double balance;
+  final bool isApproved;
+  final List<Visitor> visitors; // New field to track gym visitors
 
-  GymOwnerModel({
+  Gym({
     required this.id,
-    this.firstName = '',
-    this.lastName = '',
-    required this.userName,
-    required this.email,
-    this.phoneNumber = '',
-    this.profilePicture = '',
-    this.gymLocation = '',
-    this.gymType = '',
-    this.accountNumber = '',
-    this.bankName = '',
+    required this.name,
+    this.description,
+    required this.location,
+    required this.address,
+    required this.contactNumber,
+    this.website,
+    required this.license,
+    required this.openingHours,
+    required this.images,
+    required this.amenities,
+    required this.ownerBankDetails,
+    this.balance = 0.0,
+    this.isApproved = false,
+    this.visitors = const [], // Default to an empty list
   });
 
-  factory GymOwnerModel.fromJson(Map<String, dynamic> json) {
-    return GymOwnerModel(
-      id: json['id'],
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      userName: json['userName'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'] ?? '',
-      profilePicture: json['profilePicture'] ?? '',
-      gymLocation: json['gymLocation'] ?? '',
-      gymType: json['gymType'] ?? '',
-      accountNumber: json['accountNumber'] ?? '',
-      bankName: json['bankName'] ?? '',
-    );
-  }
+  // Convert Gym object to JSON
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "description": description,
+        "location": location.toJson(), // Location will include coordinates
+        "address": address,
+        "contact_number": contactNumber,
+        "website": website,
+        "license": license,
+        "opening_hours": openingHours,
+        "images": images,
+        "amenities": amenities,
+        "owner_bank_details": ownerBankDetails.toJson(),
+        "balance": balance,
+        "isApproved": isApproved,
+        "visitors": visitors.map((v) => v.toJson()).toList(),
+      };
 
-  factory GymOwnerModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    if (snapshot.data() != null) {
-      final data = snapshot.data()!;
-      return GymOwnerModel(
-        id: data['id'] ?? '',
-        firstName: data['firstName'] ?? '',
-        lastName: data['lastName'] ?? '',
-        userName: data['userName'] ?? '',
-        email: data['email'] ?? '',
-        phoneNumber: data['phoneNumber'] ?? '',
-        profilePicture: data['profilePicture'] ?? '',
-        gymLocation: data['gymLocation'] ?? '',
-        gymType: data['gymType'] ?? '',
-        accountNumber: data['accountNumber'] ?? '',
-        bankName: data['bankName'] ?? '',
+  // Create Gym object from JSON
+  factory Gym.fromJson(Map<String, dynamic> json) => Gym(
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+        location: Location.fromJson(json["location"]),
+        // Parsing the location
+        address: json["address"],
+        contactNumber: json["contact_number"],
+        website: json["website"],
+        license: json["license"],
+        openingHours: Map<String, String>.from(json["opening_hours"]),
+        images: List<String>.from(json["images"]),
+        amenities: List<String>.from(json["amenities"]),
+        ownerBankDetails: OwnerBankDetails.fromJson(json["owner_bank_details"]),
+        balance: (json["balance"] ?? 0.0).toDouble(),
+        isApproved: json["isApproved"] ?? false,
+        visitors: (json["visitors"] as List<dynamic>?)
+                ?.map((visitor) => Visitor.fromJson(visitor))
+                .toList() ??
+            [], // Parse each visitor JSON
       );
-    } else {
-      return GymOwnerModel.empty();
-    }
-  }
-
-  factory GymOwnerModel.empty() {
-    return GymOwnerModel(
-      id: '',
-      firstName: '',
-      lastName: '',
-      userName: '',
-      email: '',
-      phoneNumber: '',
-      profilePicture: '',
-      gymLocation: '',
-      gymType: '',
-      accountNumber: '',
-      bankName: '',
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-      'userName': userName,
-      'email': email,
-      'phoneNumber': phoneNumber,
-      'profilePicture': profilePicture,
-      'gymLocation': gymLocation,
-      'gymType': gymType,
-      'accountNumber': accountNumber,
-      'bankName': bankName,
-    };
-  }
 }

@@ -34,13 +34,13 @@ class GymVerificationScreen extends StatelessWidget {
             ),
             steps: controller.steps(),
             currentStep: controller.stepperCurrentIndex.value,
-            type: StepperType.horizontal,
+            type: StepperType.vertical,
             onStepContinue: () {
-              if (controller.isLastStep) {
-                Get.offAll(() => const GymRegistrationWaitingList());
-              } else {
-                controller.stepperCurrentIndex.value++;
-              }
+              // if (controller.isLastStep) {
+              //   Get.offAll(() => const GymRegistrationWaitingList());
+              // } else {
+              //   controller.stepperCurrentIndex.value++;
+              // }
             },
             elevation: 0,
             onStepTapped: (i) => controller.stepperCurrentIndex.value = i,
@@ -57,8 +57,10 @@ class GymVerificationScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (controller.validateCurrentStep()) {
-                          controls.onStepContinue;
+                        if (controller.isLastStep) {
+                          Get.offAll(() => const GymRegistrationWaitingList());
+                        } else {
+                          controller.stepperCurrentIndex.value++;
                         }
                       },
                       child: Text(isLastStep ? 'Finish' : 'Next'),

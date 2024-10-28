@@ -12,7 +12,7 @@ class BankInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(GymVerificationController());
     return Form(
-      key: controller.formKeyStep2,
+      // key: controller.formKeys[2],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
