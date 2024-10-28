@@ -7,7 +7,7 @@ import '../../../../utils/constants/image_string.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loader.dart';
-import '../../../personalization/model/user_model.dart';
+import '../../models/gym_model.dart';
 import '../../screens/signup_screen/verify_screen.dart';
 
 class SignupController extends GetxController {
@@ -63,9 +63,8 @@ class SignupController extends GetxController {
       // Save Authenticated user data in the Firebase Firestore
       final newUser = GymOwnerModel(
           id: userCredentials.user!.uid,
-          firstName: firstName.text.trim(),
-          lastName: lastName.text.trim(),
-          userName: username.text.trim(),
+          name: '${firstName.text.trim()} ${lastName.text.trim()}',
+          username: username.text.trim(),
           email: email.text.trim(),
           phoneNumber: phoneNumber.text.trim(),
           profilePicture: '');

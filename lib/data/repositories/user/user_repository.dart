@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../features/authentication/models/gym_model.dart';
 import '../../../features/personalization/model/user_model.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
@@ -19,6 +20,20 @@ class UserRepository extends GetxController {
   Future<void> saveUserRecord(GymOwnerModel owner) async {
     try {
       await _db.collection('Gyms').doc(owner.id).set(owner.toJson());
+    } on FirebaseException catch (e) {
+      throw ZFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw ZFormatException();
+    } on PlatformException catch (e) {
+      throw ZFormatException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  Future<void> updateGYMRecord(GymOwnerModel owner) async {
+    try {
+      await _db.collection('Gyms').doc(owner.id).update(owner.toJson());
     } on FirebaseException catch (e) {
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {
