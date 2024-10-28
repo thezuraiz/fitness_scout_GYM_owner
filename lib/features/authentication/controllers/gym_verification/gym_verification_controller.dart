@@ -1,12 +1,9 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_info.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_timmings.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/review.dart';
-import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +13,9 @@ import '../../../../utils/constants/image_string.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loader.dart';
+import '../../models/gym_model.dart';
 import '../../screens/gym_verification/widgets/bank_info.dart';
+import '../../screens/gym_verification/widgets/gym_timmings.dart';
 
 class GymVerificationController extends GetxController {
   static GymVerificationController get instance => Get.find();
@@ -27,11 +26,11 @@ class GymVerificationController extends GetxController {
   TextEditingController gymName = TextEditingController();
   TextEditingController gymAddress = TextEditingController();
   TextEditingController gymLocation = TextEditingController();
-  XFile? gymLicence;
   TextEditingController gymWebsite = TextEditingController();
   TextEditingController gymOwnerBankName = TextEditingController();
   TextEditingController gymOwnerAccountNumber = TextEditingController();
   TextEditingController gymOwnerAccountIBAN = TextEditingController();
+  Map<String, Map<String, dynamic?>> timings = {};
 
   final formKeyStep1 = GlobalKey<FormState>();
   final formKeyStep2 = GlobalKey<FormState>();
@@ -39,9 +38,11 @@ class GymVerificationController extends GetxController {
 
   bool get isFirstStep => stepperCurrentIndex.value == 0;
 
-  bool get isLastStep => stepperCurrentIndex == steps().length - 1;
+  bool get isLastStep => stepperCurrentIndex.value == steps().length - 1;
+
   final ImagePicker _picker = ImagePicker();
-  Rx<File?> gymLicenseImage = Rx<File?>(null);
+  Rx<XFile?> gymLicenseImage = Rx<XFile?>(null);
+
   RxBool isUploading = false.obs;
 
   bool validateCurrentStep() {
@@ -88,14 +89,14 @@ class GymVerificationController extends GetxController {
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      gymLicenseImage.value = File(pickedFile.path);
+      gymLicenseImage.value = pickedFile;
     } else {
       print('No image selected');
     }
   }
 
   Future<void> registerGYM() async {
-    FocusManager.instance.primaryFocus!.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus(); // Use ? to avoid null errors
     try {
       // Start Loading
       ZFullScreenLoader.openLoadingDialogy(
@@ -109,43 +110,53 @@ class GymVerificationController extends GetxController {
       }
       final userRepository = Get.put(UserRepository());
 
-      final UploadedImage =
-          await userRepository.uploadImage('/GYMLicences', gymLicence!);
+      // Ensure gymLicenseImage is not null before using it
+      if (gymLicenseImage.value != null) {
+        final UploadedImage = await userRepository.uploadImage(
+            '/GYMLicences', gymLicenseImage.value!);
 
-      ZLogger.info('Uploaded Image $UploadedImage');
+        ZLogger.info('Uploaded Image $UploadedImage');
 
-      /// Save GYM data in the Firebase Firestore
-      // final GYM = GymOwnerModel(
-      //   id: FirebaseAuth.instance.currentUser!.uid,
-      //   gymName: gymName.text.toString(),
-      //   license: UploadedImage,
-      //   address: gymAddress.text.toString(),
-      //   website: gymWebsite.text.toString(),
-      // );
+        try {
+          /// Save GYM data in the Firebase Firestore
+          final GYM = await GymOwnerModel(
+              id: FirebaseAuth.instance.currentUser!.uid,
+              name: '',
+              username: '',
+              email: '',
+              gymName: gymName.text.toString() ?? '',
+              license: UploadedImage ?? '',
+              address: gymAddress.text.toString() ?? '',
+              website: gymWebsite.text.toString() ?? '',
+              location: Location(latitude: 20, longitude: 10),
+              openingHours: timings,
+              ownerBankDetails: OwnerBankDetails(
+                  bankName: gymOwnerBankName.text.toString() ?? '',
+                  accountNumber: gymOwnerAccountNumber.text.toString() ?? '',
+                  iban: gymOwnerAccountIBAN.text.toString() ?? ''));
 
-      // GymOwnerModel({
-      // this.location,
-      // this.address,
-      // this.website,
-      // this.license,
-      // this.openingHours,
-      // this.images,
-      // this.amenities,
-      // this.ownerBankDetails,
-      // this.balance,
-      // });
+          ZLogger.info(GYM.toJson().toString());
 
-      // await userRepository.updateGYMRecord(GYM);
+          await userRepository.updateGYMRecord(GYM);
+        } catch (e, t) {
+          ZLogger.error('Error $e $t');
+        }
 
-      // Show Successor Message
-      ZLoaders.successSnackBar(
-          title: 'Congratulations',
-          message: 'Your account has been created! verify email to continue');
+        // Show Success Message
+        ZLoaders.successSnackBar(
+            title: 'Congratulations',
+            message: 'Your account has been created! verify email to continue');
 
-      ZFullScreenLoader.stopLoading();
+        ZFullScreenLoader.stopLoading();
+      } else {
+        ZLoaders.warningSnackBar(
+            title: 'Uh Snap!', message: 'Please pick an image first.');
+        ZFullScreenLoader.stopLoading();
+      }
     } catch (e) {
-      //  Show some generic error to the user
+      // Show some generic error to the user
       ZLoaders.warningSnackBar(title: 'Uh Snap!', message: e.toString());
+      ZLogger.error(e.toString());
       ZFullScreenLoader.stopLoading();
     }
   }

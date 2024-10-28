@@ -43,7 +43,7 @@ class BankInfoScreen extends StatelessWidget {
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'IBAN'),
-            controller: controller.gymOwnerAccountNumber,
+            controller: controller.gymOwnerAccountIBAN,
             validator: (value) =>
                 ZValidation.validateEmptyText('Account IBAN', value),
           ),

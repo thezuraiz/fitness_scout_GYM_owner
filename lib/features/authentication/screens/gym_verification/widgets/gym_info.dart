@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/validator/validation.dart';
 import 'package:flutter/material.dart';
@@ -135,30 +137,27 @@ class GymInfoScreen extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => controller.pickImage(),
-            child: Obx(
-              () => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.all(10),
-                child: controller.gymLicenseImage.value == null
-                    ? const Column(
-                        children: [
-                          Icon(Icons.image, size: 50, color: Colors.grey),
-                          SizedBox(height: 8),
-                          Text('Select GYM License Image',
-                              style: TextStyle(color: Colors.grey)),
-                        ],
-                      )
-                    : Image.file(
-                        controller.gymLicenseImage.value!,
-                        fit: BoxFit.cover,
-                        height: 100,
-                        width: 100,
-                      ),
-              ),
-            ),
+            child: Obx(() {
+              // Ensure gymLicenseImage has a value before using it
+              if (controller.gymLicenseImage.value != null) {
+                // Convert XFile to File
+                final file = File(controller.gymLicenseImage.value!.path);
+
+                return Image.file(
+                  file, // Use the File object here
+                  fit: BoxFit.cover,
+                  height: 100,
+                  width: 100,
+                );
+              } else {
+                return Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.grey, // Placeholder for no image
+                  child: Center(child: Text('No Image Selected')),
+                );
+              }
+            }),
           ),
           Obx(() {
             final isInvalid = controller.gymLicenseImage.value;
