@@ -1,3 +1,4 @@
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
 import 'package:flutter/material.dart';
 
 class GymTimingsScreen extends StatefulWidget {
@@ -18,9 +19,15 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
     'Sunday': {'isOpen': false, 'opening': null, 'closing': null},
   };
 
+  String _timeOfDayToString(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute'; // Format as "HH:mm"
+  }
+
   Future<void> _selectTime(
       BuildContext context, String day, bool isOpening) async {
-    final TimeOfDay? selectedTime = await showTimePicker(
+    final selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
@@ -28,20 +35,28 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
     if (selectedTime != null) {
       setState(() {
         if (isOpening) {
-          openingHours[day]!['opening'] = selectedTime; // Set opening time
+          openingHours[day]!['opening'] =
+              _timeOfDayToString(selectedTime); // Set opening time as String
         } else {
-          openingHours[day]!['closing'] = selectedTime; // Set closing time
+          openingHours[day]!['closing'] =
+              _timeOfDayToString(selectedTime); // Set closing time as String
         }
       });
+
+      // Log the timings to ensure they are formatted correctly
+      print('Opening Hours: ${openingHours[day]!['opening']}');
+      print('Closing Hours: ${openingHours[day]!['closing']}');
     }
+
+    GymVerificationController.instance.timings = openingHours;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Text(
             'Select Opening Hours',
             style: TextStyle(
@@ -95,7 +110,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                       children: [
                         ListTile(
                           title: Text(
-                              'Opening Time: ${openingHours[day]!['opening']?.format(context) ?? 'Select Opening Time'}'),
+                              'Opening Time: ${openingHours[day]!['opening'] ?? 'Select Opening Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {
@@ -105,7 +120,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                         ),
                         ListTile(
                           title: Text(
-                              'Closing Time: ${openingHours[day]!['closing']?.format(context) ?? 'Select Closing Time'}'),
+                              'Closing Time: ${openingHours[day]!['closing'] ?? 'Select Closing Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {

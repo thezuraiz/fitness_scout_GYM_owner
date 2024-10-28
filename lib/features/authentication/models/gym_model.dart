@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// enum status { Approved, Not-Approved, Blocked, Pending }
+
 class GymOwnerModel {
   final String id;
   final String name;
@@ -14,12 +16,12 @@ class GymOwnerModel {
   final String? contactNumber;
   final String? website;
   final String? license;
-  final Map<String, String>? openingHours;
+  final Map<String, dynamic>? openingHours;
   final List<String>? images;
   final List<String>? amenities;
   final OwnerBankDetails? ownerBankDetails;
-  final double? balance;
-  final bool? isApproved;
+  final double balance;
+  final String isApproved;
   final List<Visitor>? visitors;
 
   GymOwnerModel({
@@ -40,8 +42,8 @@ class GymOwnerModel {
     this.images,
     this.amenities,
     this.ownerBankDetails,
-    this.balance,
-    this.isApproved,
+    this.balance = 0.0,
+    this.isApproved = 'Not-Approved',
     this.visitors,
   });
 
@@ -76,7 +78,7 @@ class GymOwnerModel {
           ? OwnerBankDetails.fromJson(data['owner_bank_details'])
           : null,
       balance: (data['balance'] ?? 0.0).toDouble(),
-      isApproved: data['isApproved'] ?? false,
+      isApproved: data['isApproved'] ?? 'Not-Approved',
       visitors: (data['visitors'] as List<dynamic>?)
               ?.map((visitor) => Visitor.fromJson(visitor))
               .toList() ??
@@ -115,28 +117,27 @@ class GymOwnerModel {
       name: '',
       username: '',
       email: '',
-      phoneNumber: null,
-      profilePicture: null,
-      description: null,
-      gymName: null,
+      phoneNumber: '',
+      profilePicture: '',
+      description: '',
+      gymName: '',
       // Added here
       location: null,
-      address: null,
-      contactNumber: null,
-      website: null,
-      license: null,
+      address: '',
+      contactNumber: '',
+      website: '',
+      license: '',
       openingHours: null,
-      images: null,
-      amenities: null,
+      images: [],
+      amenities: [],
       ownerBankDetails: null,
-      balance: null,
-      isApproved: null,
-      visitors: null,
+      balance: 0.0,
+      isApproved: 'Not-Approved',
+      visitors: [],
     );
   }
 }
 
-// Define the Visitor model
 class Visitor {
   final String userId;
   final DateTime checkInTime;
