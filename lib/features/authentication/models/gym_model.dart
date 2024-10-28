@@ -7,7 +7,6 @@ class GymOwnerModel {
   final String name;
   final String username;
   final String email;
-  final String? phoneNumber;
   final String? profilePicture;
   final String? description;
   final String? gymName; // New optional field
@@ -23,29 +22,29 @@ class GymOwnerModel {
   final double balance;
   final String isApproved;
   final List<Visitor>? visitors;
+  final String gymType;
 
-  GymOwnerModel({
-    required this.id,
-    required this.name,
-    required this.username,
-    required this.email,
-    this.phoneNumber,
-    this.profilePicture,
-    this.description,
-    this.gymName, // Added here
-    this.location,
-    this.address,
-    this.contactNumber,
-    this.website,
-    this.license,
-    this.openingHours,
-    this.images,
-    this.amenities,
-    this.ownerBankDetails,
-    this.balance = 0.0,
-    this.isApproved = 'Not-Approved',
-    this.visitors,
-  });
+  GymOwnerModel(
+      {required this.id,
+      required this.name,
+      required this.username,
+      required this.email,
+      this.profilePicture,
+      this.description,
+      this.gymName, // Added here
+      this.location,
+      this.address,
+      this.contactNumber,
+      this.website,
+      this.license,
+      this.openingHours,
+      this.images,
+      this.amenities,
+      this.ownerBankDetails,
+      this.balance = 0.0,
+      this.isApproved = 'Not-Approved',
+      this.visitors,
+      this.gymType = 'Normal'});
 
   // Convert Firestore document snapshot to GymOwnerModel
   factory GymOwnerModel.fromSnapshot(DocumentSnapshot snapshot) {
@@ -56,7 +55,6 @@ class GymOwnerModel {
       name: data['name'] ?? '',
       username: data['username'] ?? '',
       email: data['email'] ?? '',
-      phoneNumber: data['phone_number'],
       profilePicture: data['profile_picture'],
       description: data['description'],
       gymName: data['gym_name'],
@@ -92,7 +90,6 @@ class GymOwnerModel {
         "name": name,
         "username": username,
         "email": email,
-        "phone_number": phoneNumber,
         "profile_picture": profilePicture,
         "description": description,
         "gym_name": gymName, // Added here
@@ -117,7 +114,6 @@ class GymOwnerModel {
       name: '',
       username: '',
       email: '',
-      phoneNumber: '',
       profilePicture: '',
       description: '',
       gymName: '',

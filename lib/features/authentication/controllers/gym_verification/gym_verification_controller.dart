@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/models/amenities_model.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_info.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/review.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,14 +16,24 @@ import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loader.dart';
 import '../../models/gym_model.dart';
+import '../../screens/gym_verification/gym_registration_waiting_list.dart';
 import '../../screens/gym_verification/widgets/bank_info.dart';
 import '../../screens/gym_verification/widgets/gym_timmings.dart';
 
 class GymVerificationController extends GetxController {
   static GymVerificationController get instance => Get.find();
 
-  /// - Variables
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    await Geolocator.requestPermission();
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    ZLogger.info('Position $position');
+  }
 
+  /// - Variables
+  late Position position;
   RxInt stepperCurrentIndex = 0.obs;
   TextEditingController gymName = TextEditingController();
   TextEditingController gymAddress = TextEditingController();
@@ -31,6 +43,15 @@ class GymVerificationController extends GetxController {
   TextEditingController gymOwnerAccountNumber = TextEditingController();
   TextEditingController gymOwnerAccountIBAN = TextEditingController();
   Map<String, Map<String, dynamic?>> timings = {};
+  RxList<Amenity> amenities = [
+    Amenity(name: 'WiFi'),
+    Amenity(name: 'Parking'),
+    Amenity(name: 'Pool'),
+    Amenity(name: 'Gym Equipment'),
+    Amenity(name: 'Sauna'),
+    Amenity(name: 'Cafe'),
+    Amenity(name: 'Shower'),
+  ].obs;
 
   final formKeyStep1 = GlobalKey<FormState>();
   final formKeyStep2 = GlobalKey<FormState>();
@@ -148,6 +169,7 @@ class GymVerificationController extends GetxController {
             message: 'Your account has been created! verify email to continue');
 
         ZFullScreenLoader.stopLoading();
+        Get.offAll(() => const GymRegistrationWaitingList());
       } else {
         ZLoaders.warningSnackBar(
             title: 'Uh Snap!', message: 'Please pick an image first.');

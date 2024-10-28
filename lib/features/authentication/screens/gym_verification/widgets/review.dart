@@ -5,6 +5,7 @@ import 'package:fitness_scout_owner_v1/utils/validator/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/constants/sizes.dart';
+import 'amenities.dart';
 
 class ReviewScreen extends StatelessWidget {
   const ReviewScreen({super.key});
@@ -40,14 +41,15 @@ class ReviewScreen extends StatelessWidget {
         const SizedBox(
           height: ZSizes.spaceBtwInputFields,
         ),
-        TextFormField(
-          decoration: const InputDecoration(labelText: 'GYM Location'),
-          controller: controller.gymLocation,
-          validator: (value) =>
-              ZValidation.validateEmptyText('GYM Location', value),
+        Text(
+          'License Image:',
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(fontWeight: FontWeight.w500),
         ),
         const SizedBox(
-          height: ZSizes.spaceBtwInputFields,
+          height: ZSizes.spaceBtwInputFields / 2,
         ),
         GestureDetector(
           onTap: () => controller.pickImage(),
@@ -67,12 +69,37 @@ class ReviewScreen extends StatelessWidget {
               return Container(
                 height: 100,
                 width: 100,
-                color: Colors.grey, // Placeholder for no image
-                child: Center(child: Text('No Image Selected')),
+                color: Colors.grey.shade300, // Placeholder for no image
+                child: Center(child: Icon(Icons.error)),
               );
             }
           }),
         ),
+        Obx(() {
+          final isInvalid = controller.gymLicenseImage.value;
+          return isInvalid == null
+              ? Text(
+                  'Required',
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: Colors.red.shade900, fontWeight: FontWeight.w500),
+                )
+              : SizedBox
+                  .shrink(); // Provide an empty widget when the condition is false
+        }),
+        const SizedBox(
+          height: ZSizes.spaceBtwInputFields * 1.3,
+        ),
+        Text(
+          'Select Available Amenities:',
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(
+          height: ZSizes.spaceBtwInputFields / 2,
+        ),
+        AmenitiesWidget(),
         const SizedBox(
           height: ZSizes.spaceBtwInputFields,
         ),

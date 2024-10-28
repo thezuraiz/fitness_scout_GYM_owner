@@ -58,7 +58,6 @@ class GymVerificationScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (controller.isLastStep) {
-                          // Get.offAll(() => const GymRegistrationWaitingList());
                           GymVerificationController.instance.registerGYM();
                         } else {
                           controller.stepperCurrentIndex.value++;
