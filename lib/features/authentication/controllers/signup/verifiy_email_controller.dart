@@ -34,7 +34,7 @@ class VerifyEmailController extends GetxController {
   }
 
   /// Timer to Automatically redirect on Email Verification
-  setTimerForRedirect() async {
+  setTimerForRedirect() {
     Timer.periodic(const Duration(seconds: 1), (timer) async {
       await FirebaseAuth.instance.currentUser?.reload();
       final user = FirebaseAuth.instance.currentUser;

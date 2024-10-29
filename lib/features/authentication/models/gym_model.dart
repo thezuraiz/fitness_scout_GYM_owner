@@ -17,7 +17,7 @@ class GymOwnerModel {
   final String? license;
   final Map<String, dynamic>? openingHours;
   final List<String>? images;
-  final List<String>? amenities;
+  final List<Map<String, dynamic>>? amenities;
   final OwnerBankDetails? ownerBankDetails;
   final double balance;
   final String isApproved;
@@ -70,7 +70,7 @@ class GymOwnerModel {
           : null,
       images: data['images'] != null ? List<String>.from(data['images']) : null,
       amenities: data['amenities'] != null
-          ? List<String>.from(data['amenities'])
+          ? List<Map<String, dynamic>>.from(data['amenities'])
           : null,
       ownerBankDetails: data['owner_bank_details'] != null
           ? OwnerBankDetails.fromJson(data['owner_bank_details'])
@@ -117,13 +117,12 @@ class GymOwnerModel {
       profilePicture: '',
       description: '',
       gymName: '',
-      // Added here
       location: null,
       address: '',
       contactNumber: '',
       website: '',
       license: '',
-      openingHours: null,
+      openingHours: {},
       images: [],
       amenities: [],
       ownerBankDetails: null,
@@ -136,8 +135,8 @@ class GymOwnerModel {
 
 class Visitor {
   final String userId;
-  final DateTime checkInTime;
-  final DateTime? checkOutTime;
+  final Map<String, dynamic> checkInTime;
+  final Map<String, dynamic>? checkOutTime;
 
   Visitor({
     required this.userId,
@@ -147,16 +146,15 @@ class Visitor {
 
   Map<String, dynamic> toJson() => {
         "user_id": userId,
-        "check_in_time": checkInTime.toIso8601String(),
-        "check_out_time": checkOutTime?.toIso8601String(),
+        "check_in_time": checkInTime,
+        "check_out_time": checkOutTime,
       };
 
   factory Visitor.fromJson(Map<String, dynamic> json) => Visitor(
         userId: json["user_id"],
-        checkInTime: DateTime.parse(json["check_in_time"]),
-        checkOutTime: json["check_out_time"] != null
-            ? DateTime.parse(json["check_out_time"])
-            : null,
+        checkInTime: json["check_in_time"],
+        checkOutTime:
+            json["check_out_time"] != null ? json["check_out_time"] : {},
       );
 }
 
