@@ -16,13 +16,10 @@ class UserRepository extends GetxController {
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  GymOwnerModel gymOwner = GymOwnerModel.empty();
-
   /// Function to save user record
   Future<void> saveUserRecord(GymOwnerModel owner) async {
     try {
       await _db.collection('Gyms').doc(owner.id).set(owner.toJson());
-      gymOwner = owner;
     } on FirebaseException catch (e) {
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -38,7 +35,6 @@ class UserRepository extends GetxController {
   Future<void> updateGYMRecord(GymOwnerModel owner) async {
     try {
       await _db.collection('Gyms').doc(owner.id).update(owner.toJson());
-      gymOwner = owner;
     } on FirebaseException catch (e) {
       ZLogger.error(e.toString());
       throw ZFirebaseException(e.code).message;
@@ -56,11 +52,10 @@ class UserRepository extends GetxController {
   Future<GymOwnerModel> fetchUserDetails() async {
     try {
       final documentSnapshot = await _db
-          .collection('Users')
+          .collection('Gyms')
           .doc(AuthenticationRepository.instance.authUser?.uid)
           .get();
       if (documentSnapshot.exists) {
-        gymOwner = GymOwnerModel.fromSnapshot(documentSnapshot);
         return GymOwnerModel.fromSnapshot(documentSnapshot);
       } else {
         return GymOwnerModel.empty();
@@ -80,10 +75,9 @@ class UserRepository extends GetxController {
   Future<void> updateUserDetails(GymOwnerModel updatedModel) async {
     try {
       await _db
-          .collection('Users')
+          .collection('Gyms')
           .doc(updatedModel.id)
           .update(updatedModel.toJson());
-      gymOwner = updatedModel;
     } on FirebaseException catch (e) {
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {
@@ -99,7 +93,7 @@ class UserRepository extends GetxController {
   Future<void> updateSingleField(Map<String, dynamic> json) async {
     try {
       await _db
-          .collection('Users')
+          .collection('GYM')
           .doc(AuthenticationRepository.instance.authUser!.uid)
           .update(json);
     } on FirebaseException catch (e) {
@@ -116,8 +110,7 @@ class UserRepository extends GetxController {
   /// Function to delete User data from Firestore.
   Future<void> removeUserRecord(String userId) async {
     try {
-      await _db.collection('Users').doc(userId).delete();
-      gymOwner = GymOwnerModel.empty();
+      await _db.collection('Gym').doc(userId).delete();
     } on FirebaseException catch (e) {
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {

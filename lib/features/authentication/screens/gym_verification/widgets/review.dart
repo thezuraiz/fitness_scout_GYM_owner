@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/validator/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,7 @@ class ReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GymVerificationController());
+    final controller = Get.put(GYMUserController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

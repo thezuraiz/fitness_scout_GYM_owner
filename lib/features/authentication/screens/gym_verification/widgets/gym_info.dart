@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/validator/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ class GymInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GymVerificationController());
+    final controller = Get.put(GYMUserController());
 
     return Form(
       // key: controller.formKeys[0],
@@ -25,13 +25,22 @@ class GymInfoScreen extends StatelessWidget {
             style: Theme.of(Get.context!).textTheme.headlineMedium,
           ),
           const SizedBox(
-            height: ZSizes.spaceBtwSections,
+            height: ZSizes.spaceBtwSections * 0.7,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'GYM Name'),
             validator: (value) =>
                 ZValidation.validateEmptyText('GYM Name', value),
             controller: controller.gymName,
+          ),
+          const SizedBox(
+            height: ZSizes.spaceBtwInputFields,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(labelText: 'GYM Description'),
+            validator: (value) =>
+                ZValidation.validateEmptyText('GYM Description', value),
+            controller: controller.gymDescription,
           ),
           const SizedBox(
             height: ZSizes.spaceBtwInputFields,
@@ -71,10 +80,19 @@ class GymInfoScreen extends StatelessWidget {
                 );
               } else {
                 return Container(
-                  height: 100,
-                  width: 100,
-                  color: Colors.grey.shade300, // Placeholder for no image
-                  child: Center(child: Icon(Icons.error)),
+                  height: 85,
+                  width: 85,
+                  margin: const EdgeInsets.only(bottom: ZSizes.sm),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(ZSizes.md)),
+                    color: Colors.grey.shade300,
+                  ),
+                  child: const Center(
+                      child: Icon(
+                    Icons.photo,
+                    size: ZSizes.xl,
+                  )),
                 );
               }
             }),
@@ -88,7 +106,7 @@ class GymInfoScreen extends StatelessWidget {
                         color: Colors.red.shade900,
                         fontWeight: FontWeight.w500),
                   )
-                : SizedBox
+                : const SizedBox
                     .shrink(); // Provide an empty widget when the condition is false
           }),
           const SizedBox(
@@ -104,7 +122,7 @@ class GymInfoScreen extends StatelessWidget {
           const SizedBox(
             height: ZSizes.spaceBtwInputFields / 2,
           ),
-          AmenitiesWidget(),
+          const AmenitiesWidget(),
           const SizedBox(
             height: ZSizes.spaceBtwInputFields * 1.5,
           ),

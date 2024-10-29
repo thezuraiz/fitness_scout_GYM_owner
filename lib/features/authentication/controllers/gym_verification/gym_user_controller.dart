@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/models/amenities_model.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_info.dart';
@@ -20,22 +17,23 @@ import '../../screens/gym_verification/gym_registration_waiting_list.dart';
 import '../../screens/gym_verification/widgets/bank_info.dart';
 import '../../screens/gym_verification/widgets/gym_timmings.dart';
 
-class GymVerificationController extends GetxController {
-  static GymVerificationController get instance => Get.find();
+class GYMUserController extends GetxController {
+  static GYMUserController get instance => Get.find();
+  Rx<GymOwnerModel> GYMuser = GymOwnerModel
+      .empty()
+      .obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
-    await Geolocator.requestPermission();
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    ZLogger.info('Position $position');
+    checkAndRequestLocation();
   }
 
-  /// - Variables
-  late Position position;
+  Rx<Position?> currentPosition = Rx<Position?>(null);
   RxInt stepperCurrentIndex = 0.obs;
+  RxBool profileLoading = false.obs;
   TextEditingController gymName = TextEditingController();
+  TextEditingController gymDescription = TextEditingController();
   TextEditingController gymAddress = TextEditingController();
   TextEditingController gymLocation = TextEditingController();
   TextEditingController gymWebsite = TextEditingController();
@@ -52,6 +50,9 @@ class GymVerificationController extends GetxController {
     Amenity(name: 'Cafe'),
     Amenity(name: 'Shower'),
   ].obs;
+
+  /// Repo
+  final userRepository = Get.put(UserRepository());
 
   final formKeyStep1 = GlobalKey<FormState>();
   final formKeyStep2 = GlobalKey<FormState>();
@@ -87,7 +88,8 @@ class GymVerificationController extends GetxController {
     return false;
   }
 
-  List<Step> steps() => [
+  List<Step> steps() =>
+      [
         Step(
             title: const Text('GYM Info'),
             isActive: stepperCurrentIndex.value >= 0,
@@ -106,9 +108,24 @@ class GymVerificationController extends GetxController {
             content: const ReviewScreen()),
       ];
 
+  /// Fetch User Record
+  Future<void> fetchUserRecord() async {
+    try {
+      profileLoading.value = true;
+      final user = await userRepository.fetchUserDetails();
+      this.GYMuser(user);
+      ZLogger.info('Fetching GYM User Profile: ${GYMuser.toJson()}');
+    } catch (e) {
+      GYMuser(GymOwnerModel.empty());
+    } finally {
+      profileLoading.value = false;
+    }
+  }
+
   // Method to pick an image
   Future<void> pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 8);
     if (pickedFile != null) {
       gymLicenseImage.value = pickedFile;
     } else {
@@ -129,36 +146,67 @@ class GymVerificationController extends GetxController {
         ZFullScreenLoader.stopLoading();
         return;
       }
-      final userRepository = Get.put(UserRepository());
 
       // Ensure gymLicenseImage is not null before using it
       if (gymLicenseImage.value != null) {
-        final UploadedImage = await userRepository.uploadImage(
-            '/GYMLicences', gymLicenseImage.value!);
+        final uploadedImage = await UserRepository.instance
+            .uploadImage('/GYMLicences', gymLicenseImage.value!);
 
-        ZLogger.info('Uploaded Image $UploadedImage');
+        ZLogger.info('Uploaded Image $uploadedImage');
 
+        await fetchUserRecord();
+
+        final _user = GYMuser.value;
         try {
           /// Save GYM data in the Firebase Firestore
           final GYM = await GymOwnerModel(
-              id: FirebaseAuth.instance.currentUser!.uid,
-              name: '',
-              username: '',
-              email: '',
+              id: _user.id ?? '',
+              name: _user.name ?? '',
+              username: _user.username ?? '',
+              email: _user.email ?? '',
+              description: 'hard coded description',
               gymName: gymName.text.toString() ?? '',
-              license: UploadedImage ?? '',
+              license: uploadedImage ?? '',
               address: gymAddress.text.toString() ?? '',
+              contactNumber: _user.contactNumber ?? '',
               website: gymWebsite.text.toString() ?? '',
-              location: Location(latitude: 20, longitude: 10),
+              location: Location(
+                  latitude: currentPosition.value!.longitude,
+                  longitude: currentPosition.value!.longitude),
               openingHours: timings,
+              images: ['hard coded image'],
+              amenities: amenities.value.map((item) => item.toJson()).toList(),
               ownerBankDetails: OwnerBankDetails(
                   bankName: gymOwnerBankName.text.toString() ?? '',
                   accountNumber: gymOwnerAccountNumber.text.toString() ?? '',
-                  iban: gymOwnerAccountIBAN.text.toString() ?? ''));
+                  iban: gymOwnerAccountIBAN.text.toString() ?? ''),
+              gymType: 'To-Be-Decided',
+              profilePicture: '');
+
+          // final String id;
+          // final String name;
+          // final String username;
+          // final String email;
+          // final String? profilePicture;
+          // final String? description;
+          // final String? gymName; // New optional field
+          // final Location? location;
+          // final String? address;
+          // final String? contactNumber;
+          // final String? website;
+          // final String? license;
+          // final Map<String, dynamic>? openingHours;
+          // final List<String>? images;
+          // final List<String>? amenities;
+          // final OwnerBankDetails? ownerBankDetails;
+          // final double balance;
+          // final String isApproved;
+          // final List<Visitor>? visitors;
+          // final String gymType;
 
           ZLogger.info(GYM.toJson().toString());
 
-          await userRepository.updateGYMRecord(GYM);
+          await UserRepository.instance.updateGYMRecord(GYM);
         } catch (e, t) {
           ZLogger.error('Error $e $t');
         }
@@ -180,6 +228,43 @@ class GymVerificationController extends GetxController {
       ZLoaders.warningSnackBar(title: 'Uh Snap!', message: e.toString());
       ZLogger.error(e.toString());
       ZFullScreenLoader.stopLoading();
+    }
+  }
+
+  /// Function to check and request location permission
+  Future<void> checkAndRequestLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          // Handle denial
+          ZLogger.error('Location permission denied');
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        // Handle permanent denial, possibly redirect to settings
+        ZLogger.error('Location permission permanently denied');
+        return;
+      }
+
+      // Fetch location if permission granted
+      await fetchCurrentLocation();
+    } catch (e) {
+      ZLogger.error('Error requesting location: $e');
+    }
+  }
+
+  /// Fetches the current location
+  Future<void> fetchCurrentLocation() async {
+    try {
+      currentPosition.value = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      ZLogger.info('Position ${currentPosition.value}');
+    } catch (e) {
+      ZLogger.error('Error fetching location: $e');
     }
   }
 }

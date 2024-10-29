@@ -1,5 +1,4 @@
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/gym_registration_waiting_list.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/elevated_button_theme.dart';
@@ -14,7 +13,7 @@ class GymVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GymVerificationController());
+    final controller = Get.put(GYMUserController());
     return Obx(
       () => Scaffold(
           body: SafeArea(
@@ -58,7 +57,7 @@ class GymVerificationScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (controller.isLastStep) {
-                          GymVerificationController.instance.registerGYM();
+                          GYMUserController.instance.registerGYM();
                         } else {
                           controller.stepperCurrentIndex.value++;
                         }

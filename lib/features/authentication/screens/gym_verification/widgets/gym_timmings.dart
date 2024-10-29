@@ -1,4 +1,4 @@
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_verification_controller.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:flutter/material.dart';
 
 class GymTimingsScreen extends StatefulWidget {
@@ -25,8 +25,8 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
     return '$hour:$minute'; // Format as "HH:mm"
   }
 
-  Future<void> _selectTime(
-      BuildContext context, String day, bool isOpening) async {
+  Future<void> _selectTime(BuildContext context, String day,
+      bool isOpening) async {
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -48,7 +48,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
       print('Closing Hours: ${openingHours[day]!['closing']}');
     }
 
-    GymVerificationController.instance.timings = openingHours;
+    GYMUserController.instance.timings = openingHours;
   }
 
   @override
@@ -110,7 +110,8 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                       children: [
                         ListTile(
                           title: Text(
-                              'Opening Time: ${openingHours[day]!['opening'] ?? 'Select Opening Time'}'),
+                              'Opening Time: ${openingHours[day]!['opening'] ??
+                                  'Select Opening Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {
@@ -120,7 +121,8 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                         ),
                         ListTile(
                           title: Text(
-                              'Closing Time: ${openingHours[day]!['closing'] ?? 'Select Closing Time'}'),
+                              'Closing Time: ${openingHours[day]!['closing'] ??
+                                  'Select Closing Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {
