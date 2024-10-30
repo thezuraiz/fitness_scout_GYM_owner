@@ -11,47 +11,44 @@ class BankInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(GYMUserController());
-    return Form(
-      // key: controller.formKeys[2],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Let\'s Add Your Bank Details',
-            style: Theme.of(Get.context!).textTheme.headlineMedium,
-          ),
-          const SizedBox(
-            height: ZSizes.spaceBtwItems,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Bank Name'),
-            controller: controller.gymOwnerBankName,
-            validator: (value) =>
-                ZValidation.validateEmptyText('Bank Name', value),
-          ),
-          const SizedBox(
-            height: ZSizes.spaceBtwInputFields,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Account Number'),
-            controller: controller.gymOwnerAccountNumber,
-            validator: (value) =>
-                ZValidation.validateEmptyText('Account Number', value),
-          ),
-          const SizedBox(
-            height: ZSizes.spaceBtwInputFields,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'IBAN'),
-            controller: controller.gymOwnerAccountIBAN,
-            validator: (value) =>
-                ZValidation.validateEmptyText('Account IBAN', value),
-          ),
-          const SizedBox(
-            height: ZSizes.spaceBtwInputFields,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Let\'s Add Your Bank Details',
+          style: Theme.of(Get.context!).textTheme.headlineMedium,
+        ),
+        const SizedBox(
+          height: ZSizes.spaceBtwItems,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Bank Name'),
+          controller: controller.gymOwnerBankName,
+          validator: (value) =>
+              ZValidation.validateEmptyText('Bank Name', value),
+        ),
+        const SizedBox(
+          height: ZSizes.spaceBtwInputFields,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Account Number'),
+          controller: controller.gymOwnerAccountNumber,
+          validator: (value) =>
+              ZValidation.validateEmptyText('Account Number', value),
+        ),
+        const SizedBox(
+          height: ZSizes.spaceBtwInputFields,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'IBAN'),
+          controller: controller.gymOwnerAccountIBAN,
+          validator: (value) =>
+              ZValidation.validateEmptyText('Account IBAN', value),
+        ),
+        const SizedBox(
+          height: ZSizes.spaceBtwInputFields,
+        ),
+      ],
     );
   }
 }
