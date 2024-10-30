@@ -1,4 +1,5 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
+import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
 class GymTimingsScreen extends StatefulWidget {
@@ -25,8 +26,8 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
     return '$hour:$minute'; // Format as "HH:mm"
   }
 
-  Future<void> _selectTime(BuildContext context, String day,
-      bool isOpening) async {
+  Future<void> _selectTime(
+      BuildContext context, String day, bool isOpening) async {
     final selectedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -54,19 +55,17 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'Select Opening Hours',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+        const Text(
+          'Select Opening Hours',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: ZSizes.spaceBtwItems),
         ListView(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -110,8 +109,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                       children: [
                         ListTile(
                           title: Text(
-                              'Opening Time: ${openingHours[day]!['opening'] ??
-                                  'Select Opening Time'}'),
+                              'Opening Time: ${openingHours[day]!['opening'] ?? 'Select Opening Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {
@@ -121,8 +119,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
                         ),
                         ListTile(
                           title: Text(
-                              'Closing Time: ${openingHours[day]!['closing'] ??
-                                  'Select Closing Time'}'),
+                              'Closing Time: ${openingHours[day]!['closing'] ?? 'Select Closing Time'}'),
                           trailing: IconButton(
                             icon: Icon(Icons.access_time),
                             onPressed: () {
@@ -137,6 +134,7 @@ class _GymTimingsScreenState extends State<GymTimingsScreen> {
             );
           }).toList(),
         ),
+        const SizedBox(height: ZSizes.spaceBtwItems),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/models/amenities_model.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_gallery.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_info.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/review.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
@@ -19,9 +20,7 @@ import '../../screens/gym_verification/widgets/gym_timmings.dart';
 
 class GYMUserController extends GetxController {
   static GYMUserController get instance => Get.find();
-  Rx<GymOwnerModel> GYMuser = GymOwnerModel
-      .empty()
-      .obs;
+  Rx<GymOwnerModel> GYMuser = GymOwnerModel.empty().obs;
 
   @override
   Future<void> onInit() async {
@@ -40,7 +39,7 @@ class GYMUserController extends GetxController {
   TextEditingController gymOwnerBankName = TextEditingController();
   TextEditingController gymOwnerAccountNumber = TextEditingController();
   TextEditingController gymOwnerAccountIBAN = TextEditingController();
-  Map<String, Map<String, dynamic?>> timings = {};
+  Map<String, Map<String, dynamic>> timings = {};
   RxList<Amenity> amenities = [
     Amenity(name: 'WiFi'),
     Amenity(name: 'Parking'),
@@ -54,57 +53,49 @@ class GYMUserController extends GetxController {
   /// Repo
   final userRepository = Get.put(UserRepository());
 
-  final formKeyStep1 = GlobalKey<FormState>();
-  final formKeyStep2 = GlobalKey<FormState>();
-  final formKeyStep3 = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   bool get isFirstStep => stepperCurrentIndex.value == 0;
 
   bool get isLastStep => stepperCurrentIndex.value == steps().length - 1;
 
   final ImagePicker _picker = ImagePicker();
+  Rx<XFile?> gymFrontImage = Rx<XFile?>(null);
   Rx<XFile?> gymLicenseImage = Rx<XFile?>(null);
 
   RxBool isUploading = false.obs;
 
-  bool validateCurrentStep() {
-    FormState? formState;
-    if (stepperCurrentIndex.value == 0) {
-      if (gymLicenseImage.value == null) {
-        return false;
-      }
-      formState = formKeyStep1.currentState;
-    } else if (stepperCurrentIndex.value == 1) {
-      formState = formKeyStep2.currentState;
-    } else if (stepperCurrentIndex.value == 2) {
-      formState = formKeyStep3.currentState;
-    }
+  /// Todo:
+  // bool validateCurrentStep() {
+  //   ZLoaders.warningSnackBar(title: 'Form Key ${formKey.currentState}');
+  //   if (formKey.currentState!.validate()) {
+  //     ZLogger.info('Form is valid');
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-    // if (formState != null && formState.validate()) {
-    //   formState.save();
-    //   Get.offAll(() => const HomePage());
-    //   return true;
-    // }
-    return false;
-  }
-
-  List<Step> steps() =>
-      [
+  List<Step> steps() => [
         Step(
             title: const Text('GYM Info'),
             isActive: stepperCurrentIndex.value >= 0,
-            content: GymInfoScreen()),
+            content: const GymInfoScreen()),
+        Step(
+          title: const Text('GYM Pictures'),
+          isActive: stepperCurrentIndex.value >= 1,
+          content: const GymGallery(),
+        ),
         Step(
             title: const Text('GYM Timings'),
-            isActive: stepperCurrentIndex.value >= 1,
+            isActive: stepperCurrentIndex.value >= 2,
             content: const GymTimingsScreen()),
         Step(
             title: const Text('Banking Info'),
-            isActive: stepperCurrentIndex.value >= 1,
+            isActive: stepperCurrentIndex.value >= 3,
             content: const BankInfoScreen()),
         Step(
             title: const Text('Review'),
-            isActive: stepperCurrentIndex.value >= 3,
+            isActive: stepperCurrentIndex.value >= 4,
             content: const ReviewScreen()),
       ];
 
@@ -123,13 +114,13 @@ class GYMUserController extends GetxController {
   }
 
   // Method to pick an image
-  Future<void> pickImage() async {
+  Future<void> pickImage(Rx<XFile?> imageController) async {
     final pickedFile =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 8);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 60);
     if (pickedFile != null) {
-      gymLicenseImage.value = pickedFile;
+      imageController.value = pickedFile;
     } else {
-      print('No image selected');
+      ZLogger.info('No image selected');
     }
   }
 
@@ -148,9 +139,11 @@ class GYMUserController extends GetxController {
       }
 
       // Ensure gymLicenseImage is not null before using it
-      if (gymLicenseImage.value != null) {
+      if (gymLicenseImage.value != null && gymFrontImage.value != null) {
+        final uploadedGymFrontImage = await UserRepository.instance
+            .uploadImage('/gymFrontImage', gymFrontImage.value!);
         final uploadedImage = await UserRepository.instance
-            .uploadImage('/GYMLicences', gymLicenseImage.value!);
+            .uploadImage('/gymLicences', gymLicenseImage.value!);
 
         ZLogger.info('Uploaded Image $uploadedImage');
 
@@ -164,17 +157,17 @@ class GYMUserController extends GetxController {
               name: _user.name ?? '',
               username: _user.username ?? '',
               email: _user.email ?? '',
-              description: 'hard coded description',
+              description: gymDescription.text.toString() ?? '',
               gymName: gymName.text.toString() ?? '',
               license: uploadedImage ?? '',
               address: gymAddress.text.toString() ?? '',
               contactNumber: _user.contactNumber ?? '',
               website: gymWebsite.text.toString() ?? '',
               location: Location(
-                  latitude: currentPosition.value!.longitude,
-                  longitude: currentPosition.value!.longitude),
+                  latitude: currentPosition.value!.longitude ?? 0.0,
+                  longitude: currentPosition.value!.longitude ?? 0.0),
               openingHours: timings,
-              images: ['hard coded image'],
+              images: [uploadedGymFrontImage],
               amenities: amenities.value.map((item) => item.toJson()).toList(),
               ownerBankDetails: OwnerBankDetails(
                   bankName: gymOwnerBankName.text.toString() ?? '',

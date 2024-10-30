@@ -56,10 +56,10 @@ class GymVerificationScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (controller.isLastStep) {
-                          GYMUserController.instance.registerGYM();
-                        } else {
+                        if (!controller.isLastStep) {
                           controller.stepperCurrentIndex.value++;
+                        } else {
+                          controller.registerGYM();
                         }
                       },
                       child: Text(isLastStep ? 'Finish' : 'Next'),
