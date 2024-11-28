@@ -102,6 +102,7 @@ class GYMUserController extends GetxController {
   /// Fetch User Record
   Future<void> fetchUserRecord() async {
     try {
+      ZLogger.info('Fetching GYM User Profile');
       profileLoading.value = true;
       final user = await userRepository.fetchUserDetails();
       this.GYMuser(user);
@@ -120,6 +121,7 @@ class GYMUserController extends GetxController {
     if (pickedFile != null) {
       imageController.value = pickedFile;
     } else {
+      ZLoaders.warningSnackBar(title: 'Warning', message: 'No image selected!');
       ZLogger.info('No image selected');
     }
   }
@@ -144,8 +146,6 @@ class GYMUserController extends GetxController {
             .uploadImage('/gymFrontImage', gymFrontImage.value!);
         final uploadedImage = await UserRepository.instance
             .uploadImage('/gymLicences', gymLicenseImage.value!);
-
-        ZLogger.info('Uploaded Image $uploadedImage');
 
         await fetchUserRecord();
 

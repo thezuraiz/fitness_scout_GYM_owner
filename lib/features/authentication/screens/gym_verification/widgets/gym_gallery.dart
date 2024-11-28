@@ -30,9 +30,7 @@ class GymGallery extends StatelessWidget {
           GestureDetector(
             onTap: () => controller.pickImage(controller.gymFrontImage),
             child: Obx(() {
-              // Ensure gymFrontImage has a value before using it
               if (controller.gymFrontImage.value != null) {
-                // Convert XFile to File
                 final file = File(controller.gymFrontImage.value!.path);
 
                 return Image.file(
@@ -52,7 +50,7 @@ class GymGallery extends StatelessWidget {
                   ),
                   child: const Center(
                       child: Icon(
-                    Icons.photo,
+                    Icons.add_a_photo_outlined,
                     size: ZSizes.xl,
                   )),
                 );
@@ -110,7 +108,7 @@ class GymGallery extends StatelessWidget {
                   ),
                   child: const Center(
                       child: Icon(
-                    Icons.photo,
+                    Icons.add_a_photo_outlined,
                     size: ZSizes.xl,
                   )),
                 );

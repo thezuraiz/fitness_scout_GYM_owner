@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/gym_verification.dart';
+import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
+import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -36,16 +39,21 @@ class AuthenticationRepository extends GetxController {
   screenRedirect() async {
     // _auth.signOut();
     // _auth.currentUser!.reload();
-
     if (_auth.currentUser != null) {
       if (_auth.currentUser!.emailVerified) {
-        // Todo:
-        Get.offAll(() => const GymVerificationScreen());
+        Get.to(HomePage());
+
+        /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
+
+        // Get.offAll(() => const GymVerificationScreen());
         // Get.offAll(() => const NavigationMenu());
       } else {
-        Get.offAll(() => VerifyScreen(
-              email: _auth.currentUser?.email,
-            ));
+        Get.to(HomePage());
+
+        /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
+        // Get.offAll(() => VerifyScreen(
+        //       email: _auth.currentUser?.email,
+        //     ));
       }
     } else {
       /// Local Storage

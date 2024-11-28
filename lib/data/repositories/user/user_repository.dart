@@ -56,8 +56,10 @@ class UserRepository extends GetxController {
           .doc(AuthenticationRepository.instance.authUser?.uid)
           .get();
       if (documentSnapshot.exists) {
+        ZLogger.info('GYM Owner Found');
         return GymOwnerModel.fromSnapshot(documentSnapshot);
       } else {
+        ZLogger.error('GYM Owner Not Found');
         return GymOwnerModel.empty();
       }
     } on FirebaseException catch (e) {

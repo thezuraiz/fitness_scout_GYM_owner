@@ -51,6 +51,7 @@ dependencies:
   cloud_firestore: ^5.2.1
   google_sign_in: ^6.2.1
   geolocator: ^10.0.0
+  pretty_qr_code: ^3.3.0
 
 dev_dependencies:
   flutter_test:
