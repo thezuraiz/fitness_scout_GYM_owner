@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class GymEvent {
   final String eventId;
   final String title;
   final String description;
-  final DateTime startTime;
+  final String startTime;
   final String location;
   final String? eventLink;
   final String contactNumber;
@@ -29,7 +31,7 @@ class GymEvent {
       eventId: json['eventId'],
       title: json['title'],
       description: json['description'],
-      startTime: DateTime.parse(json['startTime']),
+      startTime: json['startTime'],
       location: json['location'],
       eventLink: json['eventLink'],
       contactNumber: json['contactNumber'],
@@ -44,7 +46,7 @@ class GymEvent {
         "eventId": eventId,
         "title": title,
         "description": description,
-        "startTime": startTime.toIso8601String(),
+        "startTime": startTime,
         "location": location,
         "eventLink": eventLink,
         "contactNumber": contactNumber,
@@ -52,4 +54,20 @@ class GymEvent {
         "isFree": isFree,
         "price": price,
       };
+
+  // Create an empty GymOwnerModel instance
+  factory GymEvent.empty() {
+    return GymEvent(
+      eventId: '',
+      title: '',
+      description: '',
+      startTime: '',
+      location: '',
+      eventLink: '',
+      contactNumber: '',
+      email: '',
+      isFree: false,
+      price: 0,
+    );
+  }
 }
