@@ -18,7 +18,7 @@ class UpcomingEventsController extends GetxController {
 
   Future<void> fetchUpcomingEventRecords() async {
     try {
-      ZLogger.info('Fetching Upcoming Events User Profile');
+      ZLogger.info('Fetching Upcoming Events');
       isEventsLoading.value = true;
       final events = await upcomingEvents.fetchEvents();
       this.gymEvents(events);
