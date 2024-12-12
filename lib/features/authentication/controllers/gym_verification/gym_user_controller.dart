@@ -164,7 +164,7 @@ class GYMUserController extends GetxController {
               contactNumber: _user.contactNumber ?? '',
               website: gymWebsite.text.toString() ?? '',
               location: Location(
-                  latitude: currentPosition.value!.longitude ?? 0.0,
+                  latitude: currentPosition.value!.latitude ?? 0.0,
                   longitude: currentPosition.value!.longitude ?? 0.0),
               openingHours: timings,
               images: [uploadedGymFrontImage],

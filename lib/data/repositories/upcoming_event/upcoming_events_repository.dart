@@ -17,14 +17,14 @@ class UpcomingEventsRepository extends GetxController {
     try {
       final documentSnapshot = await _db.collection('upcoming_events').get();
       if (documentSnapshot.docs.isNotEmpty) {
-        ZLogger.info('GYM Owner Found');
+        ZLogger.info('Upcoming Events Found');
         final gymEvents = documentSnapshot.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
           return GymEvent.fromJson(data);
         }).toList();
         return gymEvents;
       } else {
-        ZLogger.error('GYM Owner Not Found');
+        ZLogger.error('Events Not Found');
         return [];
       }
     } on FirebaseException catch (e) {
