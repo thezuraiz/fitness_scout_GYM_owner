@@ -48,7 +48,7 @@ class AuthenticationRepository extends GetxController {
         Get.offAll(() => const GymVerificationScreen());
         // Get.offAll(() => const NavigationMenu());
       } else {
-        Get.to(HomePage());
+        Get.to(const HomePage());
 
         /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
         // Get.offAll(() => VerifyScreen(
