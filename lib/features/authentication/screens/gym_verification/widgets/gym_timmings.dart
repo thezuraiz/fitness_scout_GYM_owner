@@ -11,13 +11,13 @@ class GymTimingsScreen extends StatefulWidget {
 
 class _GymTimingsScreenState extends State<GymTimingsScreen> {
   final Map<String, Map<String, dynamic?>> openingHours = {
-    'Monday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Tuesday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Wednesday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Thursday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Friday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Saturday': {'isOpen': false, 'opening': null, 'closing': null},
-    'Sunday': {'isOpen': false, 'opening': null, 'closing': null},
+    'Monday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Tuesday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Wednesday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Thursday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Friday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Saturday': {'isOpen': false, 'opening': '', 'closing': ''},
+    'Sunday': {'isOpen': false, 'opening': '', 'closing': ''},
   };
 
   String _timeOfDayToString(TimeOfDay time) {
