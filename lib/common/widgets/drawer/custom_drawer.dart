@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/screens/login_screen.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/constants/colors.dart';
@@ -16,6 +19,7 @@ class CustomDrawer extends StatelessWidget {
       elevation: 100,
       child: Container(
         color: dark ? ZColor.dark : ZColor.primary,
+        padding: EdgeInsets.all(ZSizes.md),
         child: Column(
           children: [
             UserAccountsDrawerHeader(
@@ -96,17 +100,37 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {},
             ),
             const Spacer(),
-            const Divider(),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Get.offAll(() => LoginScreen());
+                  },
+                  style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.white)),
+                  child: Text("Log Out",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(color: ZColor.light))),
+            ),
             const SizedBox(
               height: ZSizes.spaceBtwSections,
+            ),
+            const Divider(
+              color: Colors.white,
+            ),
+            const SizedBox(
+              height: ZSizes.spaceBtwItems,
             ),
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [ZSocialButtons()],
             ),
             const SizedBox(
-              height: ZSizes.spaceBtwSections,
-            )
+              height: ZSizes.spaceBtwItems,
+            ),
           ],
         ),
       ),

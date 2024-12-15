@@ -41,11 +41,11 @@ class AuthenticationRepository extends GetxController {
     // _auth.currentUser!.reload();
     if (_auth.currentUser != null) {
       if (_auth.currentUser!.emailVerified) {
-        // Get.to(HomePage());
+        Get.to(HomePage());
 
         /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
 
-        Get.offAll(() => const GymVerificationScreen());
+        // Get.offAll(() => const GymVerificationScreen());
         // Get.offAll(() => const NavigationMenu());
       } else {
         Get.to(const HomePage());
