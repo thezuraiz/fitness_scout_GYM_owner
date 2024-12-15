@@ -10,10 +10,12 @@ class UpcomingEventsController extends GetxController {
   final upcomingEvents = Get.put(UpcomingEventsRepository());
   RxList<GymEvent> gymEvents = <GymEvent>[].obs;
   RxBool isEventsLoading = false.obs;
+  RxBool showDelayOnQr = true.obs;
 
   @override
   void onInit() {
     fetchUpcomingEventRecords();
+    showLoading();
   }
 
   Future<void> fetchUpcomingEventRecords() async {
@@ -30,5 +32,10 @@ class UpcomingEventsController extends GetxController {
     } finally {
       isEventsLoading.value = false;
     }
+  }
+
+  showLoading() async {
+    await Future.delayed(Duration(seconds: 3));
+    showDelayOnQr.value = false;
   }
 }

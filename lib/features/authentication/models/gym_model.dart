@@ -21,7 +21,7 @@ class GymOwnerModel {
   final OwnerBankDetails? ownerBankDetails;
   final double balance;
   final String isApproved;
-  final List<Visitor>? visitors;
+  final List<GymUserAttendance>? visitors;
   final String gymType;
 
   GymOwnerModel(
@@ -78,7 +78,7 @@ class GymOwnerModel {
       balance: (data['balance'] ?? 0.0).toDouble(),
       isApproved: data['isApproved'] ?? 'Not-Approved',
       visitors: (data['visitors'] as List<dynamic>?)
-              ?.map((visitor) => Visitor.fromJson(visitor))
+              ?.map((visitor) => GymUserAttendance.fromMap(visitor))
               .toList() ??
           [],
     );
@@ -104,7 +104,7 @@ class GymOwnerModel {
         "owner_bank_details": ownerBankDetails?.toJson(),
         "balance": balance,
         "isApproved": isApproved,
-        "visitors": visitors?.map((v) => v.toJson()).toList(),
+        "visitors": visitors?.map((v) => v.toMap()).toList(),
       };
 
   // Create an empty GymOwnerModel instance
@@ -133,29 +133,58 @@ class GymOwnerModel {
   }
 }
 
-class Visitor {
-  final String userId;
-  final Map<String, dynamic> checkInTime;
-  final Map<String, dynamic>? checkOutTime;
+class GymUserAttendance {
+  final String id;
+  final String name, phoneNo, location;
+  final DateTime checkOutTime;
+  final DateTime checkInTime;
 
-  Visitor({
-    required this.userId,
+  GymUserAttendance({
+    required this.id,
+    required this.name,
+    this.phoneNo = '',
+    this.location = '',
     required this.checkInTime,
-    this.checkOutTime,
+    required this.checkOutTime,
   });
 
-  Map<String, dynamic> toJson() => {
-        "user_id": userId,
-        "check_in_time": checkInTime,
-        "check_out_time": checkOutTime,
-      };
+  factory GymUserAttendance.empty() {
+    return GymUserAttendance(
+      id: '',
+      name: '',
+      location: '',
+      phoneNo: '',
+      checkInTime: DateTime.fromMillisecondsSinceEpoch(0),
+      checkOutTime: DateTime.fromMillisecondsSinceEpoch(0),
+    );
+  }
 
-  factory Visitor.fromJson(Map<String, dynamic> json) => Visitor(
-        userId: json["user_id"],
-        checkInTime: json["check_in_time"],
-        checkOutTime:
-            json["check_out_time"] != null ? json["check_out_time"] : {},
-      );
+  factory GymUserAttendance.fromMap(Map<String, dynamic> map) {
+    return GymUserAttendance(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      phoneNo: map['phoneNo'] ?? '',
+      location: map['location'] ?? '',
+      checkInTime: DateTime.parse(map['checkInTime']),
+      checkOutTime: DateTime.parse(map['checkOutTime']),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'phoneNo': phoneNo,
+      'location': location,
+      'checkInTime': checkInTime.toIso8601String(),
+      'checkOutTime': checkOutTime.toIso8601String(),
+    };
+  }
+
+  @override
+  String toString() {
+    return 'GymUserAttendance(id: $id, name: $name, checkInTime: $checkInTime, checkOutTime: $checkOutTime)';
+  }
 }
 
 // Define the Location model
