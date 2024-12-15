@@ -33,50 +33,73 @@ class HomePage extends StatelessWidget {
         .toList();
     return Scaffold(
       drawer: const CustomDrawer(),
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Iconsax.setting))
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          onRefresh: () => homeController.loadUserAttendance(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: ZSizes.defaultSpace, horizontal: ZSizes.sm),
-            child: Column(
-              children: [
-                Obx(
-                  () => !upcomingEventsController.showDelayOnQr.value
-                      ? SizedBox(
-                          width: Get.width / 2,
-                          child: PrettyQrView.data(
-                            data: FirebaseAuth.instance.currentUser!.uid
-                                .toString(),
-                            decoration: PrettyQrDecoration(
-                              shape: PrettyQrSmoothSymbol(
-                                  color: dark ? ZColor.white : Colors.black),
-                            ),
-                          ),
-                        )
-                      : const CircularProgressIndicator(
-                          color: ZColor.primary,
+      body: Padding(
+        padding: const EdgeInsets.only(
+            top: ZSizes.defaultSpace * 1.5, left: ZSizes.sm, right: ZSizes.sm),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 18),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Builder(
+                      builder: (context) => IconButton(
+                        onPressed: () => Scaffold.of(context).openDrawer(),
+                        icon: const Icon(
+                          Iconsax.menu_1,
+                          size: ZSizes.iconMd * 1.3,
                         ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Iconsax.check,
+                        size: ZSizes.iconMd * 1.3,
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: ZSizes.spaceBtwSections * 1.2),
-                Obx(
-                  () => Text(
-                    '${userController.GYMuser.value.balance ?? 0.00}\$',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium!
-                        .copyWith(fontWeight: FontWeight.bold),
+              ),
+              Obx(
+                () => !upcomingEventsController.showDelayOnQr.value
+                    ? SizedBox(
+                        width: Get.width / 2,
+                        child: PrettyQrView.data(
+                          data:
+                              FirebaseAuth.instance.currentUser!.uid.toString(),
+                          decoration: PrettyQrDecoration(
+                            shape: PrettyQrSmoothSymbol(
+                                color: dark ? ZColor.white : Colors.black),
+                          ),
+                        ),
+                      )
+                    : const CircularProgressIndicator(
+                        color: ZColor.primary,
+                      ),
+              ),
+              const SizedBox(height: ZSizes.spaceBtwSections * 1.2),
+              Obx(
+                () => Text(
+                  '${userController.GYMuser.value.balance ?? 0.00}\$',
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                height: ZSizes.spaceBtwSections,
+              ),
+              Card(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(ZSizes.lg),
                   ),
                 ),
-                const SizedBox(
-                  height: ZSizes.spaceBtwSections,
-                ),
-                ListTile(
+                child: ListTile(
                   leading: const Icon(
                     Iconsax.level,
                     size: ZSizes.iconLg * 1.3,
@@ -103,80 +126,83 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: ZSizes.spaceBtwSections * 2.5,
-                ),
-                Obx(() {
-                  List<GymUserAttendance> onGoingUser = homeController
-                      .userGYMAttendance.value
-                      .where((user) =>
-                          DateTime.parse(user.checkOutTime.toString())
-                              .isAfter(DateTime.now()))
-                      .toList();
+              ),
+              const SizedBox(
+                height: ZSizes.spaceBtwSections * 2.5,
+              ),
+              Obx(() {
+                List<GymUserAttendance> onGoingUser = homeController
+                    .userGYMAttendance.value
+                    .where((user) =>
+                        DateTime.parse(user.checkOutTime.toString())
+                            .isAfter(DateTime.now()))
+                    .toList();
 
-                  return onGoingUser.length > 1
-                      ? ListView.builder(
-                          itemCount: onGoingUser.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (_, index) {
-                            final user = onGoingUser[index];
-                            return ZCustomCard(
-                                gymName: user.name,
-                                gymCheckInDate: DateFormat('dd-MM-yyy')
-                                    .format(user.checkInTime),
-                                gymCheckInTime: DateFormat('HH:mm a')
-                                    .format(user.checkInTime),
-                                currentlyExercising: true);
-                          },
-                        )
-                      : Column(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                  color: ZColor.lightGrey,
-                                  shape: BoxShape.circle),
-                              padding: const EdgeInsets.all(ZSizes.sm),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Iconsax.personalcard,
-                                  size: ZSizes.iconLg * 1.3,
-                                  color: ZColor.darkGrey,
-                                ),
+                return onGoingUser.length > 1
+                    ? ListView.builder(
+                        itemCount: onGoingUser.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (_, index) {
+                          final user = onGoingUser[index];
+                          return ZCustomCard(
+                              gymName: user.name,
+                              gymCheckInDate: DateFormat('dd-MM-yyy')
+                                  .format(user.checkInTime),
+                              gymCheckInTime: DateFormat('HH:mm a')
+                                  .format(user.checkInTime),
+                              currentlyExercising: true);
+                        },
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                                color: ZColor.lightGrey,
+                                shape: BoxShape.circle),
+                            padding: const EdgeInsets.all(ZSizes.md),
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Iconsax.personalcard,
+                                size: ZSizes.iconLg * 2,
+                                color: ZColor.darkGrey,
                               ),
                             ),
-                            const SizedBox(
-                              height: ZSizes.sm,
-                            ),
-                            Text(
-                              'No members yet',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(color: ZColor.grey),
-                            )
-                          ],
-                        );
-                }),
-                const SizedBox(
-                  height: ZSizes.spaceBtwSections * 2,
-                ),
-                ListTile(
-                  leading: const Icon(Iconsax.task),
-                  title: Text('Go to visitors history',
-                      style: Theme.of(context).textTheme.titleLarge),
-                  onTap: () => Get.to(() => const VisitorsScreen()),
-                ),
-                ListTile(
-                  leading: const Icon(Iconsax.flag),
-                  title: Text(
-                      'Upcoming Events${isValidEvent.length > 0 ? ' (${isValidEvent.length})' : ''}',
-                      style: Theme.of(context).textTheme.titleLarge),
-                  onTap: () => Get.to(const UpcomingEventsScreen()),
-                )
-              ],
-            ),
+                          ),
+                          const SizedBox(
+                            height: ZSizes.sm,
+                          ),
+                          Text(
+                            'No members yet',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(color: ZColor.grey),
+                          )
+                        ],
+                      );
+              }),
+              const SizedBox(
+                height: ZSizes.spaceBtwSections * 2,
+              ),
+              ListTile(
+                leading: const Icon(Iconsax.task),
+                title: Text('Go to visitors history',
+                    style: Theme.of(context).textTheme.titleLarge),
+                onTap: () => Get.to(() => const VisitorsScreen()),
+              ),
+              ListTile(
+                leading: const Icon(Iconsax.flag),
+                title: Text(
+                    'Upcoming Events${isValidEvent.length > 0 ? ' (${isValidEvent.length})' : ''}',
+                    style: Theme.of(context).textTheme.titleLarge),
+                onTap: () => Get.to(const UpcomingEventsScreen()),
+              ),
+              const SizedBox(
+                height: ZSizes.sm,
+              )
+            ],
           ),
         ),
       ),
