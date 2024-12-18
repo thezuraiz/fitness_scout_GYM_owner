@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -62,6 +65,31 @@ class LoginController extends GetxController {
       final userCredential = await AuthenticationRepository.instance
           .loginWithEmailAndPassword(email.text.trim(), password.text.trim());
 
+      final _userId = userCredential.user!.uid;
+      ZLogger.warning('User Id: $_userId');
+
+      final DocumentSnapshot userData = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(_userId)
+          .get();
+
+      if (userData.exists || userData.data() != null) {
+        ZLogger.error('User already registered with gym app');
+
+        // Todo: Logout User
+        await FirebaseAuth.instance.signOut();
+
+        // Todo: Show Message
+        ZLoaders.errorSnackBar(
+          title: 'Already Registered in Fitness Scout GYM',
+          message:
+              'This email is already associated with the Fitness Scout Gym App. Please use a different email to register your gym in Fitness Scout.',
+        );
+        // Todo: Remove Loader
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
       // Todo: Welcome Message
       ZLoaders.successSnackBar(title: 'Welcome!', message: 'You are Login.');
 
@@ -97,6 +125,31 @@ class LoginController extends GetxController {
       // Todo: Google Authentication
       final userCredential =
           await AuthenticationRepository.instance.signInWithGoogle();
+
+      final _userId = userCredential!.user!.uid;
+      ZLogger.warning('User Id: $_userId');
+
+      final DocumentSnapshot userData = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(_userId)
+          .get();
+
+      if (userData.exists || userData.data() != null) {
+        ZLogger.error('User already registered with gym app');
+
+        // Todo: Logout User
+        await FirebaseAuth.instance.signOut();
+
+        // Todo: Show Message
+        ZLoaders.errorSnackBar(
+          title: 'Already Registered in Fitness Scout GYM',
+          message:
+              'This email is already associated with the Fitness Scout Gym App. Please use a different email to register your gym in Fitness Scout.',
+        );
+        // Todo: Remove Loader
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
 
       // Todo: Save the data
       // await userController.saveUserRecord(userCredential);
