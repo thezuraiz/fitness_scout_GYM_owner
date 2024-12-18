@@ -73,10 +73,13 @@ class AuthenticationRepository extends GetxController {
       return await _auth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
+      ZLogger.warning(e.toString());
       throw ZFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
+      ZLogger.warning(e.toString());
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {
+      ZLogger.warning(_.toString());
       throw ZFormatException();
     } on PlatformException catch (e) {
       throw ZPlatformException(e.code).message;

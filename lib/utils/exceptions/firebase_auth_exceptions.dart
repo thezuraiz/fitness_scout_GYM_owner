@@ -1,3 +1,5 @@
+import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
+
 class ZFirebaseAuthException implements Exception {
   /// The error code associated with exception.
   final String code;
@@ -20,7 +22,7 @@ class ZFirebaseAuthException implements Exception {
         return 'The user account has been disabled. Please contact support.';
       case 'user-not-found':
         return 'No user found with this email. Please check the email address and try again.';
-      case 'wrong-password':
+      case 'invalid-credential':
         return 'Incorrect password. Please try again or reset your password.';
       case 'invalid-verification-code':
         return 'Invalid verification code. Please enter a valid code.';
