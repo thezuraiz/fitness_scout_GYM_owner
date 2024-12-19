@@ -9,12 +9,12 @@ class ProfileMenu extends StatelessWidget {
     required this.title,
     required this.subTitle,
     this.icon = Iconsax.arrow_right_34,
-    required this.onPressed,
+    this.onPressed,
   });
 
   final String title, subTitle;
   final IconData icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +34,19 @@ class ProfileMenu extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: onPressed != null ? 5 : 6,
               child: Text(
                 subTitle,
                 style: Theme.of(context).textTheme.bodyMedium,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Expanded(
-                child: Icon(
-              icon,
-              size: 18,
-            ))
+            if (onPressed != null)
+              Expanded(
+                  child: Icon(
+                icon,
+                size: 18,
+              ))
           ],
         ),
       ),
