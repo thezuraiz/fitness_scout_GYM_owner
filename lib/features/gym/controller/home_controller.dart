@@ -52,8 +52,7 @@ class HomeController extends GetxController {
       userGYMAttendance.value = userAttendanceList
           .map((item) => GymUserAttendance.fromMap(item))
           .toList();
-      print(userGYMAttendance.value.toString());
-      print(userGYMAttendance.value.length);
+
       ZLogger.info('UserData: ${userGYMAttendance.value}');
       await Future.delayed(const Duration(seconds: 1));
       isLoading.value = false;
