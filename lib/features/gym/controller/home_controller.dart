@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/models/gym_model.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/helpers/logger.dart';
@@ -52,7 +51,8 @@ class HomeController extends GetxController {
       userGYMAttendance.value = userAttendanceList
           .map((item) => GymUserAttendance.fromMap(item))
           .toList();
-
+      print(userGYMAttendance.value.toString());
+      print(userGYMAttendance.value.length);
       ZLogger.info('UserData: ${userGYMAttendance.value}');
       await Future.delayed(const Duration(seconds: 1));
       isLoading.value = false;

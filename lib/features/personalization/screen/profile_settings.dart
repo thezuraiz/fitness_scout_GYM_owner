@@ -86,9 +86,10 @@ class SettingScreen extends StatelessWidget {
                         height: ZSizes.sm,
                       ),
                       TextButton(
-                          onPressed: () {},
-                          // UserController.instance.uploadUserProfilePicture(),
-                          child: const Text("Change Profile Picture"))
+                        onPressed: () {},
+                        // UserController.instance.uploadUserProfilePicture(),
+                        child: const Text("Change GYM Picture"),
+                      )
                     ],
                   ),
                 ),

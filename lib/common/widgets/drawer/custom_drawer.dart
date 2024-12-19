@@ -19,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
       elevation: 100,
       child: Container(
         color: dark ? ZColor.dark : ZColor.primary,
-        padding: EdgeInsets.all(ZSizes.md),
+        padding: EdgeInsets.all(ZSizes.sm),
         child: Column(
           children: [
             UserAccountsDrawerHeader(
@@ -49,21 +49,21 @@ class CustomDrawer extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: const Icon(Iconsax.wallet,
-                  color: ZColor.light, size: ZSizes.iconLg),
+                  color: ZColor.light, size: ZSizes.iconMd),
               title: Text("Wallet",
                   style: Theme.of(context)
                       .textTheme
-                      .headlineSmall!
+                      .titleMedium!
                       .copyWith(color: ZColor.light)),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Iconsax.security_safe,
-                  color: ZColor.light, size: ZSizes.iconLg),
+                  color: ZColor.light, size: ZSizes.iconMd),
               title: Text("Safety",
                   style: Theme.of(context)
                       .textTheme
-                      .headlineSmall!
+                      .titleMedium!
                       .copyWith(color: ZColor.light)),
               onTap: () {},
             ),
@@ -72,31 +72,31 @@ class CustomDrawer extends StatelessWidget {
                 'Settings',
                 style: Theme.of(context)
                     .textTheme
-                    .headlineSmall!
+                    .titleMedium!
                     .copyWith(color: ZColor.light),
               ),
               leading: const Icon(Iconsax.setting,
-                  color: ZColor.light, size: ZSizes.iconLg),
+                  color: ZColor.light, size: ZSizes.iconMd),
               onTap: () {},
             ),
             ListTile(
               title: Text('FAQ',
                   style: Theme.of(context)
                       .textTheme
-                      .headlineSmall!
+                      .titleMedium!
                       .copyWith(color: ZColor.light)),
               leading: const Icon(Iconsax.info_circle,
-                  color: ZColor.light, size: ZSizes.iconLg),
+                  color: ZColor.light, size: ZSizes.iconMd),
               onTap: () {},
             ),
             ListTile(
               title: Text('Support',
                   style: Theme.of(context)
                       .textTheme
-                      .headlineSmall!
+                      .titleMedium!
                       .copyWith(color: ZColor.light)),
               leading: const Icon(Iconsax.message,
-                  color: ZColor.light, size: ZSizes.iconLg),
+                  color: ZColor.light, size: ZSizes.iconMd),
               onTap: () {},
             ),
             const Spacer(),
@@ -112,7 +112,7 @@ class CustomDrawer extends StatelessWidget {
                   child: Text("Log Out",
                       style: Theme.of(context)
                           .textTheme
-                          .headlineSmall!
+                          .titleSmall!
                           .copyWith(color: ZColor.light))),
             ),
             const SizedBox(

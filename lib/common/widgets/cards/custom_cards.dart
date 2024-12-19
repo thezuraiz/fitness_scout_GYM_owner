@@ -20,11 +20,16 @@ class ZCustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = ZHelperFunction.isDarkMode(context);
+    final textColor = currentlyExercising
+        ? Colors.white
+        : dark
+            ? ZColor.white // Ensure text is visible in dark mode
+            : ZColor.dark;
+
     return ZRoundedContainer(
       width: double.infinity,
-      backgroundColor: currentlyExercising
-          ? ZColor.primary.withOpacity(0.6)
-          : Colors.transparent,
+      backgroundColor:
+          currentlyExercising ? ZColor.primary : Colors.transparent,
       showBorder: true,
       borderColor: currentlyExercising
           ? Colors.transparent
@@ -41,14 +46,18 @@ class ZCustomCard extends StatelessWidget {
             child: currentlyExercising
                 ? Container(
                     decoration: BoxDecoration(
-                      color: dark ? ZColor.dark : ZColor.lightGrey,
-                      borderRadius: BorderRadius.circular(
-                        40,
-                      ), // Makes the shape closer to a "stadium"
+                      color: dark ? ZColor.white : ZColor.lightGrey,
+                      borderRadius: BorderRadius.circular(40),
                     ),
                     padding: const EdgeInsets.symmetric(
                         horizontal: ZSizes.sm, vertical: ZSizes.sm / 2),
-                    child: const Text('On Going'),
+                    child: Text(
+                      'On Going',
+                      style: TextStyle(
+                          color: dark
+                              ? ZColor.primary
+                              : ZColor.darkerGrey), // Adjust text color
+                    ),
                   )
                 : const Icon(null),
           ),
@@ -60,7 +69,9 @@ class ZCustomCard extends StatelessWidget {
                 softWrap: true,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: textColor,
+                    ),
               ),
               const SizedBox(
                 height: ZSizes.sm / 2,
@@ -68,6 +79,7 @@ class ZCustomCard extends StatelessWidget {
               Text(
                 "Check In Date: $gymCheckInDate",
                 softWrap: true,
+                style: TextStyle(color: textColor),
               ),
               const SizedBox(
                 height: ZSizes.sm / 2,
@@ -76,6 +88,7 @@ class ZCustomCard extends StatelessWidget {
                 "Check In Time: $gymCheckInTime",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: textColor),
               ),
             ],
           )
