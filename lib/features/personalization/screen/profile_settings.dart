@@ -1,4 +1,5 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_number.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/profile_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
@@ -125,9 +126,13 @@ class SettingScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => ProfileMenu(
-                      title: "Phone Number",
-                      subTitle: gymUser.value.contactNumber!,
-                      onPressed: () {}),
+                    title: "Phone Number",
+                    subTitle: gymUser.value.contactNumber!,
+                    onPressed: () => Get.to(
+                      () => ChangeNumberScreen(
+                          number: gymUser.value.contactNumber!),
+                    ),
+                  ),
                 ),
                 Obx(
                   () => ProfileMenu(
