@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -94,17 +95,21 @@ class UserRepository extends GetxController {
   /// Functions to update single field
   Future<void> updateSingleField(Map<String, dynamic> json) async {
     try {
-      await _db
-          .collection('GYM')
-          .doc(AuthenticationRepository.instance.authUser!.uid)
-          .update(json);
+      final _userId = FirebaseAuth.instance.currentUser!.uid;
+      ZLogger.info('Current User UID: $_userId');
+      await _db.collection('Gyms').doc(_userId).update(json);
+      ZLogger.info('Updated Successful');
     } on FirebaseException catch (e) {
+      ZLogger.error("Error: $e");
       throw ZFirebaseException(e.code).message;
     } on FormatException catch (_) {
+      ZLogger.error("Error: $_");
       throw ZFormatException();
     } on PlatformException catch (e) {
+      ZLogger.error("Error: $e");
       throw ZFormatException(e.code).message;
     } catch (e) {
+      ZLogger.error("Error: $e");
       throw 'Something went wrong. Please try again';
     }
   }

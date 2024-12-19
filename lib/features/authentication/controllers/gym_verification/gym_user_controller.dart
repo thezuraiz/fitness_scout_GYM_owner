@@ -117,7 +117,7 @@ class GYMUserController extends GetxController {
       ZLogger.info('Fetching GYM User Profile');
       profileLoading.value = true;
       final user = await userRepository.fetchUserDetails();
-      ZLogger.warning('User: ${user}');
+      ZLogger.warning('User: ${user.name}');
       this.GYMuser(user);
       ZLogger.info('Fetching GYM User Profile: ${GYMuser.toJson()}');
     } catch (e) {
