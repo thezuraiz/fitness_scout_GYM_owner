@@ -9,14 +9,18 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../utils/constants/image_string.dart';
+import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/full_screen_loader.dart';
 import '../../../../utils/popups/loader.dart';
+import '../../../personalization/screen/widgets/re_auth_user_login_form.dart';
 import '../../models/gym_model.dart';
 import '../../screens/gym_verification/gym_registration_waiting_list.dart';
 import '../../screens/gym_verification/widgets/bank_info.dart';
 import '../../screens/gym_verification/widgets/gym_timmings.dart';
+import '../../screens/login_screen.dart';
 
 class GYMUserController extends GetxController {
   static GYMUserController get instance => Get.find();
@@ -26,6 +30,7 @@ class GYMUserController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     checkAndRequestLocation();
+    fetchUserRecord();
   }
 
   Rx<Position?> currentPosition = Rx<Position?>(null);
@@ -39,6 +44,13 @@ class GYMUserController extends GetxController {
   TextEditingController gymOwnerBankName = TextEditingController();
   TextEditingController gymOwnerAccountNumber = TextEditingController();
   TextEditingController gymOwnerAccountIBAN = TextEditingController();
+
+  /// For ReAuthenticate GYM Owner
+  GlobalKey<FormState> reAuthFormKey = GlobalKey<FormState>();
+  final imageUploading = false.obs;
+  final hidePassword = false.obs;
+  final verifyEmail = TextEditingController();
+  final verifyPassword = TextEditingController();
   Map<String, Map<String, dynamic>> timings = {};
   RxList<Amenity> amenities = [
     Amenity(name: 'WiFi'),
@@ -105,9 +117,11 @@ class GYMUserController extends GetxController {
       ZLogger.info('Fetching GYM User Profile');
       profileLoading.value = true;
       final user = await userRepository.fetchUserDetails();
+      ZLogger.warning('User: ${user}');
       this.GYMuser(user);
       ZLogger.info('Fetching GYM User Profile: ${GYMuser.toJson()}');
     } catch (e) {
+      ZLogger.error('Error while loading user data ${e}');
       GYMuser(GymOwnerModel.empty());
     } finally {
       profileLoading.value = false;
@@ -258,6 +272,97 @@ class GYMUserController extends GetxController {
       ZLogger.info('Position ${currentPosition.value}');
     } catch (e) {
       ZLogger.error('Error fetching location: $e');
+    }
+  }
+
+  /// Delete Account Loading
+  void deleteAccountWarningPopUp() {
+    Get.defaultDialog(
+      contentPadding: const EdgeInsets.all(ZSizes.md),
+      title: 'Delete Account',
+      middleText:
+          'Are you sure you want to delete your account permanently? This action is not reversible and all of your data will be permanently removed',
+      confirm: ElevatedButton(
+        onPressed: () async => deleteUserAccount(),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            side: const BorderSide(color: Colors.red)),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: ZSizes.lg),
+          child: Text('Delete'),
+        ),
+      ),
+      cancel: OutlinedButton(
+        onPressed: () => Navigator.of(Get.overlayContext!).pop(),
+        child: const Text('Cancel'),
+      ),
+    );
+  }
+
+  /// Delete User Account
+  void deleteUserAccount() async {
+    try {
+      /// Start Loader
+      ZFullScreenLoader.openLoadingDialogy(
+          'Processing your request...', ZImages.fileAnimation);
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      /// First Re-Authenticate User
+      final auth = AuthenticationRepository.instance;
+      final provider =
+          auth.authUser!.providerData.map((e) => e.providerId).first;
+      if (provider.isNotEmpty) {
+        /// Re verify Auth Email
+        if (provider == 'google.com') {
+          await auth.signInWithGoogle();
+          await auth.deleteAccount();
+          ZFullScreenLoader.stopLoading();
+          Get.offAll(() => const LoginScreen());
+        } else if (provider == 'password') {
+          ZFullScreenLoader.stopLoading();
+          Get.to(() => const ReAuthUserLoginForm());
+        }
+      }
+    } catch (e) {
+      ZFullScreenLoader.stopLoading();
+      ZLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  Future<void> reAuthenticateEmailAndPassword() async {
+    try {
+      /// Start Loader
+      ZFullScreenLoader.openLoadingDialogy(
+          'Processing your request...', ZImages.fileAnimation);
+
+      /// Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      /// Validation on form
+      if (!reAuthFormKey.currentState!.validate()) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      await AuthenticationRepository.instance
+          .reAuthenticateWithEmailAndPassword(
+              verifyEmail.text.trim(), verifyPassword.text.trim());
+      await AuthenticationRepository.instance.deleteAccount();
+      ZFullScreenLoader.stopLoading();
+      Get.to(() => const LoginScreen());
+    } catch (e) {
+      ZFullScreenLoader.stopLoading();
+      ZLoaders.warningSnackBar(title: 'Uh Snap!', message: e.toString());
     }
   }
 }

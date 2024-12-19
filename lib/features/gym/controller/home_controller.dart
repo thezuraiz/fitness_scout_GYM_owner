@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../utils/helpers/logger.dart';
 import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/loader.dart';
+import '../../personalization/model/user_model.dart';
 
 class HomeController extends GetxController {
   static HomeController get instance => Get.find();

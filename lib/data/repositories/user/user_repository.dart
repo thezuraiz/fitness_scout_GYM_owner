@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/services.dart';
@@ -51,10 +52,8 @@ class UserRepository extends GetxController {
   /// Functions to fetch user details based on user id
   Future<GymOwnerModel> fetchUserDetails() async {
     try {
-      final documentSnapshot = await _db
-          .collection('Gyms')
-          .doc(AuthenticationRepository.instance.authUser?.uid)
-          .get();
+      final userId = await FirebaseAuth.instance.currentUser!.uid;
+      final documentSnapshot = await _db.collection('Gyms').doc(userId).get();
       if (documentSnapshot.exists) {
         ZLogger.info('GYM Owner Found');
         return GymOwnerModel.fromSnapshot(documentSnapshot);
@@ -69,6 +68,7 @@ class UserRepository extends GetxController {
     } on PlatformException catch (e) {
       throw ZFormatException(e.code).message;
     } catch (e) {
+      ZLogger.error('Error: $e');
       throw 'Something went wrong. Please try again';
     }
   }

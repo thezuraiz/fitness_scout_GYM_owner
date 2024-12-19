@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/cards/custom_cards.dart';
-import 'package:fitness_scout_owner_v1/common/widgets/custom_appbar/custom_app_bar.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/drawer/custom_drawer.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/models/gym_model.dart';
@@ -8,6 +7,7 @@ import 'package:fitness_scout_owner_v1/features/gym/controller/home_controller.d
 import 'package:fitness_scout_owner_v1/features/gym/controller/upcoming_event.dart';
 import 'package:fitness_scout_owner_v1/features/gym/screen/upcoming_event/events.dart';
 import 'package:fitness_scout_owner_v1/features/gym/screen/visitors_screen.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/profile_settings.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
@@ -17,6 +17,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+
+import '../../../personalization/model/user_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => Get.to(() => const SettingScreen()),
                       icon: const Icon(
                         Iconsax.check,
                         size: ZSizes.iconMd * 1.3,
@@ -134,7 +136,7 @@ class HomePage extends StatelessWidget {
                 List<GymUserAttendance> onGoingUser = homeController
                     .userGYMAttendance.value
                     .where((user) =>
-                        DateTime.parse(user.checkOutTime.toString())
+                        DateTime.parse(user!.checkOutTime!.toString()!)
                             .isAfter(DateTime.now()))
                     .toList();
 
