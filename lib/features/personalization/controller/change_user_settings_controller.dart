@@ -16,6 +16,7 @@ class ChangeUserSettingsController extends GetxController {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
+  TextEditingController websiteController = TextEditingController();
 
   /// Update Name
   Future<void> updateUserName() async {
@@ -110,6 +111,68 @@ class ChangeUserSettingsController extends GetxController {
 
       final Map<String, dynamic> json = {
         'contact_number': numberController.text.trim()
+      };
+
+      // Update the fields in Firestore
+      await userRepository.updateSingleField(json);
+
+      // Update RX Values dynamically
+      await userController.fetchUserRecord();
+      userController.refresh();
+
+      // Remove the Loader
+      ZFullScreenLoader.stopLoading();
+
+      Get.back();
+      // Show Success Message
+      ZLoaders.successSnackBar(
+        title: 'Success',
+        message: 'Your profile has been updated',
+      );
+    } catch (e) {
+      // Remove the Loader
+      ZFullScreenLoader.stopLoading();
+      ZLoaders.errorSnackBar(
+        title: 'Error',
+        message: e.toString(),
+      );
+    }
+  }
+
+  /// Update Website
+  Future<void> updateUserWebsite() async {
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      // Start the Loader
+      ZFullScreenLoader.openLoadingDialogy(
+          'Processing your request...', ZImages.fileAnimation);
+
+      if (websiteController.text.trim() ==
+          userController.GYMuser.value.website) {
+        ZLoaders.warningSnackBar(
+          title: 'Warning',
+          message: 'No changes detected. Please update and try again',
+        );
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Form Validation
+      if (!updateFormKey.currentState!.validate()) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      final Map<String, dynamic> json = {
+        'website': numberController.text.trim()
       };
 
       // Update the fields in Firestore
