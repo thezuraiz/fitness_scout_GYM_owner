@@ -45,7 +45,7 @@ class LoginController extends GetxController {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         ZFullScreenLoader.stopLoading();
-        print('Internet Connection Failed!');
+        ZLogger.error('Internet Connection Failed!');
         return;
       }
 
