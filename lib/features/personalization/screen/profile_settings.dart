@@ -1,5 +1,6 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/change_user_settings_controller.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_description.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_number.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_website.dart';
@@ -170,7 +171,8 @@ class SettingScreen extends StatelessWidget {
                   () => ProfileMenu(
                     title: "Description",
                     subTitle: gymUser.value.description!,
-                    onPressed: () {},
+                    onPressed: () => Get.to(() => ChangeDescriptionScreen(
+                        description: gymUser.value.description!)),
                     // onPressed: () => Get.to(() => const ChangeNameScreen())),
                   ),
                 ),
