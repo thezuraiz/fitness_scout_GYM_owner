@@ -333,6 +333,7 @@ class ChangeUserSettingsController extends GetxController {
   }
 
   /// =================== Bank Details =======================
+
   /// Update Bank Name
   Future<void> updateBankDetails(String fieldName, String fieldValue) async {
     try {

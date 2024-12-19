@@ -8,6 +8,7 @@ import 'package:fitness_scout_owner_v1/features/personalization/screen/change_nu
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_website.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_bank_acc_no.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/amenities_screen.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/profile_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,10 @@ class SettingScreen extends StatelessWidget {
     final gymUser = controller.GYMuser;
     Get.put(ChangeUserSettingsController());
     return Scaffold(
-      appBar: ZCustomAppBar(
+      appBar: const ZCustomAppBar(
         showArrows: true,
         title: Text(
-          "Profile",
-          style: Theme.of(context).textTheme.headlineMedium,
+          "Profile Settings",
         ),
       ),
       body: RefreshIndicator(
@@ -213,8 +213,11 @@ class SettingScreen extends StatelessWidget {
                   return ProfileMenu(
                     title: "Amenities",
                     subTitle: amenities.join(', '),
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    onPressed: () => Get.to(
+                      () => AmenitiesScreen(
+                        amenities: amenities,
+                      ),
+                    ),
                   );
                 }),
                 ProfileMenu(
