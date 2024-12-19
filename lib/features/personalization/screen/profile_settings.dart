@@ -1,6 +1,8 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/controller/change_user_settings_controller.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_number.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_website.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/profile_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = GYMUserController.instance;
     final gymUser = controller.GYMuser;
+    Get.put(ChangeUserSettingsController());
     return Scaffold(
       appBar: ZCustomAppBar(
         showArrows: true,
@@ -126,7 +129,7 @@ class SettingScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => ProfileMenu(
-                    title: "Phone Number",
+                    title: "Phone No",
                     subTitle: gymUser.value.contactNumber!,
                     onPressed: () => Get.to(
                       () => ChangeNumberScreen(
@@ -136,9 +139,9 @@ class SettingScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => ProfileMenu(
-                      title: "GYM Website",
-                      subTitle: gymUser.value.website!,
-                      onPressed: () {}),
+                    title: "Is Approved",
+                    subTitle: gymUser.value.isApproved!,
+                  ),
                 ),
                 const SizedBox(
                   height: ZSizes.spaceBtwItems,
@@ -160,14 +163,13 @@ class SettingScreen extends StatelessWidget {
                   () => ProfileMenu(
                     title: "Name",
                     subTitle: gymUser.value.gymName!,
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    // onPressed: () {},
                   ),
                 ),
                 Obx(
                   () => ProfileMenu(
                     title: "Description",
-                    subTitle: gymUser.value.gymName!,
+                    subTitle: gymUser.value.description!,
                     onPressed: () {},
                     // onPressed: () => Get.to(() => const ChangeNameScreen())),
                   ),
@@ -175,9 +177,25 @@ class SettingScreen extends StatelessWidget {
                 Obx(
                   () => ProfileMenu(
                     title: "Address",
-                    subTitle: gymUser.value.gymName!,
+                    subTitle: gymUser.value.address!,
                     onPressed: () {},
                     // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                  ),
+                ),
+                Obx(
+                  () => ProfileMenu(
+                    title: "GYM Website",
+                    subTitle: gymUser.value.website!,
+                    onPressed: () => Get.to(
+                      () =>
+                          ChangeWebsiteScreen(website: gymUser.value.website!),
+                    ),
+                  ),
+                ),
+                Obx(
+                  () => ProfileMenu(
+                    title: "GYM Type",
+                    subTitle: gymUser.value.gymType,
                   ),
                 ),
                 Obx(() {
