@@ -114,6 +114,31 @@ class UserRepository extends GetxController {
     }
   }
 
+  /// Functions to update single field
+  Future<void> updateSingleFieldInBankDetails(String key, String value) async {
+    try {
+      final _userId = FirebaseAuth.instance.currentUser!.uid;
+      ZLogger.info('Current User UID: $_userId');
+      await _db
+          .collection('Gyms')
+          .doc(_userId)
+          .update({'owner_bank_details.$key': value});
+      ZLogger.info('Updated Successful');
+    } on FirebaseException catch (e) {
+      ZLogger.error("Error: $e");
+      throw ZFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      ZLogger.error("Error: $_");
+      throw ZFormatException();
+    } on PlatformException catch (e) {
+      ZLogger.error("Error: $e");
+      throw ZFormatException(e.code).message;
+    } catch (e) {
+      ZLogger.error("Error: $e");
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
   /// Function to delete User data from Firestore.
   Future<void> removeUserRecord(String userId) async {
     try {

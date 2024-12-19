@@ -6,20 +6,20 @@ import 'package:iconsax/iconsax.dart';
 import '../../../common/widgets/custom_appbar/custom_app_bar.dart';
 import '../../../utils/constants/sizes.dart';
 
-class ChangeNumberScreen extends StatelessWidget {
-  const ChangeNumberScreen({super.key, required this.number});
+class ChangeAccountIBANScreen extends StatelessWidget {
+  const ChangeAccountIBANScreen({super.key, required this.bankIBAN});
 
-  final String number;
+  final String bankIBAN;
 
   @override
   Widget build(BuildContext context) {
     final controller = ChangeUserSettingsController.instance;
-    controller.numberController.text = number;
+    controller.bankAccountIBANController.text = bankIBAN;
     return Scaffold(
       appBar: ZCustomAppBar(
         showArrows: true,
         title: Text(
-          'Owner Number',
+          'GYM Bank IBAN',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
@@ -32,7 +32,7 @@ class ChangeNumberScreen extends StatelessWidget {
             children: [
               /// Headline
               Text(
-                'Update your number for better personalization.',
+                'Update your bank IBAN for better transactions.',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(
@@ -41,13 +41,14 @@ class ChangeNumberScreen extends StatelessWidget {
 
               /// Input Field
               TextFormField(
-                controller: controller.numberController,
+                controller: controller.bankAccountIBANController,
                 validator: MultiValidator([
                   RequiredValidator(errorText: 'This field is required!'),
-                  MinLengthValidator(11, errorText: 'Minimum length is 11')
+                  MaxLengthValidator(50, errorText: 'Max alphabet 300'),
+                  MinLengthValidator(3, errorText: 'Min value 3')
                 ]),
                 decoration: const InputDecoration(
-                  labelText: 'Owner Number',
+                  labelText: 'Owner Bank IBAN',
                   prefixIcon: Icon(Iconsax.user),
                 ),
               ),
@@ -59,7 +60,8 @@ class ChangeNumberScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: controller.updateUserNumber,
+                  onPressed: () => controller.updateBankDetails(
+                      'iban', controller.bankAccountIBANController.text.trim()),
                   child: const Text('Save'),
                 ),
               ),

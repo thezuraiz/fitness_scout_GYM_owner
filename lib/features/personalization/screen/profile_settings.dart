@@ -1,10 +1,13 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/change_user_settings_controller.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_address.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_bank_iban.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_bank_name.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_description.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_number.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_website.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_bank_acc_no.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/profile_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/material.dart';
@@ -241,24 +244,30 @@ class SettingScreen extends StatelessWidget {
                   () => ProfileMenu(
                     title: "Bank Name",
                     subTitle: gymUser.value.ownerBankDetails!.bankName,
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    onPressed: () => Get.to(
+                      () => ChangeBankNameScreen(
+                          bankName: gymUser.value.ownerBankDetails!.bankName),
+                    ),
                   ),
                 ),
                 Obx(
                   () => ProfileMenu(
                     title: "Account No",
                     subTitle: gymUser.value.ownerBankDetails!.accountNumber,
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    onPressed: () => Get.to(
+                      () => ChangeAccountNumberScreen(
+                          accNo: gymUser.value.ownerBankDetails!.accountNumber),
+                    ),
                   ),
                 ),
                 Obx(
                   () => ProfileMenu(
                     title: "Account IBAN",
                     subTitle: gymUser.value.ownerBankDetails!.iban,
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    onPressed: () => Get.to(
+                      () => ChangeAccountIBANScreen(
+                          bankIBAN: gymUser.value.ownerBankDetails!.iban),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -267,15 +276,6 @@ class SettingScreen extends StatelessWidget {
                 const Divider(),
                 const SizedBox(
                   height: ZSizes.defaultSpace,
-                ),
-
-                /// --- Close Account
-                Center(
-                  child: TextButton(
-                    onPressed: () => controller.deleteAccountWarningPopUp(),
-                    child: const Text("Close Account",
-                        style: TextStyle(color: Colors.red)),
-                  ),
                 )
               ],
             ),

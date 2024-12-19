@@ -1,25 +1,24 @@
+import 'package:fitness_scout_owner_v1/common/widgets/custom_appbar/custom_app_bar.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/change_user_settings_controller.dart';
+import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../common/widgets/custom_appbar/custom_app_bar.dart';
-import '../../../utils/constants/sizes.dart';
+class ChangeAccountNumberScreen extends StatelessWidget {
+  const ChangeAccountNumberScreen({super.key, required this.accNo});
 
-class ChangeNumberScreen extends StatelessWidget {
-  const ChangeNumberScreen({super.key, required this.number});
-
-  final String number;
+  final String accNo;
 
   @override
   Widget build(BuildContext context) {
     final controller = ChangeUserSettingsController.instance;
-    controller.numberController.text = number;
+    controller.bankAccountNoController.text = accNo;
     return Scaffold(
       appBar: ZCustomAppBar(
         showArrows: true,
         title: Text(
-          'Owner Number',
+          'Bank Account Number',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
@@ -32,7 +31,7 @@ class ChangeNumberScreen extends StatelessWidget {
             children: [
               /// Headline
               Text(
-                'Update your number for better personalization.',
+                'Update your bank account number for better transections.',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(
@@ -41,13 +40,14 @@ class ChangeNumberScreen extends StatelessWidget {
 
               /// Input Field
               TextFormField(
-                controller: controller.numberController,
+                controller: controller.bankAccountNoController,
                 validator: MultiValidator([
                   RequiredValidator(errorText: 'This field is required!'),
-                  MinLengthValidator(11, errorText: 'Minimum length is 11')
+                  MaxLengthValidator(50, errorText: 'Max alphabet 300'),
+                  MinLengthValidator(3, errorText: 'Min value 3')
                 ]),
                 decoration: const InputDecoration(
-                  labelText: 'Owner Number',
+                  labelText: 'Owner Bank Account Number',
                   prefixIcon: Icon(Iconsax.user),
                 ),
               ),
@@ -59,7 +59,9 @@ class ChangeNumberScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: controller.updateUserNumber,
+                  onPressed: () => controller.updateBankDetails(
+                      'account_number',
+                      controller.bankAccountNoController.text.trim()),
                   child: const Text('Save'),
                 ),
               ),
