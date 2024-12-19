@@ -1,5 +1,6 @@
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/change_user_settings_controller.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/change_address.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_description.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_number.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_user_settings.dart';
@@ -107,10 +108,10 @@ class SettingScreen extends StatelessWidget {
                 Obx(
                   () => ProfileMenu(
                     title: "Owner Name",
-                    subTitle: gymUser.value.name!,
+                    subTitle: gymUser.value.name,
                     onPressed: () => Get.to(
                       () => ChangeUserNameScreen(
-                        name: gymUser.value.name!,
+                        name: gymUser.value.name,
                       ),
                     ),
                   ),
@@ -141,7 +142,7 @@ class SettingScreen extends StatelessWidget {
                 Obx(
                   () => ProfileMenu(
                     title: "Is Approved",
-                    subTitle: gymUser.value.isApproved!,
+                    subTitle: gymUser.value.isApproved,
                   ),
                 ),
                 const SizedBox(
@@ -180,8 +181,10 @@ class SettingScreen extends StatelessWidget {
                   () => ProfileMenu(
                     title: "Address",
                     subTitle: gymUser.value.address!,
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                    onPressed: () => Get.to(
+                      () =>
+                          ChangeAddressScreen(address: gymUser.value.address!),
+                    ),
                   ),
                 ),
                 Obx(
