@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/login_screen.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/drawer/update_gym_location.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,7 +45,7 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .bodyMedium!
                       .copyWith(color: ZColor.light)),
-              onTap: () {},
+              onTap: () => Get.to(() => const UpdateGymLocation()),
             ),
             const Divider(),
             ListTile(
