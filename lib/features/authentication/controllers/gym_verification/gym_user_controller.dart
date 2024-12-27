@@ -49,6 +49,7 @@ class GYMUserController extends GetxController {
   GlobalKey<FormState> reAuthFormKey = GlobalKey<FormState>();
   final imageUploading = false.obs;
   final hidePassword = false.obs;
+  RxBool showBankDetails = false.obs;
   final verifyEmail = TextEditingController();
   final verifyPassword = TextEditingController();
   Map<String, Map<String, dynamic>> timings = {};
