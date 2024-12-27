@@ -9,10 +9,12 @@ import 'package:fitness_scout_owner_v1/features/personalization/screen/change_us
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_website.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/change_bank_acc_no.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/amenities_screen.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/blured_profile_menue.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/widgets/profile_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../../common/widgets/custom_appbar/custom_app_bar.dart';
 import '../../../common/widgets/section_heading.dart';
 import '../../../utils/constants/sizes.dart';
@@ -233,46 +235,70 @@ class SettingScreen extends StatelessWidget {
                 ),
                 const Divider(),
                 const SizedBox(
-                  height: ZSizes.spaceBtwItems,
+                  height: ZSizes.spaceBtwItems / 2.5,
                 ),
 
                 /// --- Personal Information
-                const ZSectionHeading(
-                  title: "Banking Information",
-                  showActionButton: false,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Banking Information",
+                      style: Theme.of(context).textTheme.headlineSmall!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Obx(
+                      () => IconButton(
+                        onPressed: () => controller.showBankDetails.value =
+                            !controller.showBankDetails.value,
+                        icon: Icon(!controller.showBankDetails.value
+                            ? Iconsax.eye_slash
+                            : Iconsax.eye),
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(
-                  height: ZSizes.spaceBtwItems,
+                  height: ZSizes.spaceBtwItems / 2,
+                ),
+                Obx(() => controller.showBankDetails.value
+                    ? const BluredProfileMenue(title: 'Bank Name')
+                    : ProfileMenu(
+                        title: "Bank Name",
+                        subTitle: gymUser.value.ownerBankDetails!.bankName,
+                        onPressed: () => Get.to(
+                          () => ChangeBankNameScreen(
+                              bankName:
+                                  gymUser.value.ownerBankDetails!.bankName),
+                        ),
+                      )),
+
+                Obx(
+                  () => controller.showBankDetails.value
+                      ? const BluredProfileMenue(title: 'Account No')
+                      : ProfileMenu(
+                          title: "Account No",
+                          subTitle:
+                              gymUser.value.ownerBankDetails!.accountNumber,
+                          onPressed: () => Get.to(
+                            () => ChangeAccountNumberScreen(
+                                accNo: gymUser
+                                    .value.ownerBankDetails!.accountNumber),
+                          ),
+                        ),
                 ),
                 Obx(
-                  () => ProfileMenu(
-                    title: "Bank Name",
-                    subTitle: gymUser.value.ownerBankDetails!.bankName,
-                    onPressed: () => Get.to(
-                      () => ChangeBankNameScreen(
-                          bankName: gymUser.value.ownerBankDetails!.bankName),
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => ProfileMenu(
-                    title: "Account No",
-                    subTitle: gymUser.value.ownerBankDetails!.accountNumber,
-                    onPressed: () => Get.to(
-                      () => ChangeAccountNumberScreen(
-                          accNo: gymUser.value.ownerBankDetails!.accountNumber),
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => ProfileMenu(
-                    title: "Account IBAN",
-                    subTitle: gymUser.value.ownerBankDetails!.iban,
-                    onPressed: () => Get.to(
-                      () => ChangeAccountIBANScreen(
-                          bankIBAN: gymUser.value.ownerBankDetails!.iban),
-                    ),
-                  ),
+                  () => controller.showBankDetails.value
+                      ? const BluredProfileMenue(title: 'Account IBAN')
+                      : ProfileMenu(
+                          title: "Account IBAN",
+                          subTitle: gymUser.value.ownerBankDetails!.iban,
+                          onPressed: () => Get.to(
+                            () => ChangeAccountIBANScreen(
+                                bankIBAN: gymUser.value.ownerBankDetails!.iban),
+                          ),
+                        ),
                 ),
                 const SizedBox(
                   height: ZSizes.spaceBtwItems,
