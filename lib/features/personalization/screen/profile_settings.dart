@@ -88,8 +88,8 @@ class SettingScreen extends StatelessWidget {
                         height: ZSizes.sm,
                       ),
                       TextButton(
-                        onPressed: () {},
-                        // UserController.instance.uploadUserProfilePicture(),
+                        onPressed: () =>
+                            GYMUserController.instance.uploadGYMPicture(),
                         child: const Text("Change GYM Picture"),
                       )
                     ],
@@ -232,6 +232,65 @@ class SettingScreen extends StatelessWidget {
                 ),
                 const SizedBox(
                   height: ZSizes.spaceBtwItems,
+                ),
+                const ZSectionHeading(
+                  title: 'GYM License',
+                  showActionButton: false,
+                ),
+                const SizedBox(
+                  height: ZSizes.spaceBtwItems,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        final networkImage =
+                            gymUser.value.license?.isNotEmpty == true
+                                ? controller.GYMuser.value.license!
+                                : null;
+
+                        if (networkImage == null || networkImage.isEmpty) {
+                          ZLogger.warning('No image found for the user.');
+                          return Container(
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                            ),
+                            width: double.infinity,
+                            child: const Center(
+                              child: Text(
+                                'No Image Available',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          );
+                        }
+
+                        ZLogger.info('Displaying Network Image: $networkImage');
+                        return Container(
+                          height: Get.height * 0.23,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                            image: DecorationImage(
+                              image: NetworkImage(networkImage),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      }),
+                      const SizedBox(
+                        height: ZSizes.sm,
+                      ),
+                      TextButton(
+                        onPressed: () => controller.uploadGYMLicense(),
+                        child: const Text("Change License Image"),
+                      )
+                    ],
+                  ),
                 ),
                 const Divider(),
                 const SizedBox(
