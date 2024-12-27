@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/login_screen.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/drawer/transaction_history_screen.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/drawer/update_gym_location.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
-import '../socialButtons.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -20,22 +21,27 @@ class CustomDrawer extends StatelessWidget {
       elevation: 100,
       child: Container(
         color: dark ? ZColor.dark : ZColor.primary,
-        padding: EdgeInsets.all(ZSizes.sm),
+        padding: const EdgeInsets.all(ZSizes.sm),
         child: Column(
           children: [
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(
                 color: dark ? ZColor.dark : ZColor.primary,
               ),
-              accountName: const Text(
-                "Zuraiz Khan",
+              accountName: Obx(
+                () => Text(
+                  GYMUserController.instance.GYMuser.value.name ?? '',
+                ),
               ),
               currentAccountPicture: const CircleAvatar(
                 backgroundImage: AssetImage(
                     "assets/user_profile/user_profile_compressed.png"),
                 backgroundColor: ZColor.light,
               ),
-              accountEmail: const Text("thezuraiz@gmail.com"),
+              accountEmail: Obx(
+                () =>
+                    Text(GYMUserController.instance.GYMuser.value.email ?? ''),
+              ),
             ),
             ListTile(
               leading: const Icon(Iconsax.location,
@@ -56,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .titleMedium!
                       .copyWith(color: ZColor.light)),
-              onTap: () {},
+              onTap: () => Get.to(() => TransactionHistoryScreen()),
             ),
             ListTile(
               leading: const Icon(Iconsax.security_safe,
@@ -101,36 +107,21 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {},
             ),
             const Spacer(),
-            SizedBox(
+            Container(
               width: double.infinity,
+              padding: const EdgeInsets.all(ZSizes.md),
               child: OutlinedButton(
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    Get.offAll(() => LoginScreen());
+                    Get.offAll(() => const LoginScreen());
                   },
                   style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.white)),
+                      side: const BorderSide(color: Colors.white)),
                   child: Text("Log Out",
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
                           .copyWith(color: ZColor.light))),
-            ),
-            const SizedBox(
-              height: ZSizes.spaceBtwSections,
-            ),
-            const Divider(
-              color: Colors.white,
-            ),
-            const SizedBox(
-              height: ZSizes.spaceBtwItems,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [ZSocialButtons()],
-            ),
-            const SizedBox(
-              height: ZSizes.spaceBtwItems,
             ),
           ],
         ),

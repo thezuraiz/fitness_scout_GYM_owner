@@ -16,6 +16,7 @@ class GymOwnerModel {
   final String? license;
   final Map<String, dynamic>? openingHours;
   final List<String>? images;
+  final List<TransactionHistory>? transactionHistory;
   final List<Map<String, dynamic>>? amenities;
   final OwnerBankDetails? ownerBankDetails;
   final double balance;
@@ -39,6 +40,7 @@ class GymOwnerModel {
     this.license,
     this.openingHours,
     this.images,
+    this.transactionHistory, // Added here
     this.amenities,
     this.ownerBankDetails,
     this.balance = 0.0,
@@ -89,6 +91,11 @@ class GymOwnerModel {
             [],
         gymType: data['gym_type'] ?? 'Normal',
         ratings: data['ratings'] ?? 0,
+        transactionHistory: (data['transaction_history'] as List<dynamic>?)
+                ?.map((transaction) => TransactionHistory.fromJson(
+                    transaction as Map<String, dynamic>))
+                .toList() ??
+            [],
       );
     } catch (e, stackTrace) {
       ZLogger.error('Error parsing GymOwnerModel: $e $stackTrace');
@@ -119,6 +126,8 @@ class GymOwnerModel {
         "visitors": visitors?.map((v) => v.toJson()).toList(),
         "gym_type": gymType,
         "ratings": ratings,
+        "transaction_history":
+            transactionHistory?.map((v) => v.toJson()).toList(),
       };
 
   // Factory for creating an empty GymOwnerModel
@@ -144,6 +153,7 @@ class GymOwnerModel {
         visitors: [],
         gymType: 'Normal',
         ratings: 0,
+        transactionHistory: [],
       );
 }
 
@@ -215,4 +225,34 @@ class OwnerBankDetails {
         "account_number": accountNumber,
         "iban": iban,
       };
+}
+
+class TransactionHistory {
+  final String requestedDate; // ISO 8601 formatted date
+  final String transactionMethod;
+  final String transactionStatus;
+
+  TransactionHistory({
+    required this.requestedDate,
+    required this.transactionMethod,
+    required this.transactionStatus,
+  });
+
+  // Convert Firebase data to Dart object
+  factory TransactionHistory.fromJson(Map<String, dynamic> json) {
+    return TransactionHistory(
+      requestedDate: json['requested_date'],
+      transactionMethod: json['transaction_method'],
+      transactionStatus: json['transaction_status'],
+    );
+  }
+
+  // Convert Dart object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'requested_date': requestedDate,
+      'transaction_method': transactionMethod,
+      'transaction_status': transactionStatus,
+    };
+  }
 }
