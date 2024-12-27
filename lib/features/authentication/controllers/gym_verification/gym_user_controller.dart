@@ -141,6 +141,73 @@ class GYMUserController extends GetxController {
     }
   }
 
+  uploadGYMPicture() async {
+    try {
+      imageUploading.value = true;
+      final image = await ImagePicker().pickImage(
+          source: ImageSource.gallery, maxHeight: 512, maxWidth: 512);
+
+      if (image != null) {
+        // Upload GYMPicture
+        final imageUrl =
+            await userRepository.uploadImage('Gyms/Images/', image);
+
+        // Update GYMPicture In firestorex
+        Map<String, dynamic> json = {
+          'images': [imageUrl],
+        };
+        await userRepository.updateSingleField(json);
+
+        // Update GYMPicture in User Controller
+        // GYMuser.value.images = imageUrl;
+        // GYMuser.refresh();
+        fetchUserRecord();
+
+        ZLoaders.successSnackBar(
+            title: 'Congratulations',
+            message: 'Your gym picture has been updated');
+      }
+    } catch (e) {
+      ZLoaders.errorSnackBar(title: 'Uh Snap!', message: e.toString());
+    } finally {
+      imageUploading.value = false;
+    }
+  }
+
+  uploadGYMLicense() async {
+    try {
+      imageUploading.value = true;
+      final image = await ImagePicker().pickImage(
+          source: ImageSource.gallery, maxHeight: 512, maxWidth: 512);
+
+      if (image != null) {
+        // Upload GYM License
+        final imageUrl =
+            await userRepository.uploadImage('Gyms/license/', image);
+
+        // Update License In firestorex
+        Map<String, dynamic> json = {
+          'license': imageUrl,
+        };
+        await userRepository.updateSingleField(json);
+
+        // Update License in User Controller
+        // GYMuser.value.images = imageUrl;
+        // GYMuser.refresh();
+
+        fetchUserRecord();
+
+        ZLoaders.successSnackBar(
+            title: 'Congratulations',
+            message: 'Your GYM License has been updated');
+      }
+    } catch (e) {
+      ZLoaders.errorSnackBar(title: 'Uh Snap!', message: e.toString());
+    } finally {
+      imageUploading.value = false;
+    }
+  }
+
   Future<void> registerGYM() async {
     FocusManager.instance.primaryFocus?.unfocus(); // Use ? to avoid null errors
     try {
