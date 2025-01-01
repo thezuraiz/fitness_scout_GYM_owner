@@ -91,7 +91,7 @@ class GymOwnerModel {
             [],
         gymType: data['gym_type'] ?? 'Normal',
         ratings: data['ratings'] ?? 0,
-        transactionHistory: (data['transaction_history'] as List<dynamic>?)
+        transactionHistory: (data['transactions'] as List<dynamic>?)
                 ?.map((transaction) => TransactionHistory.fromJson(
                     transaction as Map<String, dynamic>))
                 .toList() ??
@@ -126,8 +126,7 @@ class GymOwnerModel {
         "visitors": visitors?.map((v) => v.toJson()).toList(),
         "gym_type": gymType,
         "ratings": ratings,
-        "transaction_history":
-            transactionHistory?.map((v) => v.toJson()).toList(),
+        "transactions": transactionHistory?.map((v) => v.toJson()).toList(),
       };
 
   // Factory for creating an empty GymOwnerModel
@@ -228,22 +227,26 @@ class OwnerBankDetails {
 }
 
 class TransactionHistory {
-  final String requestedDate; // ISO 8601 formatted date
+  final DateTime requestedDate; // ISO 8601 formatted date
   final String transactionMethod;
-  final String transactionStatus;
+  final String transactionStatus, message;
 
   TransactionHistory({
     required this.requestedDate,
     required this.transactionMethod,
     required this.transactionStatus,
+    this.message = '',
   });
 
   // Convert Firebase data to Dart object
   factory TransactionHistory.fromJson(Map<String, dynamic> json) {
     return TransactionHistory(
-      requestedDate: json['requested_date'],
-      transactionMethod: json['transaction_method'],
-      transactionStatus: json['transaction_status'],
+      requestedDate: json['requested_date'] != null
+          ? DateTime.tryParse(json['requested_date']) ?? DateTime.now()
+          : DateTime.now(),
+      transactionMethod: json['transactionMethod'] ?? 'Unknown',
+      transactionStatus: json['transactionStatus'] ?? 'Pending',
+      message: json['message'] ?? '',
     );
   }
 
@@ -251,8 +254,9 @@ class TransactionHistory {
   Map<String, dynamic> toJson() {
     return {
       'requested_date': requestedDate,
-      'transaction_method': transactionMethod,
-      'transaction_status': transactionStatus,
+      'transactionMethod': transactionMethod,
+      'transactionStatus': transactionStatus,
+      'message': message,
     };
   }
 }
