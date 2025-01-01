@@ -115,6 +115,12 @@ class GYMUserController extends GetxController {
   /// Fetch User Record
   Future<void> fetchUserRecord() async {
     try {
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
       ZLogger.info('Fetching GYM User Profile');
       profileLoading.value = true;
       final user = await userRepository.fetchUserDetails();

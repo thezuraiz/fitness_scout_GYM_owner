@@ -139,6 +139,50 @@ class UserRepository extends GetxController {
     }
   }
 
+  /// Functions to update single field
+  Future<List<TransactionHistory>> fetchTransactionHistory() async {
+    try {
+      // Fetch the current user's UID
+      final _userId = FirebaseAuth.instance.currentUser!.uid;
+      if (_userId == null) {
+        ZLogger.error('User ID is null. Ensure the user is authenticated.');
+        return [];
+      }
+      ZLogger.info('Current User UID: $_userId');
+
+      // Fetch the transaction history document
+      final docSnapshot = await _db.collection('Gyms').doc(_userId).get();
+
+      if (!docSnapshot.exists) {
+        ZLogger.error('Document does not exist for User ID: $_userId');
+        return [];
+      }
+
+      ZLogger.info('Fetched Successfully');
+
+      final data = docSnapshot.data();
+      ZLogger.info('History: ${data.toString()}');
+
+      // Parse transaction history
+      final transactions = (data!['transactions'] as List<dynamic>?)
+          ?.map((json) => TransactionHistory.fromJson(json))
+          .toList();
+      return transactions ?? [];
+    } on FirebaseException catch (e) {
+      ZLogger.error("Error: $e");
+      throw ZFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      ZLogger.error("Error: $_");
+      throw ZFormatException();
+    } on PlatformException catch (e) {
+      ZLogger.error("Error: $e");
+      throw ZFormatException(e.code).message;
+    } catch (e) {
+      ZLogger.error("Error: $e");
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
   /// Function to delete User data from Firestore.
   Future<void> removeUserRecord(String userId) async {
     try {
