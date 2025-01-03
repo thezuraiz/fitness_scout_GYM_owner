@@ -1,4 +1,3 @@
-import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/progress_theme.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/switch_theme.dart';
 import 'package:flutter/material.dart';
 
