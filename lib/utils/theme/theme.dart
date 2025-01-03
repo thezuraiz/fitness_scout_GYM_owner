@@ -1,3 +1,4 @@
+import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/progress_theme.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/switch_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class AppTheme {
     outlinedButtonTheme: ZOutlinedButton.lightOutlinedButtonTheme,
     inputDecorationTheme: ZTextFormFieldTheme.lightTextFormField,
     switchTheme: ZSwitchTheme.lightSwitchThemeData,
+    progressIndicatorTheme: ZProgressTheme.lightProgressIndicatorTheme,
   );
 
   // --- Dark Theme
@@ -48,5 +50,6 @@ class AppTheme {
     outlinedButtonTheme: ZOutlinedButton.darkOutlinedButtonTheme,
     inputDecorationTheme: ZTextFormFieldTheme.darkTextFormField,
     switchTheme: ZSwitchTheme.darkSwitchThemeData,
+    progressIndicatorTheme: ZProgressTheme.lightProgressIndicatorTheme,
   );
 }

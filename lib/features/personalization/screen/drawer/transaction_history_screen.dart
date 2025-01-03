@@ -1,6 +1,7 @@
 import 'package:fitness_scout_owner_v1/common/widgets/custom_cards/rounded_container.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/shimmer/shimmer.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/models/gym_model.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/transaction_history_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
@@ -24,6 +25,17 @@ class TransactionHistoryScreen extends StatelessWidget {
           'Transaction History',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: ZSizes.lg),
+            child: Obx(
+              () => Text(
+                'Rs ${controller.totalAmount.toInt()}',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () => controller.reFetchTransactionHistory(),
@@ -59,7 +71,8 @@ class TransactionHistoryScreen extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       showBorder: true,
                       borderColor: dark ? ZColor.darkerGrey : ZColor.grey,
-                      margin: const EdgeInsets.all(ZSizes.spaceBtwItems),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: ZSizes.sm, horizontal: ZSizes.md),
                       padding: const EdgeInsets.symmetric(
                         horizontal: ZSizes.sm,
                       ),
@@ -71,20 +84,33 @@ class TransactionHistoryScreen extends StatelessWidget {
                           'Status: ${transaction.transactionStatus}'
                           '${transaction.message.isNotEmpty ? '\nMessage: ${transaction.message}' : ''}',
                         ),
-                        isThreeLine: true,
+                        trailing: Text(
+                          transaction.transactionStatus == 'Failed'
+                              ? ''
+                              : 'Rs ${transaction.widthDrawAmount}',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        isThreeLine: false,
                       ),
                     );
                   },
                 ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(ZSizes.md),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: const Text('Request Withdraw'),
-        ),
-      ),
+      bottomNavigationBar: Obx(() {
+        return controller.transactions.value.last.transactionStatus == 'Pending'
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: ZSizes.md,
+                  vertical: ZSizes.md / 2,
+                ),
+                child: ElevatedButton(
+                  onPressed: () => controller.requestWidthDraw(),
+                  child: const Text('Request Withdraw'),
+                ),
+              );
+      }),
     );
   }
 }

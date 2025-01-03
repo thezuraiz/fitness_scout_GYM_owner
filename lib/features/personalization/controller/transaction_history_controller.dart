@@ -13,11 +13,20 @@ class TransactionHistoryController extends GetxController {
 
   @override
   void onInit() async {
+    super.onInit();
     fetchTransactionHistory();
   }
 
   RxBool isLoading = false.obs;
   RxList<TransactionHistory> transactions = <TransactionHistory>[].obs;
+  RxDouble totalAmount = 0.0.obs;
+
+  void calculateTotalApprovedAmount() {
+    totalAmount.value = transactions
+        .where((t) => t.transactionStatus == 'Approved')
+        .map((t) => t.widthDrawAmount)
+        .fold(0.0, (sum, amount) => sum + amount);
+  }
 
   Future<void> fetchTransactionHistory() async {
     try {
@@ -29,6 +38,7 @@ class TransactionHistoryController extends GetxController {
 
       ZLogger.info('History: ${transactions.value.toList()}');
       isLoading.value = false;
+      calculateTotalApprovedAmount();
     } catch (e) {
       isLoading.value = false;
       ZLogger.error('Error: $e');
@@ -55,6 +65,46 @@ class TransactionHistoryController extends GetxController {
       ZLogger.info('History: ${transactions.value}');
 
       isLoading.value = false;
+      calculateTotalApprovedAmount();
+    } catch (e) {
+      isLoading.value = false;
+      ZLogger.error('Error: $e');
+      ZLoaders.errorSnackBar(
+          title: 'Uh Snap!',
+          message: 'Something went wrong while loading transaction history');
+    }
+  }
+
+  Future<void> requestWidthDraw() async {
+    try {
+      final gymOwner = GYMUserController.instance.GYMuser.value;
+
+      // Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      isLoading.value = true;
+      final transactionObject = TransactionHistory(
+        requestedDate: DateTime.now(),
+        transactionMethod: gymOwner.ownerBankDetails!.bankName,
+        transactionStatus: 'Pending',
+        widthDrawAmount: gymOwner.balance.toInt(),
+      );
+
+      await UserRepository.instance.addTransactionHistory(transactionObject);
+
+      transactions.add(transactionObject);
+
+      isLoading.value = false;
+      calculateTotalApprovedAmount();
+      ZLoaders.successSnackBar(
+        title: 'Success',
+        message:
+            'Please wait while we process your transaction. We will complete it shortly!',
+      );
     } catch (e) {
       isLoading.value = false;
       ZLogger.error('Error: $e');
