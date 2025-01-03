@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/cards/custom_cards.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/drawer/custom_drawer.dart';
+import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/gym/controller/home_controller.dart';
 import 'package:fitness_scout_owner_v1/features/gym/controller/upcoming_event.dart';
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: const CustomDrawer(),
       body: RefreshIndicator(
-        onRefresh: () => homeController.loadUserAttendance(),
+        onRefresh: () => GYMUserController.instance.fetchUserRecord(),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -68,7 +69,7 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.md,
                 ),
                 Obx(
@@ -88,13 +89,13 @@ class HomePage extends StatelessWidget {
                           color: ZColor.primary,
                         ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: ZSizes.md,
                 ),
                 const SizedBox(height: ZSizes.spaceBtwSections * 1.2),
                 Obx(
                   () => Text(
-                    '${userController.GYMuser.value.balance ?? 0.00}\$',
+                    'Rs. ${userController.GYMuser.value.balance.toInt() ?? 0.0}',
                     style: Theme.of(context)
                         .textTheme
                         .displayMedium!
