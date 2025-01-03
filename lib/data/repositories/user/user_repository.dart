@@ -183,6 +183,40 @@ class UserRepository extends GetxController {
     }
   }
 
+  Future<void> addTransactionHistory(TransactionHistory newTransaction) async {
+    try {
+      // Fetch the current user's UID
+      final _userId = FirebaseAuth.instance.currentUser!.uid;
+      if (_userId == null) {
+        ZLogger.error('User ID is null. Ensure the user is authenticated.');
+        return;
+      }
+      ZLogger.info('Current User UID: $_userId');
+
+      // Convert the new transaction to JSON
+      final newTransactionJson = newTransaction.toJson();
+
+      // Get the user's document reference
+      final docRef = _db.collection('Gyms').doc(_userId);
+
+      // Atomically update the transactions array with the new transaction
+      await docRef.update({
+        'transactions': FieldValue.arrayUnion([newTransactionJson]),
+      });
+
+      ZLogger.info('Transaction added successfully: $newTransactionJson');
+    } on FirebaseException catch (e) {
+      ZLogger.error("Firebase Error: $e");
+      throw ZFirebaseException(e.code).message;
+    } on PlatformException catch (e) {
+      ZLogger.error("Platform Error: $e");
+      throw ZFormatException(e.code).message;
+    } catch (e) {
+      ZLogger.error("Error: $e");
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
   /// Function to delete User data from Firestore.
   Future<void> removeUserRecord(String userId) async {
     try {

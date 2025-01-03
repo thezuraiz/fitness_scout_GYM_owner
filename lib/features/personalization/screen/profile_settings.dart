@@ -28,10 +28,11 @@ class SettingScreen extends StatelessWidget {
     final gymUser = controller.GYMuser;
     Get.put(ChangeUserSettingsController());
     return Scaffold(
-      appBar: const ZCustomAppBar(
+      appBar: ZCustomAppBar(
         showArrows: true,
         title: Text(
           "Profile Settings",
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
       body: RefreshIndicator(
@@ -312,8 +313,8 @@ class SettingScreen extends StatelessWidget {
                         onPressed: () => controller.showBankDetails.value =
                             !controller.showBankDetails.value,
                         icon: Icon(!controller.showBankDetails.value
-                            ? Iconsax.eye_slash
-                            : Iconsax.eye),
+                            ? Iconsax.eye
+                            : Iconsax.eye_slash),
                       ),
                     )
                   ],
@@ -321,22 +322,23 @@ class SettingScreen extends StatelessWidget {
                 const SizedBox(
                   height: ZSizes.spaceBtwItems / 2,
                 ),
-                Obx(() => controller.showBankDetails.value
-                    ? const BluredProfileMenue(title: 'Bank Name')
-                    : ProfileMenu(
-                        title: "Bank Name",
-                        subTitle: gymUser.value.ownerBankDetails!.bankName,
-                        onPressed: () => Get.to(
-                          () => ChangeBankNameScreen(
-                              bankName:
-                                  gymUser.value.ownerBankDetails!.bankName),
-                        ),
-                      )),
+                Obx(
+                  () => controller.showBankDetails.value
+                      ? ProfileMenu(
+                          title: "Bank Name",
+                          subTitle: gymUser.value.ownerBankDetails!.bankName,
+                          onPressed: () => Get.to(
+                            () => ChangeBankNameScreen(
+                                bankName:
+                                    gymUser.value.ownerBankDetails!.bankName),
+                          ),
+                        )
+                      : const BluredProfileMenue(title: 'Bank Name'),
+                ),
 
                 Obx(
                   () => controller.showBankDetails.value
-                      ? const BluredProfileMenue(title: 'Account No')
-                      : ProfileMenu(
+                      ? ProfileMenu(
                           title: "Account No",
                           subTitle:
                               gymUser.value.ownerBankDetails!.accountNumber,
@@ -345,19 +347,20 @@ class SettingScreen extends StatelessWidget {
                                 accNo: gymUser
                                     .value.ownerBankDetails!.accountNumber),
                           ),
-                        ),
+                        )
+                      : const BluredProfileMenue(title: 'Account No'),
                 ),
                 Obx(
                   () => controller.showBankDetails.value
-                      ? const BluredProfileMenue(title: 'Account IBAN')
-                      : ProfileMenu(
+                      ? ProfileMenu(
                           title: "Account IBAN",
                           subTitle: gymUser.value.ownerBankDetails!.iban,
                           onPressed: () => Get.to(
                             () => ChangeAccountIBANScreen(
                                 bankIBAN: gymUser.value.ownerBankDetails!.iban),
                           ),
-                        ),
+                        )
+                      : const BluredProfileMenue(title: 'Account IBAN'),
                 ),
                 const SizedBox(
                   height: ZSizes.spaceBtwItems,

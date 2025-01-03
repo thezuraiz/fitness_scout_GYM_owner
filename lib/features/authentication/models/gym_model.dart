@@ -230,11 +230,13 @@ class TransactionHistory {
   final DateTime requestedDate; // ISO 8601 formatted date
   final String transactionMethod;
   final String transactionStatus, message;
+  final int widthDrawAmount;
 
   TransactionHistory({
     required this.requestedDate,
     required this.transactionMethod,
     required this.transactionStatus,
+    required this.widthDrawAmount,
     this.message = '',
   });
 
@@ -246,6 +248,7 @@ class TransactionHistory {
           : DateTime.now(),
       transactionMethod: json['transactionMethod'] ?? 'Unknown',
       transactionStatus: json['transactionStatus'] ?? 'Pending',
+      widthDrawAmount: json['widthDrawAmount'] ?? '',
       message: json['message'] ?? '',
     );
   }
@@ -253,10 +256,11 @@ class TransactionHistory {
   // Convert Dart object to JSON
   Map<String, dynamic> toJson() {
     return {
-      'requested_date': requestedDate,
+      'requested_date': requestedDate.toIso8601String(),
       'transactionMethod': transactionMethod,
       'transactionStatus': transactionStatus,
       'message': message,
+      'widthDrawAmount': widthDrawAmount
     };
   }
 }
