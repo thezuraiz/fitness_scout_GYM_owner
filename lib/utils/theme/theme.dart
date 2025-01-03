@@ -31,7 +31,6 @@ class AppTheme {
     outlinedButtonTheme: ZOutlinedButton.lightOutlinedButtonTheme,
     inputDecorationTheme: ZTextFormFieldTheme.lightTextFormField,
     switchTheme: ZSwitchTheme.lightSwitchThemeData,
-    progressIndicatorTheme: ZProgressTheme.lightProgressIndicatorTheme,
   );
 
   // --- Dark Theme
@@ -50,6 +49,5 @@ class AppTheme {
     outlinedButtonTheme: ZOutlinedButton.darkOutlinedButtonTheme,
     inputDecorationTheme: ZTextFormFieldTheme.darkTextFormField,
     switchTheme: ZSwitchTheme.darkSwitchThemeData,
-    progressIndicatorTheme: ZProgressTheme.lightProgressIndicatorTheme,
   );
 }
