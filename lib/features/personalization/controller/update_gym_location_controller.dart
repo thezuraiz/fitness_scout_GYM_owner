@@ -44,6 +44,8 @@ class UpdateGYMLocation extends GetxController {
     } catch (e) {
       errorMessage.value = "Failed to fetch location: $e";
       address.value = "Error fetching location!";
+      ZLoaders.errorSnackBar(
+          title: 'Uh Snap!', message: 'Error fetching location: $e');
       ZLogger.error('Error fetching location: $e');
     }
   }
