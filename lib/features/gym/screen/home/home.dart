@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/cards/custom_cards.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/drawer/custom_drawer.dart';
-import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/gym/controller/home_controller.dart';
 import 'package:fitness_scout_owner_v1/features/gym/controller/upcoming_event.dart';
@@ -147,8 +146,9 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     );
-                  } else
-                    return SizedBox();
+                  } else {
+                    return const SizedBox();
+                  }
                 }),
                 const SizedBox(
                   height: ZSizes.spaceBtwSections,

@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
 
 class ZDeviceUtils {
   ZDeviceUtils._();
@@ -48,7 +48,7 @@ class ZDeviceUtils {
     return MediaQuery.of(Get.context!).padding.top;
   }
 
-  static double getAppBarHeight(){
+  static double getAppBarHeight() {
     return kToolbarHeight;
   }
 
@@ -95,20 +95,32 @@ class ZDeviceUtils {
     }
   }
 
-  static bool isIOS(){
+  static bool isIOS() {
     return Platform.isIOS;
   }
 
-  static bool isAndriod(){
+  static bool isAndriod() {
     return Platform.isAndroid;
   }
 
-  // static void launchUrl(String url)async{
-  //   if(await canLaunchUrlString(url)){
-  //     await launchUrlString(url);
-  //   }else{
-  //     throw 'Could not launch $url';
-  //   }
-  // }
+  /// --- FOR PLAY AUDIO
 
+  static Future<void> playSound(String soundAssetAddress) async {
+    try {
+      AudioPlayer player = AudioPlayer();
+      debugPrint('Audio Playing');
+      await player.setSource(AssetSource(soundAssetAddress));
+      await player.resume();
+    } catch (e) {
+      debugPrint('Error playing audio: $e');
+    }
+  }
+
+// static void launchUrl(String url)async{
+//   if(await canLaunchUrlString(url)){
+//     await launchUrlString(url);
+//   }else{
+//     throw 'Could not launch $url';
+//   }
+// }
 }

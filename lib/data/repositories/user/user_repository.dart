@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../features/authentication/models/gym_model.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
-import '../authentication/authentication_repository.dart';
 
 class UserRepository extends GetxController {
   // --- Variables
