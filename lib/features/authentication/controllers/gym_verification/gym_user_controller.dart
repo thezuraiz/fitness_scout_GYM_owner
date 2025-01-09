@@ -261,7 +261,7 @@ class GYMUserController extends GetxController {
                   bankName: gymOwnerBankName.text.toString() ?? '',
                   accountNumber: gymOwnerAccountNumber.text.toString() ?? '',
                   iban: gymOwnerAccountIBAN.text.toString() ?? ''),
-              gymType: 'To-Be-Decided',
+              gymType: GymType.Basic,
               profilePicture: '');
 
           // final String id;
