@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/login_screen.dart';
+import 'package:fitness_scout_owner_v1/features/gym/screen/drawer_screens/safety_screen.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/drawer/transaction_history_screen.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/screen/drawer/update_gym_location.dart';
+import 'package:fitness_scout_owner_v1/features/personalization/screen/profile_settings.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,6 +33,10 @@ class CustomDrawer extends StatelessWidget {
               accountName: Obx(
                 () => Text(
                   GYMUserController.instance.GYMuser.value.name ?? '',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall!
+                      .copyWith(color: ZColor.light),
                 ),
               ),
               currentAccountPicture: const CircleAvatar(
@@ -62,7 +68,7 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .titleMedium!
                       .copyWith(color: ZColor.light)),
-              onTap: () => Get.to(() => TransactionHistoryScreen()),
+              onTap: () => Get.to(() => const TransactionHistoryScreen()),
             ),
             ListTile(
               leading: const Icon(Iconsax.security_safe,
@@ -72,7 +78,7 @@ class CustomDrawer extends StatelessWidget {
                       .textTheme
                       .titleMedium!
                       .copyWith(color: ZColor.light)),
-              onTap: () {},
+              onTap: () => Get.to(() => const SafetyScreen()),
             ),
             ListTile(
               title: Text(
@@ -84,7 +90,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               leading: const Icon(Iconsax.setting,
                   color: ZColor.light, size: ZSizes.iconMd),
-              onTap: () {},
+              onTap: () => Get.to(() => const SettingScreen()),
             ),
             ListTile(
               title: Text('FAQ',
@@ -111,17 +117,20 @@ class CustomDrawer extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(ZSizes.md),
               child: OutlinedButton(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Get.offAll(() => const LoginScreen());
-                  },
-                  style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.white)),
-                  child: Text("Log Out",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: ZColor.light))),
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Get.offAll(() => const LoginScreen());
+                },
+                style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.white)),
+                child: Text(
+                  "Log Out",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(color: ZColor.light),
+                ),
+              ),
             ),
           ],
         ),
