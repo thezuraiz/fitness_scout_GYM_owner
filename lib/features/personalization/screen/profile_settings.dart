@@ -207,7 +207,7 @@ class SettingScreen extends StatelessWidget {
                 Obx(
                   () => ProfileMenu(
                     title: "GYM Type",
-                    subTitle: gymUser.value.gymType,
+                    subTitle: gymUser.value.gymType.toString(),
                   ),
                 ),
                 Obx(() {

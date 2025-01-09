@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../utils/helpers/logger.dart';
 
+enum GymType { Basic, Silver, Diamond, Not_Decided }
+
 class GymOwnerModel {
   final String id;
   final String name;
@@ -22,7 +24,7 @@ class GymOwnerModel {
   final double balance;
   final String isApproved;
   final List<Visitor>? visitors;
-  final String gymType;
+  final GymType gymType;
   final int ratings;
 
   GymOwnerModel({
@@ -40,13 +42,13 @@ class GymOwnerModel {
     this.license,
     this.openingHours,
     this.images,
-    this.transactionHistory, // Added here
+    this.transactionHistory,
     this.amenities,
     this.ownerBankDetails,
     this.balance = 0.0,
     this.isApproved = 'Not-Approved',
     this.visitors,
-    this.gymType = 'Normal',
+    this.gymType = GymType.Not_Decided,
     this.ratings = 0,
   });
 
@@ -89,7 +91,7 @@ class GymOwnerModel {
                     Visitor.fromJson(visitor as Map<String, dynamic>))
                 .toList() ??
             [],
-        gymType: data['gym_type'] ?? 'Normal',
+        gymType: _gymTypeFromString(data['gym_type'] ?? 'Not_Decided'),
         ratings: data['ratings'] ?? 0,
         transactionHistory: (data['transactions'] as List<dynamic>?)
                 ?.map((transaction) => TransactionHistory.fromJson(
@@ -124,7 +126,7 @@ class GymOwnerModel {
         "balance": balance,
         "isApproved": isApproved,
         "visitors": visitors?.map((v) => v.toJson()).toList(),
-        "gym_type": gymType,
+        "gym_type": _gymTypeToString(gymType),
         "ratings": ratings,
         "transactions": transactionHistory?.map((v) => v.toJson()).toList(),
       };
@@ -150,10 +152,37 @@ class GymOwnerModel {
         balance: 0.0,
         isApproved: 'Not-Approved',
         visitors: [],
-        gymType: 'Normal',
+        gymType: GymType.Not_Decided,
         ratings: 0,
         transactionHistory: [],
       );
+
+  // Helper functions to convert GymType enum to/from string
+  static GymType _gymTypeFromString(String gymType) {
+    switch (gymType) {
+      case 'Silver':
+        return GymType.Silver;
+      case 'Diamond':
+        return GymType.Diamond;
+      case 'Basic':
+        return GymType.Basic;
+      default:
+        return GymType.Not_Decided;
+    }
+  }
+
+  static String _gymTypeToString(GymType gymType) {
+    switch (gymType) {
+      case GymType.Silver:
+        return 'Silver';
+      case GymType.Diamond:
+        return 'Diamond';
+      case GymType.Basic:
+        return 'Basic';
+      default:
+        return 'Not_Decided';
+    }
+  }
 }
 
 class Visitor {
@@ -248,7 +277,7 @@ class TransactionHistory {
           : DateTime.now(),
       transactionMethod: json['transactionMethod'] ?? 'Unknown',
       transactionStatus: json['transactionStatus'] ?? 'Pending',
-      widthDrawAmount: json['widthDrawAmount'] ?? '',
+      widthDrawAmount: json['widthDrawAmount'] ?? 0,
       message: json['message'] ?? '',
     );
   }
@@ -260,7 +289,7 @@ class TransactionHistory {
       'transactionMethod': transactionMethod,
       'transactionStatus': transactionStatus,
       'message': message,
-      'widthDrawAmount': widthDrawAmount
+      'widthDrawAmount': widthDrawAmount,
     };
   }
 }
