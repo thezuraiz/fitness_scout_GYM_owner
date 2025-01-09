@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/helpers/logger.dart';
 import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/loader.dart';
+import '../../authentication/controllers/gym_verification/gym_user_controller.dart';
 import '../../personalization/model/user_model.dart';
 
 class HomeController extends GetxController {
@@ -19,6 +19,11 @@ class HomeController extends GetxController {
   RxBool isLoading = false.obs;
   final _userId = FirebaseAuth.instance.currentUser!.uid.toString();
   RxList<GymUserAttendance> userGYMAttendance = <GymUserAttendance>[].obs;
+
+  reloadProfile() async {
+    await GYMUserController.instance.fetchUserRecord();
+    await loadUserAttendance();
+  }
 
   Future<void> loadUserAttendance() async {
     try {
@@ -53,7 +58,10 @@ class HomeController extends GetxController {
 
       userGYMAttendance.value = userAttendanceList
           .map((item) => GymUserAttendance.fromMap(item))
-          .toList();
+          .toList()
+          .reversed
+          .toList(); // Convert the reversed iterable back into a list
+
       ZLogger.info(userGYMAttendance.value.toString());
       ZLogger.info(userGYMAttendance.value.length.toString());
       ZLogger.info('UserData: ${userGYMAttendance.value}');

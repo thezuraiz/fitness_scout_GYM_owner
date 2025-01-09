@@ -30,7 +30,8 @@ class VisitorsScreen extends StatelessWidget {
         onRefresh: () => controller.loadUserAttendance(),
         child: Obx(
           () => Padding(
-            padding: const EdgeInsets.all(ZSizes.defaultSpace),
+            padding:
+                const EdgeInsets.symmetric(horizontal: ZSizes.defaultSpace),
             child: controller.isLoading.value == true
                 ? ListView.builder(
                     itemCount: 3,
