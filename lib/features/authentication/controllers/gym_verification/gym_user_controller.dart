@@ -117,7 +117,7 @@ class GYMUserController extends GetxController {
   /// Fetch User Record
   Future<void> fetchUserRecord() async {
     try {
-      // Check Internet Connectivity
+      /// Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         ZFullScreenLoader.stopLoading();

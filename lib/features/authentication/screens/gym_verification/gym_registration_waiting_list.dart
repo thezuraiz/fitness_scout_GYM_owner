@@ -1,6 +1,5 @@
 import 'package:fitness_scout_owner_v1/common/widgets/success_screen/successScreens.dart';
 import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
-import 'package:fitness_scout_owner_v1/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

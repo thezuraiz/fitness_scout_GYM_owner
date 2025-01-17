@@ -10,7 +10,7 @@
 
     <application
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="fitness_scout_owner_v1">
 
         <!-- Google Play Services version (for Android 12+) -->
