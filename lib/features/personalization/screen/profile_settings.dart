@@ -148,8 +148,12 @@ class SettingScreen extends StatelessWidget {
                 ),
                 Obx(
                   () => ProfileMenu(
-                    title: "Is Approved",
-                    subTitle: gymUser.value.isApproved,
+                    title: "Is Verified",
+                    subTitle: gymUser.value.isApproved.name == 'APPROVED'
+                        ? 'True'
+                        : gymUser.value.isApproved.name == 'NOT_APPROVED'
+                            ? 'False'
+                            : 'Pending',
                   ),
                 ),
                 const SizedBox(
@@ -207,7 +211,7 @@ class SettingScreen extends StatelessWidget {
                 Obx(
                   () => ProfileMenu(
                     title: "GYM Type",
-                    subTitle: gymUser.value.gymType.toString(),
+                    subTitle: gymUser.value.gymType.name,
                   ),
                 ),
                 Obx(() {

@@ -3,7 +3,10 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/constants/image_string.dart';
 import '../../../utils/helpers/logger.dart';
+import '../../../utils/helpers/network_manager.dart';
+import '../../../utils/popups/full_screen_loader.dart';
 import '../../../utils/popups/loader.dart';
 
 class UpdateGYMLocation extends GetxController {
@@ -52,6 +55,18 @@ class UpdateGYMLocation extends GetxController {
 
   Future<void> updateLocation() async {
     try {
+      // Todo: Start Loader
+      ZFullScreenLoader.openLoadingDialogy(
+          'Logging you in...', ZImages.fileAnimation);
+
+      // Todo: Check Internet Connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        ZFullScreenLoader.stopLoading();
+        ZLogger.error('Internet Connection Failed!');
+        return;
+      }
+
       Map<String, dynamic> json = {
         'location': {
           'latitude': position.latitude,
@@ -60,10 +75,15 @@ class UpdateGYMLocation extends GetxController {
       };
       await UserRepository.instance.updateSingleField(json);
 
+      // Todo: Remove Loader
+      ZFullScreenLoader.stopLoading();
+
       ZLoaders.successSnackBar(
           title: 'Congratulations',
           message: 'Your GYM Location has been updated');
     } catch (e) {
+      // Todo: Remove Loader
+      ZFullScreenLoader.stopLoading();
       ZLoaders.errorSnackBar(
           title: 'Uh Snap!', message: 'Error: Something went Wrong');
       throw e;

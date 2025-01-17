@@ -49,7 +49,9 @@ class TransactionHistoryScreen extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       showBorder: true,
                       borderColor: dark ? ZColor.darkerGrey : ZColor.grey,
-                      margin: const EdgeInsets.all(ZSizes.spaceBtwItems),
+                      margin: const EdgeInsets.all(
+                        ZSizes.spaceBtwItems,
+                      ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: ZSizes.sm,
                       ),
@@ -98,7 +100,9 @@ class TransactionHistoryScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Obx(() {
-        return controller.transactions.value.last.transactionStatus == 'Pending'
+        return controller.transactions.isNotEmpty &&
+                controller.transactions.value.last.transactionStatus ==
+                    'Pending'
             ? const SizedBox()
             : Padding(
                 padding: const EdgeInsets.symmetric(
