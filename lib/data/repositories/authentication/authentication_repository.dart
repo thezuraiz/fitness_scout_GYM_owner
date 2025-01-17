@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/gym_verification.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_waiting_screen.dart';
+import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
 import 'package:fitness_scout_owner_v1/navigation_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
 import 'package:fitness_scout_owner_v1/utils/popups/loader.dart';
@@ -50,7 +51,7 @@ class AuthenticationRepository extends GetxController {
         } else if (isApprovedField == 'Pending') {
           Get.to(() => const GymWaitingScreen());
         } else if (isApprovedField == 'Approved') {
-          Get.offAll(() => const NavigationMenu());
+          Get.offAll(() => const HomePage());
         } else {
           ZLogger.error(
             'Something went wrong on your Verification Field',
