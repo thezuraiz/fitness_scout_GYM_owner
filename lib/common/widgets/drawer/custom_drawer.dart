@@ -9,7 +9,6 @@ import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 
@@ -122,7 +121,10 @@ class CustomDrawer extends StatelessWidget {
                   Get.offAll(() => const LoginScreen());
                 },
                 style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.white)),
+                  side: const BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
                 child: Text(
                   "Log Out",
                   style: Theme.of(context)

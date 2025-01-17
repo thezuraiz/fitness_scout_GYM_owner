@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/models/amenities_model.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/widgets/gym_gallery.dart';

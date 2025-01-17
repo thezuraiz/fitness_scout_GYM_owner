@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_verification/gym_verification.dart';
-import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/screens/gym_waiting_screen.dart';
+import 'package:fitness_scout_owner_v1/navigation_menu.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
+import 'package:fitness_scout_owner_v1/utils/popups/loader.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -41,19 +43,27 @@ class AuthenticationRepository extends GetxController {
     // _auth.currentUser!.reload();
     if (_auth.currentUser != null) {
       if (_auth.currentUser!.emailVerified) {
-        Get.to(HomePage());
-
-        /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
-
-        // Get.offAll(() => const GymVerificationScreen());
-        // Get.offAll(() => const NavigationMenu());
+        final isApprovedField = await isGYMValid();
+        ZLogger.info('Is Approved: $isApprovedField');
+        if (isApprovedField == 'Not-Approved') {
+          Get.offAll(() => const GymVerificationScreen());
+        } else if (isApprovedField == 'Pending') {
+          Get.to(() => const GymWaitingScreen());
+        } else if (isApprovedField == 'Approved') {
+          Get.offAll(() => const NavigationMenu());
+        } else {
+          ZLogger.error(
+            'Something went wrong on your Verification Field',
+          );
+          ZLoaders.errorSnackBar(
+              title: 'Uh Snap!',
+              message: 'Something went wrong on your verification');
+        }
       } else {
-        Get.to(const HomePage());
-
-        /// Todo: Lazmi Uncomment krna hn due to gym verfiaction screen
-        // Get.offAll(() => VerifyScreen(
-        //       email: _auth.currentUser?.email,
-        //     ));
+        /// Todo: Lazmi Uncomment krna hn due to gym verification screen
+        Get.offAll(() => VerifyScreen(
+              email: _auth.currentUser?.email,
+            ));
       }
     } else {
       /// Local Storage
@@ -61,6 +71,29 @@ class AuthenticationRepository extends GetxController {
       deviceStorage.read('isFirstTime') != true
           ? Get.offAll(const LoginScreen())
           : Get.offAll(const OnBoardingScreen());
+    }
+  }
+
+  Future<String> isGYMValid() async {
+    try {
+      final documentSnapshot = await FirebaseFirestore.instance
+          .collection('Gyms')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (documentSnapshot.exists) {
+        final data = documentSnapshot.data() as Map<String, dynamic>;
+        final isApprovedField = data['isApproved'];
+        ZLogger.info('Is Approved: $isApprovedField');
+
+        return isApprovedField;
+      } else {
+        ZLogger.error('Document not found');
+        throw Exception('User Document not found');
+      }
+    } catch (e) {
+      ZLogger.error('Error: $e');
+      throw Exception(e);
     }
   }
 

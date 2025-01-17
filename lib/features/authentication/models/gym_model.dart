@@ -3,6 +3,8 @@ import '../../../utils/helpers/logger.dart';
 
 enum GymType { Basic, Silver, Diamond, Not_Decided }
 
+enum VerificationType { APPROVED, NOT_APPROVED, PENDING }
+
 class GymOwnerModel {
   final String id;
   final String name;
@@ -22,7 +24,7 @@ class GymOwnerModel {
   final List<Map<String, dynamic>>? amenities;
   final OwnerBankDetails? ownerBankDetails;
   final double balance;
-  final String isApproved;
+  final VerificationType isApproved;
   final List<Visitor>? visitors;
   final GymType gymType;
   final int ratings;
@@ -46,7 +48,7 @@ class GymOwnerModel {
     this.amenities,
     this.ownerBankDetails,
     this.balance = 0.0,
-    this.isApproved = 'Not-Approved',
+    this.isApproved = VerificationType.NOT_APPROVED,
     this.visitors,
     this.gymType = GymType.Not_Decided,
     this.ratings = 0,
@@ -85,7 +87,8 @@ class GymOwnerModel {
                 data['owner_bank_details'] as Map<String, dynamic>)
             : null,
         balance: (data['balance'] as num?)?.toDouble() ?? 0.0,
-        isApproved: data['isApproved'] ?? 'Not-Approved',
+        isApproved:
+            _verificationTypeFromString(data['isApproved'] ?? 'NOTAPPROVED'),
         visitors: (data['visitors'] as List<dynamic>?)
                 ?.map((visitor) =>
                     Visitor.fromJson(visitor as Map<String, dynamic>))
@@ -111,24 +114,24 @@ class GymOwnerModel {
         "name": name,
         "username": username,
         "email": email,
-        "profile_picture": profilePicture,
-        "description": description,
-        "gym_name": gymName,
-        "location": location?.toJson(),
-        "address": address,
-        "contact_number": contactNumber,
-        "website": website,
-        "license": license,
-        "opening_hours": openingHours,
-        "images": images,
-        "amenities": amenities,
-        "owner_bank_details": ownerBankDetails?.toJson(),
+        "profile_picture": profilePicture ?? '',
+        "description": description ?? '',
+        "gym_name": gymName ?? '',
+        "location": location?.toJson() ?? {},
+        "address": address ?? '',
+        "contact_number": contactNumber ?? '',
+        "website": website ?? '',
+        "license": license ?? '',
+        "opening_hours": openingHours ?? {},
+        "images": images ?? [],
+        "amenities": amenities ?? [],
+        "owner_bank_details": ownerBankDetails?.toJson() ?? {},
         "balance": balance,
-        "isApproved": isApproved,
-        "visitors": visitors?.map((v) => v.toJson()).toList(),
-        "gym_type": _gymTypeToString(gymType),
+        "isApproved": _verificationTypeToString(isApproved),
+        "visitors": visitors?.map((v) => v.toJson()).toList() ?? [],
         "ratings": ratings,
-        "transactions": transactionHistory?.map((v) => v.toJson()).toList(),
+        "transactions":
+            transactionHistory?.map((v) => v.toJson()).toList() ?? [],
       };
 
   // Factory for creating an empty GymOwnerModel
@@ -150,7 +153,7 @@ class GymOwnerModel {
         amenities: [],
         ownerBankDetails: null,
         balance: 0.0,
-        isApproved: 'Not-Approved',
+        isApproved: VerificationType.NOT_APPROVED,
         visitors: [],
         gymType: GymType.Not_Decided,
         ratings: 0,
@@ -181,6 +184,33 @@ class GymOwnerModel {
         return 'Basic';
       default:
         return 'Not_Decided';
+    }
+  }
+
+  // Helper functions to convert VerificationType enum to/from string
+  static VerificationType _verificationTypeFromString(String status) {
+    switch (status.toUpperCase()) {
+      case 'APPROVED':
+        return VerificationType.APPROVED;
+      case 'NOTAPPROVED':
+        return VerificationType.NOT_APPROVED;
+      case 'PENDING':
+        return VerificationType.PENDING;
+      default:
+        return VerificationType.NOT_APPROVED;
+    }
+  }
+
+  static String _verificationTypeToString(VerificationType status) {
+    switch (status) {
+      case VerificationType.APPROVED:
+        return 'Approved';
+      case VerificationType.NOT_APPROVED:
+        return 'Not-Approved';
+      case VerificationType.PENDING:
+        return 'Pending';
+      default:
+        return 'Not-Approved';
     }
   }
 }
@@ -256,9 +286,10 @@ class OwnerBankDetails {
 }
 
 class TransactionHistory {
-  final DateTime requestedDate; // ISO 8601 formatted date
+  final DateTime requestedDate;
   final String transactionMethod;
-  final String transactionStatus, message;
+  final String transactionStatus;
+  final String message;
   final int widthDrawAmount;
 
   TransactionHistory({
@@ -269,7 +300,6 @@ class TransactionHistory {
     this.message = '',
   });
 
-  // Convert Firebase data to Dart object
   factory TransactionHistory.fromJson(Map<String, dynamic> json) {
     return TransactionHistory(
       requestedDate: json['requested_date'] != null
@@ -282,7 +312,6 @@ class TransactionHistory {
     );
   }
 
-  // Convert Dart object to JSON
   Map<String, dynamic> toJson() {
     return {
       'requested_date': requestedDate.toIso8601String(),

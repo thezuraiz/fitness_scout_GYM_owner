@@ -26,7 +26,7 @@ class ProfileMenu extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 3,
+              flex: 7,
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.bodySmall,
