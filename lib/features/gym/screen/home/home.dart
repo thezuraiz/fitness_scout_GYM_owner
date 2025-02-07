@@ -1,5 +1,12 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
+import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_scout_owner_v1/utils/helpers/logger.dart';
+import 'package:fitness_scout_owner_v1/utils/popups/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +27,7 @@ import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import '../../../personalization/model/user_model.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +69,21 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Builder(
-            builder: (context) => IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(
-                Iconsax.menu_1,
-                size: ZSizes.iconMd * 1.3,
-              ),
-            ),
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  if (Scaffold.of(context).hasDrawer) {
+                    Scaffold.of(context).openDrawer();
+                  } else {
+                    ZLogger.error("No Drawer found!");
+                  }
+                },
+                icon: const Icon(
+                  Iconsax.menu_1,
+                  size: ZSizes.iconMd * 1.3,
+                ),
+              );
+            },
           ),
           IconButton(
             onPressed: () => Get.to(() => const SettingScreen()),
@@ -92,13 +107,19 @@ class HomePage extends StatelessWidget {
                   child: CircularProgressIndicator(color: ZColor.primary)),
             )
           : Center(
-              child: SizedBox(
-                height: Get.width / 1.5,
-                child: PrettyQrView.data(
-                  data: FirebaseAuth.instance.currentUser!.uid.toString(),
-                  decoration: PrettyQrDecoration(
-                    shape: PrettyQrSmoothSymbol(
-                      color: dark ? ZColor.white : Colors.black,
+              child: InkWell(
+                onTap: () => _shareQRCode(),
+                child: RepaintBoundary(
+                  key: qrKey,
+                  child: SizedBox(
+                    height: Get.width / 1.5,
+                    child: PrettyQrView.data(
+                      data: FirebaseAuth.instance.currentUser!.uid.toString(),
+                      decoration: PrettyQrDecoration(
+                        shape: PrettyQrSmoothSymbol(
+                          color: dark ? ZColor.white : Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -108,20 +129,82 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildBalanceSection(GYMUserController userController) {
+    RxBool showWalletAmount = false.obs;
     return Column(
       children: [
-        const SizedBox(height: ZSizes.spaceBtwItems),
-        Obx(
-          () => Text(
-            'Rs. ${userController.GYMuser.value.balance.toInt() ?? 0.0}',
-            style: Get.textTheme.displayMedium!.copyWith(
-              fontWeight: FontWeight.bold,
+        const SizedBox(height: ZSizes.spaceBtwItems * 1.5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(
+              () => showWalletAmount.value
+                  ? Text(
+                      'Rs. ${userController.GYMuser.value.balance.toInt() ?? 0.0}',
+                      style: Get.textTheme.displayMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Container(
+                      width: 150,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20))),
+                    ),
             ),
-          ),
+            const SizedBox(
+              width: 20,
+            ),
+            Obx(
+              () => IconButton(
+                onPressed: () =>
+                    showWalletAmount.value = !showWalletAmount.value,
+                style:
+                    IconButton.styleFrom(backgroundColor: Colors.grey.shade300),
+                icon: Icon(
+                    showWalletAmount.value ? Iconsax.eye_slash : Iconsax.eye),
+              ),
+            )
+          ],
         ),
         const SizedBox(height: ZSizes.spaceBtwSections),
       ],
     );
+  }
+
+  final GlobalKey qrKey = GlobalKey();
+
+  Future<void> _shareQRCode() async {
+    try {
+      if (qrKey.currentContext == null) {
+        print('QR key context is null');
+        return;
+      }
+
+      // Capture the widget as an image
+      RenderRepaintBoundary boundary =
+          qrKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+
+      // Convert the captured image to byte data
+      var image = await boundary.toImage(pixelRatio: 3.0); // Image scaling
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      var buffer = byteData!.buffer.asUint8List();
+
+      // Share the image using esys_flutter_share_plus
+      await Share.file(
+        'qr_code.png', // File name (QR code image)
+        'qr_code.png', // The name of the file
+        buffer, // Byte data for the QR code image
+        'image/png', // MIME type (PNG image)
+      );
+
+      ZLoaders.successSnackBar(title: 'Success', message: 'QR Code Shared!');
+    } catch (e) {
+      ZLogger.error('Error sharing QR code: $e');
+      ZLoaders.errorSnackBar(
+          title: 'Uh Snap!', message: 'Failed to share QR code');
+    }
   }
 
   Widget _buildOngoingUsersList(

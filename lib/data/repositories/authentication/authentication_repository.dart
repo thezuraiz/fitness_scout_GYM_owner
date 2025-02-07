@@ -51,7 +51,7 @@ class AuthenticationRepository extends GetxController {
         } else if (isApprovedField == 'Pending') {
           Get.to(() => const GymWaitingScreen());
         } else if (isApprovedField == 'Approved') {
-          Get.offAll(() => const HomePage());
+          Get.offAll(() => HomePage());
         } else {
           ZLogger.error(
             'Something went wrong on your Verification Field',
@@ -63,7 +63,7 @@ class AuthenticationRepository extends GetxController {
       } else {
         /// Todo: Lazmi Uncomment krna hn due to gym verification screen
         Get.offAll(() => VerifyScreen(
-              email: _auth.currentUser?.email,
+              email: _auth.currentUser?.email.toString(),
             ));
       }
     } else {

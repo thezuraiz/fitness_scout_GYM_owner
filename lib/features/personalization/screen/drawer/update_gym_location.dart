@@ -12,8 +12,11 @@ class UpdateGymLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(UpdateGYMLocation());
     return Scaffold(
-      appBar: const ZCustomAppBar(
-        title: Text('Update GYM Location'),
+      appBar: ZCustomAppBar(
+        title: Text(
+          'Update GYM Location',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         showArrows: true,
       ),
       body: SingleChildScrollView(
