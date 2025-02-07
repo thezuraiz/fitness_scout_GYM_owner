@@ -68,7 +68,7 @@ class GymRegistrationWaitingList extends StatelessWidget {
                       image: ZImages.successScreenAnimation,
                       title: ZText.yourAccountCreatedTitle,
                       subTitle: ZText.changeYourPasswordTitle,
-                      onPressed: () => Get.offAll(const HomePage()),
+                      onPressed: () => Get.offAll(HomePage()),
                     ),
                   ),
                   child: const Text(ZText.Continue),

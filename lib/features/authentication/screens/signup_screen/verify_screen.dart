@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ import '../../../../utils/device/deviceUtilities.dart';
 import '../../controllers/signup/verifiy_email_controller.dart';
 
 class VerifyScreen extends StatelessWidget {
-  const VerifyScreen({super.key, this.email});
+  const VerifyScreen({super.key, required this.email});
 
   final email;
 
@@ -58,8 +59,7 @@ class VerifyScreen extends StatelessWidget {
                 height: ZSizes.spaceBtwItems,
               ),
               Text(
-                // FirebaseAuth.instance.currentUser!.email ?? '',
-                'email',
+                email ?? 'email',
                 style: Theme.of(context).textTheme.labelLarge,
                 textAlign: TextAlign.center,
               ),

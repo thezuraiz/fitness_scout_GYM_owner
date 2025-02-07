@@ -58,6 +58,7 @@ dependencies:
   geocoding:
   audioplayers: ^6.1.0
   flutter_markdown: ^0.7.1
+  esys_flutter_share_plus: ^2.3.0
 
 
 dev_dependencies:

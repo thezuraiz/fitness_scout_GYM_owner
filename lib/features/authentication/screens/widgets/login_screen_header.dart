@@ -5,7 +5,6 @@ import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/helpers/helper_functions.dart';
 
-
 class LoginScreenHeader extends StatelessWidget {
   const LoginScreenHeader({
     super.key,
@@ -21,7 +20,7 @@ class LoginScreenHeader extends StatelessWidget {
           height: ZSizes.lg,
         ),
         Image.asset(
-            height: 140, dark ? ZImages.lightAppLogo : ZImages.lightAppLogo),
+            height: 140, dark ? ZImages.darkAppLogo : ZImages.lightAppLogo),
         const SizedBox(
           height: ZSizes.sm,
         ),
