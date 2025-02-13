@@ -23,9 +23,11 @@ class TransactionHistoryController extends GetxController {
 
   void calculateTotalApprovedAmount() {
     totalAmount.value = transactions
-        .where((t) => t.transactionStatus == 'Approved')
+        .where((t) => t.transactionStatus == 'Paid')
         .map((t) => t.widthDrawAmount)
         .fold(0.0, (sum, amount) => sum + amount);
+    ZLogger.info(
+        transactions.map((t) => t.transactionStatus).toList().toString());
   }
 
   Future<void> fetchTransactionHistory() async {
