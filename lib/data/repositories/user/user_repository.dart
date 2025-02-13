@@ -201,6 +201,7 @@ class UserRepository extends GetxController {
       // Atomically update the transactions array with the new transaction
       await docRef.update({
         'transactions': FieldValue.arrayUnion([newTransactionJson]),
+        'balance': 0
       });
 
       ZLogger.info('Transaction added successfully: $newTransactionJson');

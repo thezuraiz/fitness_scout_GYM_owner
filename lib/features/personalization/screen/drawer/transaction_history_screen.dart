@@ -1,7 +1,5 @@
 import 'package:fitness_scout_owner_v1/common/widgets/custom_cards/rounded_container.dart';
 import 'package:fitness_scout_owner_v1/common/widgets/shimmer/shimmer.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
-import 'package:fitness_scout_owner_v1/features/authentication/models/gym_model.dart';
 import 'package:fitness_scout_owner_v1/features/personalization/controller/transaction_history_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';

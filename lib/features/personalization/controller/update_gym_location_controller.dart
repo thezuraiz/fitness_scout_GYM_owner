@@ -76,7 +76,7 @@ class UpdateGYMLocation extends GetxController {
       };
       await UserRepository.instance.updateSingleField(json);
 
-      // Suspend GYM
+      /// Suspend GYM
       await AuthenticationRepository.instance.suspendGYM();
 
       // Todo: Remove Loader
