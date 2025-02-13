@@ -359,7 +359,10 @@ class GYMUserController extends GetxController {
       middleText:
           'Are you sure you want to delete your account permanently? This action is not reversible and all of your data will be permanently removed',
       confirm: ElevatedButton(
-        onPressed: () async => deleteUserAccount(),
+        onPressed: () {
+          ZLogger.info('Button Clicked');
+          deleteUserAccount();
+        },
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             side: const BorderSide(color: Colors.red)),
@@ -377,6 +380,7 @@ class GYMUserController extends GetxController {
 
   /// Delete User Account
   void deleteUserAccount() async {
+    ZLogger.info('Deleting User Account');
     try {
       /// Start Loader
       ZFullScreenLoader.openLoadingDialogy(
@@ -386,6 +390,21 @@ class GYMUserController extends GetxController {
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         ZFullScreenLoader.stopLoading();
+        return;
+      }
+
+      // Check GYM Wallet
+      final balance = GYMUserController.instance.GYMuser.value.balance;
+      ZLogger.info('Balance: $balance (Type: ${balance.runtimeType})');
+      double value = 0.1;
+      ZLogger.info('value: $value (Type: ${value.runtimeType})');
+      if (balance > value) {
+        ZFullScreenLoader.stopLoading();
+        Get.back();
+        ZLoaders.errorSnackBar(
+            title: 'Uh-oh!',
+            message:
+                'Please transfer your balance from the wallet before deleting your account.');
         return;
       }
 

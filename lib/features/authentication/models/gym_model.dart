@@ -57,9 +57,6 @@ class GymOwnerModel {
   // Factory to create a GymOwnerModel from Firestore document snapshot
   factory GymOwnerModel.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>? ?? {};
-
-    ZLogger.info('Parsing GymOwnerModel: $data');
-
     try {
       return GymOwnerModel(
         id: snapshot.id,
