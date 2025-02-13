@@ -35,7 +35,7 @@ class UpcomingEventsController extends GetxController {
   }
 
   showLoading() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     showDelayOnQr.value = false;
   }
 }
