@@ -255,7 +255,7 @@ class HomePage extends StatelessWidget {
   Widget _buildNoMembersYet() {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: ZSizes.spaceBtwSections,
         ),
         Container(
@@ -299,7 +299,7 @@ class HomePage extends StatelessWidget {
       () {
         List<dynamic> validEvents = controller.gymEvents.value
             .where((event) =>
-                DateTime.parse(event.startTime).isBefore(DateTime.now()))
+                DateTime.parse(event.startTime).isAfter(DateTime.now()))
             .toList();
 
         return ListTile(
