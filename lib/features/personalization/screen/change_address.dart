@@ -32,7 +32,7 @@ class ChangeAddressScreen extends StatelessWidget {
             children: [
               /// Headline
               Text(
-                'Update your address for better personalization.',
+                'Update your address for better personalization. \n\nNote: Your gym account will be temporarily suspended until our support team reviews and approves it.',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(

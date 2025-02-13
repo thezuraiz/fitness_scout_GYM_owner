@@ -31,7 +31,7 @@ class ChangeAccountNumberScreen extends StatelessWidget {
             children: [
               /// Headline
               Text(
-                'Update your bank account number for better transections.',
+                'Update your bank account number for better transactions. \n\nNote: Your gym account will be temporarily suspended until our support team reviews and approves it.',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(

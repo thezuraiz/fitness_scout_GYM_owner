@@ -32,7 +32,7 @@ class ChangeDescriptionScreen extends StatelessWidget {
             children: [
               /// Headline
               Text(
-                'Update your description for better personalization.',
+                'Update your description for better personalization. \n\nNote: Your gym account will be temporarily suspended until our support team reviews and approves it. Do you wish to proceed?',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(

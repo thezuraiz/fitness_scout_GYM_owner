@@ -1,4 +1,7 @@
 import 'package:fitness_scout_owner_v1/common/widgets/success_screen/successScreens.dart';
+import 'package:fitness_scout_owner_v1/data/repositories/authentication/authentication_repository.dart';
+import 'package:fitness_scout_owner_v1/data/repositories/user/user_repository.dart';
+import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/features/gym/screen/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,7 +71,8 @@ class GymRegistrationWaitingList extends StatelessWidget {
                       image: ZImages.successScreenAnimation,
                       title: ZText.yourAccountCreatedTitle,
                       subTitle: ZText.changeYourPasswordTitle,
-                      onPressed: () => Get.offAll(HomePage()),
+                      onPressed: () =>
+                          AuthenticationRepository.instance.screenRedirect(),
                     ),
                   ),
                   child: const Text(ZText.Continue),

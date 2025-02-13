@@ -39,7 +39,7 @@ class VerifyEmailController extends GetxController {
       await FirebaseAuth.instance.currentUser?.reload();
       final user = FirebaseAuth.instance.currentUser;
       if (user!.emailVerified ?? false) {
-        timer.cancel();
+        timer!.cancel();
         Get.offAll(
           () => SuccessScreen(
             image: ZImages.staticSuccessIllustration,
