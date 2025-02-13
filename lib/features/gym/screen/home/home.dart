@@ -279,7 +279,7 @@ class HomePage extends StatelessWidget {
           style: Get.textTheme.titleMedium!
               .copyWith(color: ZColor.primary, fontWeight: FontWeight.w500),
         ),
-        SizedBox(
+        const SizedBox(
           height: ZSizes.spaceBtwSections * 2,
         )
       ],

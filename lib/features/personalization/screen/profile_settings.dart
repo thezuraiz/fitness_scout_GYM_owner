@@ -372,7 +372,24 @@ class SettingScreen extends StatelessWidget {
                 const Divider(),
                 const SizedBox(
                   height: ZSizes.defaultSpace,
-                )
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      GYMUserController.instance.deleteAccountWarningPopUp();
+                    },
+                    child: Text(
+                      'Delete Account',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.red),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
