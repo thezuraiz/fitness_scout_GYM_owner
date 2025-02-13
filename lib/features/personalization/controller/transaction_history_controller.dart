@@ -34,7 +34,7 @@ class TransactionHistoryController extends GetxController {
     try {
       isLoading.value = true;
       final gymUser = GYMUserController.instance.GYMuser.value;
-      print(
+      ZLogger.info(
           'GYM User: ${GYMUserController.instance.GYMuser.value.transactionHistory!.length}');
       transactions.value = gymUser.transactionHistory ?? [];
 
@@ -80,6 +80,15 @@ class TransactionHistoryController extends GetxController {
   Future<void> requestWidthDraw() async {
     try {
       final gymOwner = GYMUserController.instance.GYMuser.value;
+      final balance = gymOwner.balance.toInt();
+      if (balance < 1) {
+        ZLoaders.errorSnackBar(
+            title: 'Oops!',
+            message:
+                'Your balance is insufficient. Earn more to withdraw money.');
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
 
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
