@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
+import '../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../utils/constants/image_string.dart';
 import '../../../utils/helpers/logger.dart';
 import '../../../utils/helpers/network_manager.dart';
@@ -74,6 +75,9 @@ class UpdateGYMLocation extends GetxController {
         },
       };
       await UserRepository.instance.updateSingleField(json);
+
+      // Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
 
       // Todo: Remove Loader
       ZFullScreenLoader.stopLoading();

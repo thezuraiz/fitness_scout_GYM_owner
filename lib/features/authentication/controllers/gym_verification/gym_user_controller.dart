@@ -250,6 +250,7 @@ class GYMUserController extends GetxController {
               description: gymDescription.text.toString() ?? '',
               gymName: gymName.text.toString() ?? '',
               license: uploadedImage ?? '',
+              isApproved: VerificationType.PENDING,
               address: gymAddress.text.toString() ?? '',
               contactNumber: _user.contactNumber ?? '',
               website: gymWebsite.text.toString() ?? '',

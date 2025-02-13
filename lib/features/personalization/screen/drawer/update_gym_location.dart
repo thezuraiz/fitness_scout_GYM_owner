@@ -26,8 +26,12 @@ class UpdateGymLocation extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Note: When you update your gym Location, then your gym wil be go for udpation nad the user land on this location',
+                'Note: Updating your gym location will require approval, and users will be redirected to the new location.',
                 style: TextStyle(color: Colors.red),
+              ),
+              Text(
+                '\nWarning: Your gym account will be temporarily suspended until our support team reviews and approves it.',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(
                 height: ZSizes.defaultSpace,

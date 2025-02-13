@@ -1,3 +1,4 @@
+import 'package:fitness_scout_owner_v1/data/repositories/authentication/authentication_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../data/repositories/user/user_repository.dart';
@@ -120,12 +121,15 @@ class ChangeUserSettingsController extends GetxController {
         'contact_number': numberController.text.trim()
       };
 
-      // Update the fields in Firestore
+      // Update the fields in Fire store
       await userRepository.updateSingleField(json);
 
       // Update RX Values dynamically
       await userController.fetchUserRecord();
       userController.refresh();
+
+      // Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
 
       // Remove the Loader
       ZFullScreenLoader.stopLoading();
@@ -189,6 +193,9 @@ class ChangeUserSettingsController extends GetxController {
       await userController.fetchUserRecord();
       userController.refresh();
 
+      // Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
+
       // Remove the Loader
       ZFullScreenLoader.stopLoading();
 
@@ -250,6 +257,9 @@ class ChangeUserSettingsController extends GetxController {
       // Update RX Values dynamically
       await userController.fetchUserRecord();
       userController.refresh();
+
+      /// Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
 
       // Remove the Loader
       ZFullScreenLoader.stopLoading();
@@ -313,6 +323,9 @@ class ChangeUserSettingsController extends GetxController {
       await userController.fetchUserRecord();
       userController.refresh();
 
+      // Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
+
       // Remove the Loader
       ZFullScreenLoader.stopLoading();
 
@@ -343,15 +356,15 @@ class ChangeUserSettingsController extends GetxController {
       ZFullScreenLoader.openLoadingDialogy(
           'Processing your request...', ZImages.fileAnimation);
 
-      // if (bankNameController.text.trim() ==
-      //     userController.GYMuser.value.ownerBankDetails!.bankName) {
-      //   ZLoaders.warningSnackBar(
-      //     title: 'Warning',
-      //     message: 'No changes detected. Please update and try again',
-      //   );
-      //   ZFullScreenLoader.stopLoading();
-      //   return;
-      // }
+      if (bankNameController.text.trim() ==
+          userController.GYMuser.value.ownerBankDetails!.bankName) {
+        ZLoaders.warningSnackBar(
+          title: 'Warning',
+          message: 'No changes detected. Please update and try again',
+        );
+        ZFullScreenLoader.stopLoading();
+        return;
+      }
 
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -377,6 +390,9 @@ class ChangeUserSettingsController extends GetxController {
       // Update RX Values dynamically
       await userController.fetchUserRecord();
       userController.refresh();
+
+      // Suspend GYM
+      await AuthenticationRepository.instance.suspendGYM();
 
       // Remove the Loader
       ZFullScreenLoader.stopLoading();

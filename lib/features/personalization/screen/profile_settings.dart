@@ -228,13 +228,13 @@ class SettingScreen extends StatelessWidget {
                     ),
                   );
                 }),
-                ProfileMenu(
-                  title: "Opening Hours",
-                  subTitle: 'Tap to view',
-                  // Joins list elements with a comma and space
-                  onPressed: () {},
-                  // onPressed: () => Get.to(() => const ChangeNameScreen())),
-                ),
+                // ProfileMenu(
+                //   title: "Opening Hours",
+                //   subTitle: 'Tap to view',
+                //   // Joins list elements with a comma and space
+                //   onPressed: () {},
+                //   // onPressed: () => Get.to(() => const ChangeNameScreen())),
+                // ),
                 const SizedBox(
                   height: ZSizes.spaceBtwItems,
                 ),

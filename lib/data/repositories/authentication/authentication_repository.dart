@@ -98,6 +98,20 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  Future suspendGYM() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('Gyms')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'isApproved': 'Pending'});
+      ZLogger.info('GYM Suspended');
+      screenRedirect();
+    } catch (e) {
+      ZLogger.error('Error: $e');
+      throw Exception(e);
+    }
+  }
+
   /// ------------------ Email & Password Sign-in -----------------------
 
   ///  [Email Authentication] - Sign-in
