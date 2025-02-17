@@ -1,8 +1,11 @@
+import 'package:fitness_scout_owner_v1/data/repositories/authentication/authentication_repository.dart';
 import 'package:fitness_scout_owner_v1/features/authentication/controllers/gym_verification/gym_user_controller.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/colors.dart';
 import 'package:fitness_scout_owner_v1/utils/constants/sizes.dart';
+import 'package:fitness_scout_owner_v1/utils/helpers/helper_functions.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/elevated_button_theme.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/outlined_button.dart';
+import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/textTheme.dart';
 import 'package:fitness_scout_owner_v1/utils/theme/custom_themes/textformfield_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +17,7 @@ class GymVerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(GYMUserController());
+    final dark = ZHelperFunction.isDarkMode(context);
     return Obx(
       () => Scaffold(
           body: SafeArea(
@@ -22,8 +26,14 @@ class GymVerificationScreen extends StatelessWidget {
               primarySwatch: Colors.orange,
               elevatedButtonTheme:
                   ZElevatedButtonTheme.lightElevatedButtonTheme,
-              inputDecorationTheme: ZTextFormFieldTheme.lightTextFormField,
-              outlinedButtonTheme: ZOutlinedButton.lightOutlinedButtonTheme,
+              inputDecorationTheme: dark
+                  ? ZTextFormFieldTheme.darkTextFormField
+                  : ZTextFormFieldTheme.lightTextFormField,
+              outlinedButtonTheme: dark
+                  ? ZOutlinedButton.darkOutlinedButtonTheme
+                  : ZOutlinedButton.lightOutlinedButtonTheme,
+              textTheme:
+                  dark ? ZTextTheme.darkTextTheme : ZTextTheme.lightTextTheme,
               colorScheme: const ColorScheme.light(primary: Colors.orange)),
           child: Stepper(
             stepIconBuilder: (int stepIndex, StepState stepState) => const Icon(
@@ -56,10 +66,13 @@ class GymVerificationScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        FocusManager.instance.primaryFocus!.unfocus();
                         if (!controller.isLastStep) {
                           controller.stepperCurrentIndex.value++;
                         } else {
-                          controller.registerGYM();
+                          if (controller.formKey.currentState!.validate()) {
+                            controller.registerGYM();
+                          }
                         }
                       },
                       child: Text(isLastStep ? 'Finish' : 'Next'),

@@ -60,10 +60,7 @@ class GymInfoScreen extends StatelessWidget {
         ),
         Text(
           'Select Available Amenities:',
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall!
-              .copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(Get.context!).textTheme.headlineMedium,
         ),
         const SizedBox(
           height: ZSizes.spaceBtwInputFields / 2,
