@@ -36,10 +36,15 @@ class VerifyEmailController extends GetxController {
   /// Timer to Automatically redirect on Email Verification
   setTimerForRedirect() {
     Timer.periodic(const Duration(seconds: 1), (timer) async {
-      await FirebaseAuth.instance.currentUser?.reload();
       final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        timer.cancel();
+        ZLoaders.errorSnackBar(title: 'Error', message: 'User is null');
+        return;
+      }
+      await user.reload();
       if (user!.emailVerified ?? false) {
-        timer!.cancel();
+        timer.cancel();
         Get.offAll(
           () => SuccessScreen(
             image: ZImages.staticSuccessIllustration,

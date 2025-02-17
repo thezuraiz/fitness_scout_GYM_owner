@@ -14,7 +14,7 @@ import '../../controllers/signup/verifiy_email_controller.dart';
 class VerifyScreen extends StatelessWidget {
   const VerifyScreen({super.key, required this.email});
 
-  final email;
+  final String email;
 
   @override
   Widget build(BuildContext context) {

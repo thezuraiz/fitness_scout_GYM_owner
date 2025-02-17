@@ -63,7 +63,7 @@ class AuthenticationRepository extends GetxController {
       } else {
         /// Todo: Lazmi Uncomment krna hn due to gym verification screen
         Get.offAll(() => VerifyScreen(
-              email: _auth.currentUser?.email.toString(),
+              email: _auth.currentUser!.email.toString(),
             ));
       }
     } else {
